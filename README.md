@@ -19,13 +19,13 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
 or install it via composer on an existing pimcore installation
 
 ```
-composer require dpfaffenbauer/ProcessManager
+composer require dpfaffenbauer/process-manager
 ```
 
 or for the nightly dev version
 
 ```
-composer require dpfaffenbauer/ProcessManager dev-master
+composer require dpfaffenbauer/process-manager dev-master
 ```
 
 ## Integrate to your Task
