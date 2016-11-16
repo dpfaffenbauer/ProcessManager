@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
+    <plugin>
+        <pluginName>ProcessManager</pluginName>
+        <pluginDescription><![CDATA[]]></pluginDescription>
+        <pluginVersion>1.0</pluginVersion>
+        <pluginRevision>1</pluginRevision>
+        <pluginBuildTimestamp>0</pluginBuildTimestamp>
+        <pluginClassName>\ProcessManager\Plugin</pluginClassName>
+        <pluginIncludePaths>
+            <path>/ProcessManager/lib</path>
+        </pluginIncludePaths>
+        <pluginNamespaces>
+            <namespace>ProcessManager</namespace>
+        </pluginNamespaces>
+        <pluginJsPaths>
+            <path>/plugins/ProcessManager/static/js/startup.js</path>
+            <path>/plugins/ProcessManager/static/js/panel.js</path>
+            <path>/plugins/ProcessManager/static/js/processes.js</path>
+            <path>/plugins/ProcessManager/static/js/portlet.js</path>
+        </pluginJsPaths>
+        <pluginCssPaths>
+            <path>/plugins/ProcessManager/static/css/processmanager.css</path>
+        </pluginCssPaths>
+    </plugin>
+</zend-config>
