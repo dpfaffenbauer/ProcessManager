@@ -2,7 +2,8 @@
 <zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
     <plugin>
         <pluginName>ProcessManager</pluginName>
-        <pluginDescription><![CDATA[]]></pluginDescription>
+        <pluginNiceName>Process Manager</pluginNiceName>
+        <pluginDescription><![CDATA[Process Manager helps you to see statuses for long running Processes]]></pluginDescription>
         <pluginVersion>1.0</pluginVersion>
         <pluginRevision>1</pluginRevision>
         <pluginBuildTimestamp>0</pluginBuildTimestamp>
