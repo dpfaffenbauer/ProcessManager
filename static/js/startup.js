@@ -29,13 +29,15 @@ pimcore.plugin.processmanager = Class.create(pimcore.plugin.admin, {
         if (user.isAllowed('plugins')) {
 
             var exportMenu = new Ext.Action({
-                text: t('processmanager_processes'),
+                text: t('processmanager'),
                 iconCls: 'processmanager_icon_processes',
                 handler:this.openProcesses
             });
 
-            layoutToolbar.settingsMenu.add(exportMenu);
+            layoutToolbar.extrasMenu.add({xtype: 'menuseparator'});
+            layoutToolbar.extrasMenu.add(exportMenu);
 
+            $(document).trigger('processmanager.ready');
         }
     },
 

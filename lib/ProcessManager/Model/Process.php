@@ -16,6 +16,7 @@ namespace ProcessManager\Model;
 
 use Pimcore\Logger;
 use Pimcore\Model\AbstractModel;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Process
@@ -47,6 +48,11 @@ class Process extends AbstractModel
      * @var int
      */
     public $total;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * get Log by id
@@ -81,10 +87,6 @@ class Process extends AbstractModel
         }
 
         $this->save();
-
-        if($this->getProgress() === $this->getTotal()) {
-            $this->delete();
-        }
     }
 
     /**
@@ -165,6 +167,27 @@ class Process extends AbstractModel
     public function setTotal($total)
     {
         $this->total = $total;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger() {
+        if(is_null($this->logger)) {
+            $loggerFile = new \Monolog\Logger('core');
+            $loggerFile->pushHandler(new \Monolog\Handler\StreamHandler($this->getLogFilePath()));
+
+            $this->logger = $loggerFile;
+        }
+
+        return $this->logger;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogFilePath() {
+        return PIMCORE_LOG_DIRECTORY . "/process-" . $this->getId() . ".log";
     }
 
     /**

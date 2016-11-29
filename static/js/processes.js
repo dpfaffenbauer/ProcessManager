@@ -96,7 +96,31 @@ pimcore.plugin.processmanager.processes = Class.create({
                             '{percent:number("0")}% ' + t('processmanager_text')
                         ]
                     }
-                }
+                },
+                {
+                    xtype:'actioncolumn',
+                    width:50,
+                    items: [
+                        {
+                            iconCls : 'pimcore_icon_delete',
+                            tooltip: t('delete'),
+                            handler: function(grid, rowIndex) {
+                                var rec = grid.getStore().getAt(rowIndex);
+
+                                Ext.Ajax.request({
+                                    url: '/plugin/ProcessManager/admin_process/delete',
+                                    params : {
+                                        id : rec.get("id")
+                                    },
+                                    method: 'GET',
+                                    success: function () {
+                                        pimcore.globalmanager.get(this.storeId).reload();
+                                    }.bind(this)
+                                });
+                            }.bind(this)
+                        }
+                    ]
+                },
             ],
             useArrows: true,
             autoScroll: true,

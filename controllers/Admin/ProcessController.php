@@ -26,7 +26,7 @@ class ProcessManager_Admin_ProcessController extends \Pimcore\Controller\Action\
     {
         $list = new \ProcessManager\Model\Process\Listing();
 
-        $data = array();
+        $data = [];
         if (is_array($list->getData())) {
             foreach ($list->getData() as $process) {
                 $data[] = [
@@ -40,5 +40,27 @@ class ProcessManager_Admin_ProcessController extends \Pimcore\Controller\Action\
             }
         }
         $this->_helper->json($data);
+    }
+
+    public function deleteAction() {
+        $process = \ProcessManager\Model\Process::getById($this->getParam("id"));
+
+        if(!$process instanceof \ProcessManager\Model\Process) {
+            $this->_helper->json(["success" => false, "message" => "Process not found"]);
+        }
+
+        $process->delete();
+
+        $this->_helper->json(["success" => true]);
+    }
+
+    public function readLogAction() {
+        $process = \ProcessManager\Model\Process::getById($this->getParam("id"));
+
+        if(!$process instanceof \ProcessManager\Model\Process) {
+            $this->_helper->json(["success" => false, "message" => "Process not found"]);
+        }
+
+        $this->_helper->json(["success" => true, "log" => file_exists($process->getLogFilePath()) ? file_get_contents($process->getLogFilePath()) : ""]);
     }
 }

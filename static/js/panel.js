@@ -17,8 +17,20 @@ pimcore.plugin.processmanager.panel = Class.create({
     layoutId: 'processmanager_definition_processes',
     iconCls : 'processmanager_icon_processes',
 
+    types : [],
+
     initialize: function () {
-        this.getLayout();
+        Ext.Ajax.request({
+            url: '/plugin/ProcessManager/admin_executable/get-types',
+            method: 'GET',
+            success: function (result) {
+                var result = Ext.decode(result.responseText);
+
+                this.types = result.types;
+
+                this.getLayout();
+            }.bind(this)
+        });
     },
 
     activate: function () {
@@ -30,16 +42,31 @@ pimcore.plugin.processmanager.panel = Class.create({
         if (!this.layout) {
 
             var processPanel = new pimcore.plugin.processmanager.processes();
+            var executablesPanel = new pimcore.plugin.processmanager.executables(this.types);
+
+            var tabPanel = new Ext.tab.Panel({
+                items : [
+                    executablesPanel.getLayout(),
+                    {
+                        layout : 'fit',
+                        title: t('processmanager_processes'),
+                        iconCls: this.iconCls,
+                        items : [
+                            processPanel.getGrid()
+                        ]
+                    }
+                ]
+            });
 
             // create new panel
             this.layout = new Ext.Panel({
                 id: this.layoutId,
-                title: t('processmanager_processes'),
+                title: t('processmanager'),
                 iconCls: this.iconCls,
                 border: false,
                 closable: true,
                 layout : 'fit',
-                items: [processPanel.getGrid()]
+                items: [tabPanel]
             });
 
             // add event listener

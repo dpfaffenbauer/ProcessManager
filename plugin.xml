@@ -19,6 +19,11 @@
             <path>/plugins/ProcessManager/static/js/panel.js</path>
             <path>/plugins/ProcessManager/static/js/processes.js</path>
             <path>/plugins/ProcessManager/static/js/portlet.js</path>
+            <path>/plugins/ProcessManager/static/js/executables.js</path>
+            <path>/plugins/ProcessManager/static/js/executable/item.js</path>
+            <path>/plugins/ProcessManager/static/js/executable/abstractType.js</path>
+            <path>/plugins/ProcessManager/static/js/executable/types/cli.js</path>
+            <path>/plugins/ProcessManager/static/js/executable/types/pimcore.js</path>
         </pluginJsPaths>
         <pluginCssPaths>
             <path>/plugins/ProcessManager/static/css/processmanager.css</path>

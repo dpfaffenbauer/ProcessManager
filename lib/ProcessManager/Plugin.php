@@ -50,18 +50,27 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
 
         try
         {
-            $result = $db->describeTable("plugin_process_manager");
+            $result = $db->describeTable("plugin_process_manager") && $db->describeTable("plugin_process_manager_executable");
         }
         catch(\Exception $e) {
         }
 
         if(!$result) {
-            $db->query("CREATE TABLE `plugin_process_manager` (
+            $db->query("CREATE TABLE IF NOT EXISTS `plugin_process_manager` (
               `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
               `name` VARCHAR(255) NOT NULL,
               `message` TEXT NOT NULL,
               `progress` int NOT NULL,
               `total` int NOT NULL
+            );");
+
+            $db->query("CREATE TABLE IF NOT EXISTS `plugin_process_manager_executable` (
+              `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+              `name` VARCHAR(255) NOT NULL,
+              `description` TEXT NOT NULL,
+              `type` varchar(255) NOT NULL,
+              `settings` TEXT NOT NULL,
+              `active` int NOT NULL DEFAULT 1
             );");
         }
 
@@ -76,6 +85,7 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
         $db = Db::get();
 
         $db->query("DROP TABLE `plugin_process_manager`;");
+        $db->query("DROP TABLE `plugin_process_manager_executable`;");
 
         return self::getTranslate()->_('processmanager_uninstalled');
     }
@@ -89,7 +99,7 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
 
         try
         {
-            $result = Db::get()->describeTable("plugin_process_manager");
+            $result = is_array(Db::get()->describeTable("plugin_process_manager")) && is_array(Db::get()->describeTable("plugin_process_manager_executable"));
         }
         catch(\Exception $e) {
 
