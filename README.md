@@ -69,4 +69,5 @@ Copyright: [lineofcode.at](http://www.lineofcode.at)
 For licensing details please visit [LICENSE.md](LICENSE.md)
 
 ![Interface](docs/portlet.png)
+![Interface](docs/executables.png)
 ![Interface](docs/panel.png)
