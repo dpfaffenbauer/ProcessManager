@@ -37,7 +37,8 @@ class ProcessManager_Admin_ExecutableController extends \Pimcore\Controller\Acti
                         'description' => $exe->getDescription(),
                         'active' => $exe->getActive(),
                         'settings' => $exe->getSettings(),
-                        'type' => $exe->getType()
+                        'type' => $exe->getType(),
+                        'cron' => $exe->getCron()
                     ];
                 }
             }
@@ -96,11 +97,9 @@ class ProcessManager_Admin_ExecutableController extends \Pimcore\Controller\Acti
             $this->_helper->json(["success" => false, "message" => "Executable not found"]);
         }
 
-        $typeHelper = $process->getTypeHelper();
+        $success = $process->run();
 
-        if($typeHelper instanceof \ProcessManager\Model\Type) {
-            $typeHelper->run($process);
-
+        if($success) {
             $this->_helper->json(["success" => true]);
         }
         else {

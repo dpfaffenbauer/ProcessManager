@@ -74,6 +74,11 @@ class Executable extends AbstractModel
     public $active;
 
     /**
+     * @var string
+     */
+    public $cron;
+
+    /**
      * get Log by id
      *
      * @param $id
@@ -90,6 +95,23 @@ class Executable extends AbstractModel
         }
 
         return null;
+    }
+
+    /**
+     * Runs the Command
+     *
+     * @return bool
+     */
+    public function run() {
+        $typeHelper = $this->getTypeHelper();
+
+        if($typeHelper instanceof Type) {
+            $typeHelper->run($this);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -199,5 +221,21 @@ class Executable extends AbstractModel
     public function setSettings($settings)
     {
         $this->settings = $settings;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCron()
+    {
+        return $this->cron;
+    }
+
+    /**
+     * @param string $cron
+     */
+    public function setCron($cron)
+    {
+        $this->cron = $cron;
     }
 }

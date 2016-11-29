@@ -38,6 +38,14 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
     public function init()
     {
         parent::init();
+
+        \Pimcore::getEventManager()->attach('system.maintenance', function (\Zend_EventManager_Event $e) {
+            $manager = $e->getTarget();
+
+            if ($manager instanceof Procedural) {
+                $manager->registerJob(new Job('processmanager_maintenance', '\\ProcessManager\\Maintenance', 'runCron'));
+            }
+        });
     }
 
     /**
@@ -69,6 +77,7 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
               `name` VARCHAR(255) NOT NULL,
               `description` TEXT NOT NULL,
               `type` varchar(255) NOT NULL,
+              `cron` varchar(255) NULL,
               `settings` TEXT NOT NULL,
               `active` int NOT NULL DEFAULT 1
             );");

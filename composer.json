@@ -8,5 +8,8 @@
         "psr-4": {
             "ProcessManager\\": "lib"
         }
+    },
+    "requires" : {
+        "mtdowling/cron-expression": "^1.1"
     }
 }

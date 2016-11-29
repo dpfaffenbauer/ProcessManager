@@ -119,6 +119,11 @@ pimcore.plugin.processmanager.executables = Class.create({
                     flex : 1
                 },
                 {
+                    text: t('processmanager_cron'),
+                    dataIndex: 'cron',
+                    width : 100
+                },
+                {
                     xtype:'actioncolumn',
                     width:50,
                     items: [

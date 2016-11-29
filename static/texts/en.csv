@@ -11,3 +11,4 @@
 "processmanager_type_cli","CLI"
 "processmanager_command","Command"
 "processmanager_executable_started","Executable started"
+"processmanager_cron","Cron"
