@@ -105,8 +105,7 @@ pimcore.plugin.processmanager.executable.item = Class.create({
                         xtype: 'textfield',
                         fieldLabel: t('processmanager_cron'),
                         name: 'cron',
-                        value: this.data.cron,
-                        allowBlank: false
+                        value: this.data.cron
                     },
                     {
                         xtype: 'combo',
