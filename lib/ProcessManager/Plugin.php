@@ -46,6 +46,8 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
                 $manager->registerJob(new Job('processmanager_maintenance', '\\ProcessManager\\Maintenance', 'runCron'));
             }
         });
+
+        \Pimcore::getEventManager()->trigger("processManager.init");
     }
 
     /**
