@@ -20,7 +20,8 @@ pimcore.plugin.processmanager.executables = Class.create({
     types : [],
 
     url : {
-        list : '/plugin/ProcessManager/admin_executable/list'
+        list : '/plugin/ProcessManager/admin_executable/list',
+        delete : '/plugin/ProcessManager/admin_executable/delete'
     },
 
     initialize: function (types) {
@@ -155,8 +156,8 @@ pimcore.plugin.processmanager.executables = Class.create({
                     ]
                 },
                 {
-                    xtype:'actioncolumn',
-                    width:50,
+                    xtype: 'actioncolumn',
+                    width: 50,
                     items: [
                         {
                             iconCls : 'pimcore_icon_edit',
@@ -170,6 +171,16 @@ pimcore.plugin.processmanager.executables = Class.create({
                             }.bind(this)
                         }
                     ]
+                },
+                {
+                    xtype: 'actioncolumn',
+                    width: 40,
+                    tooltip: t('delete'),
+                    icon: '/pimcore/static6/img/flat-color-icons/delete.svg',
+                    handler: function (grid, rowIndex, colIndex) {
+                        var rec = grid.getStore().getAt(rowIndex);
+                        this.delete(rec.get('id')); 
+                    }.bind(this)
                 }
             ],
             useArrows: true,
@@ -180,5 +191,31 @@ pimcore.plugin.processmanager.executables = Class.create({
                 loadMask: false
             }
         };
+    },
+
+    delete: function(id)
+    {
+        Ext.Ajax.request({
+            url: this.url.delete,
+            method: 'post',
+            params: {
+                id : id
+            },
+            success: function (response) {
+                try {
+                    var res = Ext.decode(response.responseText);
+
+                    if (res.success) {
+                        pimcore.helpers.showNotification(t('success'), t('success'), 'success');
+                        pimcore.globalmanager.get(this.storeId).load();
+                    } else {
+                        pimcore.helpers.showNotification(t('error'), t('error'),
+                            'error', res.message);
+                    }
+                } catch (e) {
+                    pimcore.helpers.showNotification(t('error'), t('error'), 'error');
+                }
+            }.bind(this)
+        });
     }
 });
