@@ -79,15 +79,17 @@ class ProcessManager_Admin_ExecutableController extends \Pimcore\Controller\Acti
     }
 
     public function deleteAction() {
-        $process = \ProcessManager\Model\Executable::getById($this->getParam("id"));
+        $id = $this->getParam('id', null);
+        
+        $process = \ProcessManager\Model\Executable::getById($this->getParam('id'));
 
-        if(!$process instanceof \ProcessManager\Model\Executable) {
-            $this->_helper->json(["success" => false, "message" => "Executable not found"]);
+        if (!$process instanceof \ProcessManager\Model\Executable) {
+            $this->_helper->json(['success' => false, 'message' => 'Executable not found']);
         }
 
         $process->delete();
 
-        $this->_helper->json(["success" => true]);
+        $this->_helper->json(['success' => true]);
     }
 
     public function runAction() {
