@@ -33,34 +33,26 @@ composer require dpfaffenbauer/process-manager dev-master
 ### Create new Process
 
 ```php
-if(class_exists('\ProcessManager\Model\Process')) { //Always check if the plugin is installed
-    $process = new \ProcessManager\Model\Process();
-    $process->setName('Task Name');         //Name of your Task
-    $process->setTotal(100);                //Total steps of your Task
-    $process->setMessage('Loading');        //Message
-    $process->setProgress(0);               //Initial Progress
-    $process->save();                       //Save
-}
+
+$process = $container->get('process_manager.factory.process')->createNew();
+$process->setName('Task Name');         //Name of your Task
+$process->setTotal(100);                //Total steps of your Task
+$process->setMessage('Loading');        //Message
+$process->setProgress(0);               //Initial Progress
+$process->save();                       //Save
 ```
 
 ### Advance the Progress
 
 ```php
-if(class_exists('\ProcessManager\Model\Process')) {
-    if($process instanceof \ProcessManager\Model\Process) {
-        $process->progress();
-    }
-}
+$process->progress();
+$process->save();
 ```
 
 ### Finish the Progress
 
 ```php
-if(class_exists('\ProcessManager\Model\Process')) {
-    if($process instanceof \ProcessManager\Model\Process) {
-        $process->delete();
-    }
-}
+$process->delete();
 ```
 
 
