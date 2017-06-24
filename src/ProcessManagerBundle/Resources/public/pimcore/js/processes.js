@@ -29,12 +29,12 @@ pimcore.plugin.processmanager.processes = Class.create({
     createTimer : function() {
         var me = this;
 
-        /*this.task = Ext.TaskManager.start({
+        this.task = Ext.TaskManager.start({
             run: function(){
                 pimcore.globalmanager.get(me.storeId).load();
             },
-            interval: 1000 * 2  //Reload every x seconds
-        });*/
+            interval: 1000 * 5  //Reload every x seconds
+        });
     },
 
     stop : function() {
