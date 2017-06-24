@@ -1,0 +1,29 @@
+ProcessManagerBundle\Model\Process:
+  exclusion_policy: ALL
+  xml_root_name: process
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+      groups: [List, Detailed]
+    name:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    message:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    progress:
+      expose: true
+      type: int
+      groups: [List, Detailed]
+    total:
+      expose: true
+      type: int
+      groups: [List, Detailed]
+  virtual_properties:
+    getPercentage:
+      serialized_name: percentage
+      groups: [List, Detailed]

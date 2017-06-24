@@ -1,0 +1,6 @@
+jms_serializer:
+    metadata:
+        directories:
+            process-manager:
+                namespace_prefix: "ProcessManagerBundle"
+                path: "@ProcessManagerBundle/Resources/config/serializer"

@@ -1,0 +1,37 @@
+ProcessManagerBundle\Model\Executable:
+  exclusion_policy: ALL
+  xml_root_name: executable
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+      groups: [List, Detailed]
+    name:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    description:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    type:
+      expose: true
+      type: string
+      groups: [Detailed]
+    active:
+      expose: true
+      type: boolean
+      groups: [Detailed]
+    class:
+      expose: true
+      type: string
+      groups: [Detailed]
+    settings:
+      expose: true
+      type: array
+      groups: [Detailed]
+    cron:
+      expose: true
+      type: string
+      groups: [Detailed]

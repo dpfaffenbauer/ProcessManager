@@ -1,0 +1,19 @@
+process_manager_admin_executables:
+  type: coreshop.resources
+  resource: |
+    alias: process_manager.executable
+    additional_routes:
+      getConfig:
+        path: get-config
+        action: getConfig
+        methods: [GET]
+      run:
+        path: run
+        action: run
+        methods: [GET]
+
+process_manager_admin_processes:
+  type: coreshop.resources
+  resource: |
+    alias: process_manager.process
+    only: ['list', 'delete']

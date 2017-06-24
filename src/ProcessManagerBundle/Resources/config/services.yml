@@ -1,0 +1,25 @@
+imports:
+    - { resource: "services/forms.yml" }
+
+services:
+  ### Registries
+  process_manager.registry.processes:
+    class: CoreShop\Component\Registry\ServiceRegistry
+    arguments:
+      - ProcessManagerBundle\Process\ProcessInterface
+      - 'Process Manager Processes'
+
+  process_manager.form.registry.processes:
+    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+  ### Processes
+  process_manager.process.cli:
+    class: ProcessManagerBundle\Process\Cli
+    tags:
+      - { name: process_manager.process, type: cli, form-type: ProcessManagerBundle\Form\Type\Processes\CliType }
+
+  process_manager.process.pimcore:
+    class: ProcessManagerBundle\Process\Pimcore
+    tags:
+      - { name: process_manager.process, type: pimcore, form-type: ProcessManagerBundle\Form\Type\Processes\PimcoreType }
+
