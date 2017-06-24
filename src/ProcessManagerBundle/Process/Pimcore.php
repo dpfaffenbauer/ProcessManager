@@ -17,7 +17,7 @@ namespace ProcessManagerBundle\Process;
 use Pimcore\Tool\Console;
 use ProcessManagerBundle\Model\ExecutableInterface;
 
-final class Pimcore implements ProcessInterface
+class Pimcore implements ProcessInterface
 {
     /**
      * {@inheritdoc}
