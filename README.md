@@ -1,5 +1,8 @@
 # Pimcore - Process Manager
 
+## Requirements
+ - Pimcore 5
+
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 
 Process Manager Plugin keeps track of all your "long running jobs". It adds a nive GUI and a new portlet for your Dashboard. You can also create Executables and run them with one click. (It's planned to integrate a CRON like Syntax for recurring tasks)
@@ -7,26 +10,12 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
 ## Plugins using Process Manager
 
  - [ImportDefinitions](https://github.com/w-vision/ImportDefinitions)
- - [CoreShop](https://github.com/CoreShop/CoreShop)
 
 ## Getting started
-
-* Download Plugin and place it in your plugins directory
-* Open Extension Manager in Pimcore and enable/install Plugin
-* After Installation within Pimcore Extension Manager, you have to reload Pimcore
-* Open Settings -> Process Manager
-
-or install it via composer on an existing pimcore installation
-
-```
-composer require dpfaffenbauer/process-manager
-```
-
-or for the nightly dev version
-
-```
-composer require dpfaffenbauer/process-manager dev-master
-```
+ * Install via composer ```composer require dpfaffenbauer/process-manager dev-master```
+ * Open Extension Manager in Pimcore and enable/install Plugin
+ * After Installation within Pimcore Extension Manager, you have to reload Pimcore
+ * Open Settings -> Process Manager
 
 ## Integrate to your Task
 
@@ -54,6 +43,18 @@ $process->save();
 ```php
 $process->delete();
 ```
+
+## Add a new Process Type
+ * Add a new Class to your Bundle and implement ``ProcessManagerBundle\Process\ProcessInterface``` Interface
+ * Add a new Form Type to your Bundle and add required fields to it
+ * Add a new Service with tag ```process_manager.process```
+  ```yml
+        import_definition.process_manager.process:
+            class: Wvision\Bundle\ImportDefinitionsBundle\ProcessManager\ImportDefinitionProcess
+            tags:
+            - { name: 'process_manager.process', type: 'importdefinition', form-type: 'Wvision\Bundle\ImportDefinitionsBundle\Form\Type\ProcessManager\ImportDefinitionsType' }
+  ```
+ * Thats it, done. (You still need to handle Process creation within your Bundle yourself, there is no magic behind it)
 
 
 ## Copyright and license 
