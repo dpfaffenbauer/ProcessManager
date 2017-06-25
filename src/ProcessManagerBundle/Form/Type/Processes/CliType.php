@@ -14,15 +14,13 @@
 
 namespace ProcessManagerBundle\Form\Type\Processes;
 
-use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
-use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+
+
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
+
 
 final class CliType extends AbstractType
 {
