@@ -127,6 +127,12 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('process_manager')->defaultValue('/bundles/processmanager/pimcore/css/processmanager.css')->end()
                         ->end()
                     ->end()
+                    ->arrayNode('install')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('sql')->defaultValue(['@ProcessManagerBundle/Resources/install/pimcore/sql/data.sql'])->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ->end();
