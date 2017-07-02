@@ -30,12 +30,6 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
         ), 120);
     }
     ```
- * Load config file:
-    ```yml
-    #app/config.yml
-    imports:
-        - { resource: "@CoreShopResourceBundle/Resources/config/app/config.yml" }
-    ```
  * Open Extension Manager in Pimcore and enable/install Plugin
  * It sometimes happens to me that assets are not getting installed right from pimcore, therefore run ```bin/console assets:install --symlink```
  * Install via CLI ```bin/console coreshop:resources:install --application-name process_manager``` or within Pimcore Extension Manager
