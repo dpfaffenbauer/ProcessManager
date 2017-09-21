@@ -15,12 +15,14 @@
 namespace ProcessManagerBundle;
 
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessTypeRegistryCompilerPass;
-use ProcessManagerBundle\Installer\PimcoreInstaller;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ProcessManagerBundle extends AbstractPimcoreBundle
 {
+    use PackageVersionTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -50,9 +52,9 @@ class ProcessManagerBundle extends AbstractPimcoreBundle
     /**
      * {@inheritdoc}
      */
-    public function getVersion()
+    protected function getComposerPackageName(): string
     {
-        return '2.0.0';
+        return 'dpfaffenbauer/process-manager';
     }
 
     /**
@@ -60,7 +62,7 @@ class ProcessManagerBundle extends AbstractPimcoreBundle
      */
     public function getInstaller()
     {
-        return new PimcoreInstaller();
+        return $this->container->get(Installer::class);
     }
 
     /**

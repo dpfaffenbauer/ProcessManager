@@ -29,6 +29,9 @@
       "bundles": [
         "ProcessManagerBundle\\ProcessManagerBundle"
       ]
+    },
+    "branch-alias": {
+      "dev-master": "2.0-dev"
     }
   }
 }

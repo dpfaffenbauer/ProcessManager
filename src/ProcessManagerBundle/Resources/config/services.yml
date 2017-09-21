@@ -1,5 +1,6 @@
 imports:
     - { resource: "services/forms.yml" }
+    - { resource: "services/installer.yml" }
 
 services:
   ### Registries
