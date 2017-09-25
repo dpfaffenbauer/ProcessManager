@@ -1,5 +1,7 @@
 # Pimcore - Process Manager
 
+**Looking for the current stable (version 1)? See https://github.com/dpfaffenbauer/ProcessManager/tree/1.1**
+
 ## Requirements
  - Pimcore 5
 
