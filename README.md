@@ -14,8 +14,7 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
  - [ImportDefinitions](https://github.com/w-vision/ImportDefinitions)
 
 ## Getting started
- * Since Process-Manager depends on CoreShops ResourceBundle, and the ResourceBundle only exists in DEV yet, you need to set your "minimum-stability" to "dev" in your composer.json
- * Install via composer ```composer require dpfaffenbauer/process-manager dev-master```
+ * Install via composer ```composer require dpfaffenbauer/process-manager:^2.0-dev@dev```
  * Load needed Bundles:
     ```php
     <?php
@@ -32,9 +31,7 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
         ), 120);
     }
     ```
- * Open Extension Manager in Pimcore and enable/install Plugin
- * It sometimes happens to me that assets are not getting installed right from pimcore, therefore run ```bin/console assets:install --symlink```
- * Install via CLI ```bin/console coreshop:resources:install --application-name process_manager``` or within Pimcore Extension Manager
+ * Install via CLI ```bin/console pimcore:bundle:enable ProcessManagerBundle && bin/console pimcore:bundle:install ProcessManagerBundle``` or within Pimcore Extension Manager
  * After Installation within Pimcore Extension Manager, you have to reload Pimcore
  * Open Tools -> Process Manager
 

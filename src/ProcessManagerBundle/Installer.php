@@ -23,25 +23,30 @@ use Symfony\Component\Console\Input\ArrayInput;
 class Installer extends MigrationInstaller
 {
     /**
-     *
-     */
-    protected function beforeInstallMigration()
-    {
-        $kernel = \Pimcore::getKernel();
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
-        $options = ['command' => 'coreshop:resources:install'];
-        $options = array_merge($options, ['--no-interaction' => true, '--application-name process_managercd ']);
-        $application->run(new ArrayInput($options));
-    }
-
-
-    /**
      * {@inheritdoc}
      */
     public function migrateInstall(Schema $schema, Version $version)
     {
+        $processTable = $schema->createTable('process_manager_processes');
+        $processTable->addColumn('id', 'integer')
+            ->setAutoincrement(true);
+        $processTable->addColumn('name', 'string');
+        $processTable->addColumn('message', 'text');
+        $processTable->addColumn('progress', 'integer');
+        $processTable->addColumn('total', 'integer');
+        $processTable->setPrimaryKey(['id']);
 
+        $execTable = $schema->createTable('process_manager_executables');
+        $execTable->addColumn('id', 'integer')
+            ->setAutoincrement(true);
+        $execTable->addColumn('name', 'string');
+        $execTable->addColumn('description', 'text');
+        $execTable->addColumn('type', 'string');
+        $execTable->addColumn('cron', 'string');
+        $execTable->addColumn('settings', 'text');
+        $execTable->addColumn('active', 'boolean')
+            ->setDefault(1);
+        $execTable->setPrimaryKey(['id']);
     }
 
     /**
@@ -49,6 +54,15 @@ class Installer extends MigrationInstaller
      */
     public function migrateUninstall(Schema $schema, Version $version)
     {
+        $tables = [
+            'process_manager_processes',
+            'process_manager_executables'
+        ];
 
+        foreach ($tables as $table) {
+            if ($schema->hasTable($table)) {
+                $schema->dropTable($table);
+            }
+        }
     }
 }
