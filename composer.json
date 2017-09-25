@@ -1,15 +1,25 @@
 {
-    "name": "dpfaffenbauer/process-manager",
-    "type": "pimcore-plugin",
-    "require": {
-        "pimcore/installer-plugin": ">=1"
-    },
-    "autoload": {
-        "psr-4": {
-            "ProcessManager\\": "lib"
-        }
-    },
-    "requires" : {
-        "mtdowling/cron-expression": "^1.1"
+  "name": "dpfaffenbauer/process-manager",
+  "type": "pimcore-plugin",
+  "require": {
+    "pimcore/installer-plugin": ">=1"
+  },
+  "autoload": {
+    "psr-4": {
+      "ProcessManager\\": "lib"
     }
+  },
+  "requires": {
+    "mtdowling/cron-expression": "^1.1"
+  },
+  "extra": {
+    "pimcore": {
+      "bundles": [
+        "ProcessManagerBundle\\ProcessManagerBundle"
+      ]
+    },
+    "branch-alias": {
+      "dev-master": "1.1-dev"
+    }
+  }
 }
