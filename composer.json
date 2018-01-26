@@ -1,7 +1,7 @@
 {
   "name": "dpfaffenbauer/process-manager",
   "type": "pimcore-bundle",
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "description": "Process Manager helps you to see statuses for long running Processes",
   "keywords": [
     "pimcore",
