@@ -14,6 +14,7 @@
 
 namespace ProcessManagerBundle\Model\Executable;
 
+use ProcessManagerBundle\Model\Executable;
 use ProcessManagerBundle\Model\Process;
 use Pimcore\Model;
 use Zend\Paginator\AdapterAggregateInterface;
@@ -54,7 +55,7 @@ class Listing extends Model\Listing\AbstractListing implements \Zend\Paginator\A
     }
 
     /**
-     * @return Process[]
+     * @return Executable[]
      */
     public function getObjects()
     {

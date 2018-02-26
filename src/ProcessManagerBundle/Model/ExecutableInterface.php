@@ -87,4 +87,14 @@ interface ExecutableInterface extends ResourceInterface
      * @param string $cron
      */
     public function setCron($cron);
+
+    /**
+     * @return int
+     */
+    public function getLastrun();
+
+    /**
+     * @param int $lastrun
+     */
+    public function setLastrun($lastrun);
 }
