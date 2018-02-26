@@ -55,6 +55,11 @@ class Executable extends AbstractModel implements ExecutableInterface
     public $cron;
 
     /**
+     * @var int
+     */
+    public $lastrun;
+
+    /**
      * get Log by id
      *
      * @param $id
@@ -183,5 +188,21 @@ class Executable extends AbstractModel implements ExecutableInterface
     public function setCron($cron)
     {
         $this->cron = $cron;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastrun()
+    {
+        return $this->lastrun;
+    }
+
+    /**
+     * @param int $lastrun
+     */
+    public function setLastrun($lastrun)
+    {
+        $this->lastrun = $lastrun;
     }
 }
