@@ -23,22 +23,23 @@ pimcore.plugin.processmanager.processes = Class.create({
 
     initialize: function () {
         this.createStore();
-        this.createTimer();
+        this.reloadProcesses();
     },
 
-    createTimer : function() {
-        var me = this;
+    reloadProcesses: function() {
+        pimcore.globalmanager.get(this.storeId).load(function () {
+            this.createInterval();
+        }.bind(this));
+    },
 
-        this.task = Ext.TaskManager.start({
-            run: function(){
-                pimcore.globalmanager.get(me.storeId).load();
-            },
-            interval: 1000 * 5  //Reload every x seconds
-        });
+    createInterval : function() {
+        this.task = setTimeout(function () {
+            this.reloadProcesses();
+        }.bind(this), 5000);
     },
 
     stop : function() {
-        this.task.stopped = true;
+        clearTimeout(this.task);
     },
 
     createStore : function () {
