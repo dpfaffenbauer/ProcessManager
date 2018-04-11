@@ -14,25 +14,11 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
  - [ImportDefinitions](https://github.com/w-vision/ImportDefinitions)
 
 ## Getting started
- * Install via composer ```composer require dpfaffenbauer/process-manager:^2.0-dev@dev```
- * Load needed Bundles:
-    ```php
-    <?php
-
-    // app/AppKernel.php
-    public function registerBundlesToCollection(BundleCollection $collection)
-    {
-        $collection->addBundles(array(
-            new \JMS\SerializerBundle\JMSSerializerBundle(),
-            new \CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle(),
-            new \FOS\RestBundle\FOSRestBundle(),
-            new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle()
-        ), 120);
-    }
-    ```
- * Install via CLI ```bin/console pimcore:bundle:enable ProcessManagerBundle && bin/console pimcore:bundle:install ProcessManagerBundle``` or within Pimcore Extension Manager
- * After Installation within Pimcore Extension Manager, you have to reload Pimcore
+ * Since Process Manager depends on CoreShops ResourceBundle, and the ResourceBundle only exists in DEV yet, you need to set your "minimum-stability" to "dev" in your composer.json
+ * Install via composer ```composer require dpfaffenbauer/process-manager:2.0```
+ * Enable via command-line (or inside the pimcore extension manager): ```bin/console pimcore:bundle:enable ProcessManagerBundle```
+ * Install via command-line (or inside the pimcore extension manager): ```bin/console pimcore:bundle:install ProcessManagerBundle```
+ * Reload Pimcore
  * Open Tools -> Process Manager
 
 ## Integrate to your Task

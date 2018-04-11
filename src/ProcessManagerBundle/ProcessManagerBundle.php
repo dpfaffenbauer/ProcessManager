@@ -14,14 +14,35 @@
 
 namespace ProcessManagerBundle;
 
-use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessTypeRegistryCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ProcessManagerBundle extends AbstractPimcoreBundle
+class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBundleInterface, ComposerPackageBundleInterface
 {
     use PackageVersionTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPackageName()
+    {
+        return 'dpfaffenbauer/process-manager';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedDrivers()
+    {
+        return [
+            CoreShopResourceBundle::DRIVER_PIMCORE,
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -49,7 +70,7 @@ class ProcessManagerBundle extends AbstractPimcoreBundle
         return 'Process Manager helps you to see statuses for long running Processes';
     }
 
-    /**
+        /**
      * {@inheritdoc}
      */
     protected function getComposerPackageName(): string
@@ -63,5 +84,45 @@ class ProcessManagerBundle extends AbstractPimcoreBundle
     public function getInstaller()
     {
         return $this->container->get(Installer::class);
+    }
+
+        /**
+     * {@inheritdoc}
+     */
+    public function getAdminIframePath()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJsPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCssPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeJsPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeCssPaths()
+    {
+        return [];
     }
 }
