@@ -161,7 +161,7 @@ class Process extends AbstractModel implements ProcessInterface
      * @return float
      */
     public function getPercentage() {
-        if($this->getTotal() == 0) {
+        if ($this->getTotal() == 0) {
             return 100;
         }
 
