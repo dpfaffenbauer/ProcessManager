@@ -15,9 +15,9 @@
 }
 
 .processmanager_icon_executable_type_pimcore {
-    background: url(/pimcore/static6/img/flat-color-icons/pimcore-sign.svg) center center no-repeat !important;
+    background: url(/bundles/pimcoreadmin/img/flat-color-icons/pimcore-sign.svg) center center no-repeat !important;
 }
 
 .processmanager_icon_executable_run {
-    background: url(/pimcore/static6/img/flat-color-icons/advance.svg) center center no-repeat !important;
+    background: url(/bundles/pimcoreadmin/img/flat-color-icons/advance.svg) center center no-repeat !important;
 }

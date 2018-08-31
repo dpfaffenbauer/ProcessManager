@@ -187,7 +187,7 @@ pimcore.plugin.processmanager.executables = Class.create({
                     xtype: 'actioncolumn',
                     width: 40,
                     tooltip: t('delete'),
-                    icon: '/pimcore/static6/img/flat-color-icons/delete.svg',
+                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/delete.svg',
                     handler: function (grid, rowIndex, colIndex) {
                         var rec = grid.getStore().getAt(rowIndex);
                         this.delete(rec.get('id'));
