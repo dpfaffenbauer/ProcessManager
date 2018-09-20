@@ -17,3 +17,8 @@ process_manager_admin_processes:
   resource: |
     alias: process_manager.process
     only: ['list', 'delete']
+
+process_manager_admin_processes_report:
+  resource: "@ProcessManagerBundle/Controller/"
+  type:     annotation
+  prefix:   /

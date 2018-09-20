@@ -71,6 +71,40 @@ pimcore.plugin.processmanager.processes = Class.create({
         tabPanel.setActiveItem(this.layoutId);
     },
 
+    showReportWindow: function(data) {
+        var raportWin = new Ext.Window({
+            title: data.report.title,
+            modal: true,
+            iconCls: "pimcore_icon_reports",
+            width: 700,
+            height: 400,
+            html: data.report.html,
+            autoScroll: true,
+            bodyStyle: "padding: 10px; background:#fff;",
+            buttonAlign: "center",
+            shadow: false,
+            closable: true
+        });
+        raportWin.show();
+    },
+
+    showErrorWindow: function(message) {
+        var errWin = new Ext.Window({
+            title: "ERROR",
+            modal: true,
+            iconCls: "pimcore_icon_error",
+            width: 600,
+            height: 300,
+            html: message,
+            autoScroll: true,
+            bodyStyle: "padding: 10px; background:#fff;",
+            buttonAlign: "center",
+            shadow: false,
+            closable: true
+        });
+        errWin.show();
+    },
+
     getGrid: function () {
         return {
             xtype: 'grid',
@@ -97,6 +131,36 @@ pimcore.plugin.processmanager.processes = Class.create({
                             '{percent:number("0")}% ' + t('processmanager_text')
                         ]
                     }
+                },
+                {
+                    text : t('processmanager_report'),
+                    xtype:'actioncolumn',
+                    width:50,
+                    items: [
+                        {
+                            iconCls : 'pimcore_icon_reports',
+                            tooltip: t('Report'),
+                            handler: function(grid, rowIndex) {
+                                var rec = grid.getStore().getAt(rowIndex);
+
+                                Ext.Ajax.request({
+                                    url: '/admin/process_manager/reports/get',
+                                    params : {
+                                        id : rec.get("id")
+                                    },
+                                    success: function (response, options) {
+                                        var data = Ext.decode(response.responseText);
+                                        if (data.success) {
+                                            this.showReportWindow(data);
+                                        } else {
+                                            this.showErrorWindow(data.message);
+                                        }
+                                    }.bind(this)
+                                });
+
+                            }.bind(this)
+                        }
+                    ]
                 },
                 {
                     xtype:'actioncolumn',

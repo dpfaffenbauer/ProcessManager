@@ -31,3 +31,17 @@ services:
       - { name: kernel.event_listener, event: pimcore.system.maintenance, method: run, arguments: }
     arguments:
       - '@process_manager.registry.processes'
+
+  process_manager.process.report:
+    class: ProcessManagerBundle\Service\ProcessReport
+    arguments:
+      - '@process_manager.process.log'
+
+  process_manager.process.log:
+    class: ProcessManagerBundle\Service\ProcessLog
+
+  ProcessManagerBundle\Controller\ProcessReportController:
+    arguments:
+      - '@process_manager.process.report'
+    public: true
+    tags: ['controller.service_arguments']
