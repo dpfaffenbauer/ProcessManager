@@ -23,7 +23,6 @@ pimcore.plugin.processmanager.processes = Class.create({
 
     initialize: function () {
         this.createStore();
-        this.reloadProcesses();
     },
 
     reloadProcesses: function() {
@@ -63,7 +62,7 @@ pimcore.plugin.processmanager.processes = Class.create({
         });
 
         pimcore.globalmanager.add(this.storeId, store);
-        store.load();
+        this.reloadProcesses();
     },
 
     activate: function () {
