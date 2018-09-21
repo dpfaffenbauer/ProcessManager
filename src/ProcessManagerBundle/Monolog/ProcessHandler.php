@@ -41,7 +41,7 @@ class ProcessHandler extends AbstractHandler
      */
     public function handle(array $record)
     {
-        if (!array_key_exists('process', $record['context'])) {
+        if (!array_key_exists('process', $record['extra'])) {
             return true;
         }
 

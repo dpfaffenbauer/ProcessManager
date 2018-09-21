@@ -79,6 +79,10 @@ class ProcessProcessor
             $log = $this->loggers[$process->getId()];
         }
 
+        $record['extra']['process'] = $process;
+
+        unset($record['context']['process']);
+
         $log->addRecord($record['level'], $record['message'], $record['context']);
 
         return $record;
