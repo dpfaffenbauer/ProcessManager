@@ -39,6 +39,16 @@ interface ProcessInterface extends ResourceInterface
     /**
      * @return string
      */
+    public function getType();
+
+    /**
+     * @param string $type
+     */
+    public function setType($type);
+
+    /**
+     * @return string
+     */
     public function getName();
 
     /**

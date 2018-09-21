@@ -18,6 +18,8 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
 use ProcessManagerBundle\Controller\ExecutableController;
+use ProcessManagerBundle\Controller\ProcessController;
+use ProcessManagerBundle\Factory\ProcessFactory;
 use ProcessManagerBundle\Form\Type\ExecutableType;
 use ProcessManagerBundle\Model\Executable;
 use ProcessManagerBundle\Model\ExecutableInterface;
@@ -85,8 +87,8 @@ class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(Process::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProcessInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ProcessController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(ProcessFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()

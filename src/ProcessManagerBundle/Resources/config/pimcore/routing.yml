@@ -17,8 +17,12 @@ process_manager_admin_processes:
   resource: |
     alias: process_manager.process
     only: ['list', 'delete']
-
-process_manager_admin_processes_report:
-  resource: "@ProcessManagerBundle/Controller/"
-  type:     annotation
-  prefix:   /
+    additional_routes:
+      getLogDownload:
+        path: log-download
+        action: logDownload
+        methods: [GET]
+      getLogReport:
+        path: log-report
+        action: logReport
+        methods: [GET]

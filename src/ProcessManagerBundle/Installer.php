@@ -30,6 +30,7 @@ class Installer extends MigrationInstaller
         $processTable = $schema->createTable('process_manager_processes');
         $processTable->addColumn('id', 'integer')
             ->setAutoincrement(true);
+        $processTable->addColumn('type', 'string');
         $processTable->addColumn('name', 'string');
         $processTable->addColumn('message', 'text');
         $processTable->addColumn('progress', 'integer');

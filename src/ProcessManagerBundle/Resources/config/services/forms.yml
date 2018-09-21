@@ -1,15 +1,18 @@
 parameters:
-  process_manager.form.type.executable.validation_groups: [process_manager]
+    process_manager.form.type.executable.validation_groups: [process_manager]
 
 services:
-  process_manager.form.process_choice_type:
-    class: ProcessManagerBundle\Form\Type\ProcessChoiceType
-    arguments: ['%process_manager.processes%']
-    tags:
-        - { name: form.type }
+    _defaults:
+        public: true
 
-  process_manager.form.executable_type:
-    class: ProcessManagerBundle\Form\Type\ExecutableType
-    arguments: ['%process_manager.model.executable.class%', '%process_manager.form.type.executable.validation_groups%', '@process_manager.form.registry.processes']
-    tags:
-        - { name: form.type }
+    process_manager.form.process_choice_type:
+        class: ProcessManagerBundle\Form\Type\ProcessChoiceType
+        arguments: ['%process_manager.processes%']
+        tags:
+            - { name: form.type }
+
+    process_manager.form.executable_type:
+        class: ProcessManagerBundle\Form\Type\ExecutableType
+        arguments: ['%process_manager.model.executable.class%', '%process_manager.form.type.executable.validation_groups%', '@process_manager.form.registry.processes']
+        tags:
+            - { name: form.type }
