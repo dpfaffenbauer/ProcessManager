@@ -56,7 +56,7 @@ services:
         class: ProcessManagerBundle\Monolog\ProcessProcessor
         arguments:
             - '@process_manager.default_handler_factory'
-            - '@process_manager.registry.process_reports'
+            - '@process_manager.registry.process_handler_factories'
         tags:
             - { name: monolog.processor }
 
