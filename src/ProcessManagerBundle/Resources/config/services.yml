@@ -3,31 +3,70 @@ imports:
     - { resource: "services/installer.yml" }
 
 services:
+    _defaults:
+        public: true
 
-  ### Registries
-  process_manager.registry.processes:
-    class: CoreShop\Component\Registry\ServiceRegistry
-    arguments:
-      - ProcessManagerBundle\Process\ProcessInterface
-      - 'Process Manager Processes'
+    ### Registries
+    process_manager.registry.processes:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - ProcessManagerBundle\Process\ProcessInterface
+            - 'Process Manager Processes'
 
-  process_manager.form.registry.processes:
-    class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+    process_manager.registry.process_reports:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - ProcessManagerBundle\Report\ReportInterface
+            - 'Reports'
 
-  ### Processes
-  process_manager.process.cli:
-    class: ProcessManagerBundle\Process\Cli
-    tags:
-      - { name: process_manager.process, type: cli, form-type: ProcessManagerBundle\Form\Type\Processes\CliType }
+    process_manager.registry.process_handler_factories:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - ProcessManagerBundle\Monolog\HandlerFactoryInterface
+            - 'Handler Factories'
 
-  process_manager.process.pimcore:
-    class: ProcessManagerBundle\Process\Pimcore
-    tags:
-      - { name: process_manager.process, type: pimcore, form-type: ProcessManagerBundle\Form\Type\Processes\PimcoreType }
+    process_manager.form.registry.processes:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-  ### Event listeners
-  ProcessManagerBundle\EventListener\CronListener:
-    tags:
-      - { name: kernel.event_listener, event: pimcore.system.maintenance, method: run, arguments: }
-    arguments:
-      - '@process_manager.registry.processes'
+    ### Processes
+    process_manager.process.cli:
+        class: ProcessManagerBundle\Process\Cli
+        tags:
+            - { name: process_manager.process, type: cli, form-type: ProcessManagerBundle\Form\Type\Processes\CliType }
+
+    process_manager.process.pimcore:
+        class: ProcessManagerBundle\Process\Pimcore
+        tags:
+            - { name: process_manager.process, type: pimcore, form-type: ProcessManagerBundle\Form\Type\Processes\PimcoreType }
+
+    ### Event listeners
+    process_manager.event_listener.cron:
+        class: ProcessManagerBundle\EventListener\CronListener
+        tags:
+            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: run, arguments: }
+        arguments:
+            - '@process_manager.registry.processes'
+
+    process_manager.logger:
+        class: ProcessManagerBundle\Logger\ProcessLogger
+        arguments:
+            - '@logger'
+
+    process_manager.monolog.processor:
+        class: ProcessManagerBundle\Monolog\ProcessProcessor
+        arguments:
+            - '@process_manager.default_handler_factory'
+            - '@process_manager.registry.process_handler_factories'
+        tags:
+            - { name: monolog.processor }
+
+    process_manager.monolog.handler:
+        class: ProcessManagerBundle\Monolog\ProcessHandler
+
+    process_manager.default_handler_factory:
+        class: ProcessManagerBundle\Logger\DefaultHandlerFactory
+        arguments:
+            - '%kernel.logs_dir%'
+
+    process_manager.default_report:
+        class: ProcessManagerBundle\Report\DefaultReport

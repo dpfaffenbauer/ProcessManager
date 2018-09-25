@@ -22,7 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ProcessManagerBundle\\": "src/"
+      "ProcessManagerBundle\\": "src/ProcessManagerBundle"
     }
   },
   "extra": {

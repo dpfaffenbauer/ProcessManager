@@ -19,6 +19,9 @@ use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
+use ProcessManagerBundle\DependencyInjection\Compiler\MonologHandlerPass;
+use ProcessManagerBundle\DependencyInjection\Compiler\ProcessHandlerFactoryTypeRegistryCompilerPass;
+use ProcessManagerBundle\DependencyInjection\Compiler\ProcessReportTypeRegistryCompilerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessTypeRegistryCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -52,6 +55,9 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
         parent::build($builder);
 
         $builder->addCompilerPass(new ProcessTypeRegistryCompilerPass());
+        $builder->addCompilerPass(new ProcessReportTypeRegistryCompilerPass());
+        $builder->addCompilerPass(new ProcessHandlerFactoryTypeRegistryCompilerPass());
+        $builder->addCompilerPass(new MonologHandlerPass());
     }
 
     /**
