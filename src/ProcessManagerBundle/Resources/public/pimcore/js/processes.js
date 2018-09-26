@@ -170,11 +170,8 @@ pimcore.plugin.processmanager.processes = Class.create({
                             iconCls : 'pimcore_icon_download',
                             tooltip: t('processmanager_log_download'),
                             handler: function(grid, rowIndex) {
-                                var rec = grid.getStore().getAt(rowIndex);
-                                var link = document.createElement("a");
-                                link.download = rec.get('id');
-                                link.href = '/admin/process_manager/processes/log-download?id=' + rec.get('id');
-                                link.click();
+                                var id = grid.getStore().getAt(rowIndex).get('id');
+                                pimcore.helpers.download("/admin/process_manager/processes/log-download?id=" + id);
                             }.bind(this)
                         }
                     ]
