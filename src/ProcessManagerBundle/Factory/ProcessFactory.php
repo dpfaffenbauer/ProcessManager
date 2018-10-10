@@ -45,8 +45,14 @@ class ProcessFactory implements ProcessFactoryInterface
         string $type = null,
         string $message = '',
         int $total = 1,
-        int $progress = 0
+        int $progress = 0,
+        int $started = -1,
+        int $completed = 0
     ) {
-        return new $this->model($name, $type, $message, $total, $progress);
+        if($started == -1){
+            $started = new \DateTime();
+            $started = $started->format('U');
+        }
+        return new $this->model($name, $type, $message, $total, $progress, $started, $completed);
     }
 }

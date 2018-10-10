@@ -51,7 +51,9 @@ pimcore.plugin.processmanager.processes = Class.create({
             { name:'name' },
             { name:'message' },
             { name:'progress' },
-            { name:'total' }
+            { name:'total' },
+            { name:'started' },
+            { name:'completed' }
         ]);
 
         var store = new Ext.data.Store({
@@ -110,14 +112,43 @@ pimcore.plugin.processmanager.processes = Class.create({
             store: pimcore.globalmanager.get(this.storeId),
             columns: [
                 {
-                    text : t('id'),
-                    dataIndex : 'id',
-                    width : 100
+                    text: t('id'),
+                    dataIndex: 'id',
+                    width: 100
+                },
+                {
+                    text: t('name'),
+                    dataIndex: 'name',
+                    width: 300
                 },
                 {
                     text: t('processmanager_message'),
                     dataIndex: 'message',
                     flex : 1
+                },
+                {
+                    text: t('processmanager_started'),
+                    dataIndex: 'started',
+                    renderer: function (value) {
+                        if(value == 0){
+                            return null
+                        }else{
+                            return Ext.Date.format(Ext.Date.parse(value, "U"), "Y-m-d H:i:s");
+                        }
+                    },
+                    width: 180
+                },
+                {
+                    text: t('processmanager_completed'),
+                    dataIndex: 'completed',
+                    renderer: function (value) {
+                        if (value == 0) {
+                            return null
+                        } else {
+                            return Ext.Date.format(Ext.Date.parse(value, "U"), "Y-m-d H:i:s");
+                        }
+                    },
+                    width: 180
                 },
                 {
                     text     : t('processmanager_progress'),
