@@ -129,9 +129,7 @@ class Process extends AbstractModel implements ProcessInterface
         }
 
         if($this->getCompleted() == 0 && $this->getProgress() >= $this->getTotal()){
-            $completed = new \DateTime();
-            $completed = $completed->format('U');
-            $this->setCompleted($completed);
+            $this->setCompleted(time());
         }
 
         $this->save();

@@ -50,8 +50,7 @@ class ProcessFactory implements ProcessFactoryInterface
         int $completed = 0
     ) {
         if($started == -1){
-            $started = new \DateTime();
-            $started = $started->format('U');
+            $started = time();
         }
         return new $this->model($name, $type, $message, $total, $progress, $started, $completed);
     }

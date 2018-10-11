@@ -130,9 +130,9 @@ pimcore.plugin.processmanager.processes = Class.create({
                     text: t('processmanager_started'),
                     dataIndex: 'started',
                     renderer: function (value) {
-                        if(value == 0){
-                            return null
-                        }else{
+                        if (value == 0) {
+                            return null;
+                        } else {
                             return Ext.Date.format(Ext.Date.parse(value, "U"), "Y-m-d H:i:s");
                         }
                     },
@@ -143,7 +143,7 @@ pimcore.plugin.processmanager.processes = Class.create({
                     dataIndex: 'completed',
                     renderer: function (value) {
                         if (value == 0) {
-                            return null
+                            return null;
                         } else {
                             return Ext.Date.format(Ext.Date.parse(value, "U"), "Y-m-d H:i:s");
                         }
