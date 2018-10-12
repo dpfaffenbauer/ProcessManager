@@ -23,6 +23,14 @@ ProcessManagerBundle\Model\Process:
       expose: true
       type: int
       groups: [List, Detailed]
+    started:
+      expose: true
+      type: int
+      groups: [List, Detailed]
+    completed:
+      expose: true
+      type: int
+      groups: [List, Detailed]
   virtual_properties:
     getPercentage:
       serialized_name: percentage

@@ -50,19 +50,31 @@ class Process extends AbstractModel implements ProcessInterface
     public $total;
 
     /**
+     * @var int
+     */
+    public $started;
+
+    /**
+     * @var int
+     */
+    public $completed;
+
+    /**
      * @param string      $name
      * @param string|null $type
      * @param string      $message
      * @param int         $total
      * @param int         $progress
      */
-    public function __construct(string $name, string $type = null, string $message = '', int $total = 1, int $progress = 0)
+    public function __construct(string $name, string $type = null, string $message = '', int $total = 1, int $progress = 0, int $started = 0, int $completed = 0)
     {
         $this->name = $name;
         $this->type = $type;
         $this->message = $message;
         $this->progress = $progress;
         $this->total = $total;
+        $this->started = $started;
+        $this->completed = $completed;
     }
 
     /**
@@ -114,6 +126,10 @@ class Process extends AbstractModel implements ProcessInterface
 
         if($message) {
             $this->setMessage($message);
+        }
+
+        if($this->getCompleted() == 0 && $this->getProgress() >= $this->getTotal()){
+            $this->setCompleted(time());
         }
 
         $this->save();
@@ -213,6 +229,38 @@ class Process extends AbstractModel implements ProcessInterface
     public function setTotal($total)
     {
         $this->total = $total;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStarted()
+    {
+        return $this->started;
+    }
+
+    /**
+     * @param int $started
+     */
+    public function setStarted($started)
+    {
+        $this->started = $started;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCompleted()
+    {
+        return $this->completed;
+    }
+
+    /**
+     * @param int $completed
+     */
+    public function setCompleted($completed)
+    {
+        $this->completed = $completed;
     }
 
     /**
