@@ -15,7 +15,7 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
 
 ## Getting started
  * Since Process Manager depends on CoreShops ResourceBundle, and the ResourceBundle only exists in DEV yet, you need to set your "minimum-stability" to "dev" in your composer.json
- * Install via composer ```composer require dpfaffenbauer/process-manager:2.0```
+ * Install via composer ```composer require dpfaffenbauer/process-manager:^2.0```
  * Enable via command-line (or inside the pimcore extension manager): ```bin/console pimcore:bundle:enable ProcessManagerBundle```
  * Install via command-line (or inside the pimcore extension manager): ```bin/console pimcore:bundle:install ProcessManagerBundle```
  * Reload Pimcore
