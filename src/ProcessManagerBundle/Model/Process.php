@@ -61,6 +61,11 @@ class Process extends AbstractModel implements ProcessInterface
     public $completed;
 
     /**
+     * @var null|Asset
+     */
+    public $artifact;
+
+    /**
      * @param string      $name
      * @param string|null $type
      * @param string      $message
@@ -280,6 +285,7 @@ class Process extends AbstractModel implements ProcessInterface
      */
     public function setArtifact(Asset $artifact)
     {
+        $this->artifact = $artifact;
     }
 
     /**
@@ -287,5 +293,6 @@ class Process extends AbstractModel implements ProcessInterface
      */
     public function getArtifact()
     {
+        return $this->artifact;
     }
 }
