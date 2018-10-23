@@ -18,6 +18,7 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Monolog\Logger;
 use ProcessManagerBundle\Logger\HandlerFactoryInterface;
 use ProcessManagerBundle\Model\ProcessInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProcessProcessor
 {
@@ -37,13 +38,19 @@ class ProcessProcessor
     private $registry;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param HandlerFactoryInterface  $defaultHandlerFactory
      * @param ServiceRegistryInterface $registry
      */
-    public function __construct(HandlerFactoryInterface $defaultHandlerFactory, ServiceRegistryInterface $registry)
+    public function __construct(HandlerFactoryInterface $defaultHandlerFactory, ServiceRegistryInterface $registry, EventDispatcherInterface $eventDispatcher)
     {
         $this->defaultHandlerFactory = $defaultHandlerFactory;
         $this->registry = $registry;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(array $record): array
@@ -82,6 +89,9 @@ class ProcessProcessor
         $record['extra']['process'] = $process;
 
         unset($record['context']['process']);
+
+        $event = new ProcessLogEvent($record);
+        $this->eventDispatcher->dispatch(ProcessLogEvent::PROCESS_LOG_EVENT, $event);
 
         $log->addRecord($record['level'], $record['message'], $record['context']);
 
