@@ -40,6 +40,12 @@ services:
             - { name: process_manager.process, type: pimcore, form-type: ProcessManagerBundle\Form\Type\Processes\PimcoreType }
 
     ### Event listeners
+    process_manager.event_listener.artifact:
+        class: ProcessManagerBundle\EventListener\ArtifactListener
+        tags:
+            - { name: kernel.event_listener, event: process_manager.process.log_event, method: onProcessLogEvent }
+        arguments:
+            - '@process_manager.registry.processes'
     process_manager.event_listener.cron:
         class: ProcessManagerBundle\EventListener\CronListener
         tags:
