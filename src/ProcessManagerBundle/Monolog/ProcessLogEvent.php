@@ -16,9 +16,6 @@ namespace ProcessManagerBundle\Monolog;
 
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class ProcessLogEvent.
- */
 class ProcessLogEvent extends Event
 {
     const PROCESS_LOG_EVENT = 'process_manager.process.log_event';
