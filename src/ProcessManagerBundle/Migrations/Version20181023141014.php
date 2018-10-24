@@ -16,7 +16,7 @@ class Version20181023141014 extends AbstractPimcoreMigration
     public function up(Schema $schema)
     {
         $processesTable = $schema->getTable("process_manager_processes");
-        $processesTable->addColumn("artifact", "asset", ['notnull' => true]);
+        $processesTable->addColumn("artifact", "integer", ["notnull" => false]);
     }
 
     /**

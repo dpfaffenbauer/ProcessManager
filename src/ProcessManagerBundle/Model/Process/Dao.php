@@ -14,6 +14,7 @@
 
 namespace ProcessManagerBundle\Model\Process;
 
+use Pimcore\Model\Asset;
 use Pimcore\Model\Dao\AbstractDao;
 
 class Dao extends AbstractDao
@@ -71,6 +72,8 @@ class Dao extends AbstractDao
 
                 if (is_bool($value)) {
                     $value = (int)$value;
+                } elseif ($value instanceof Asset) {
+                    $value = $value->getId();
                 }
 
                 $buffer[$k] = $value;
@@ -92,5 +95,19 @@ class Dao extends AbstractDao
     public function delete()
     {
         $this->db->delete($this->tableName, ['id' => $this->model->getId()]);
+    }
+    
+    /**
+     * @param array $data
+     */
+    protected function assignVariablesToModel($data)
+    {
+        foreach($data as $key => &$value) {
+            if ($key === "artifact") {
+                $value = Asset::getById($value);
+            }
+        }
+
+        $this->model->setValues($data);
     }
 }

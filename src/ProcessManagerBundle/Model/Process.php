@@ -281,9 +281,9 @@ class Process extends AbstractModel implements ProcessInterface
     }
 
     /**
-     * @param Asset $artifact
+     * @param null|Asset $artifact
      */
-    public function setArtifact(Asset $artifact)
+    public function setArtifact(?Asset $artifact)
     {
         $this->artifact = $artifact;
     }
@@ -294,5 +294,17 @@ class Process extends AbstractModel implements ProcessInterface
     public function getArtifact()
     {
         return $this->artifact;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getArtifactId()
+    {
+        if (null === $this->artifact) {
+            return null;
+        }
+
+        return $this->artifact->getId();
     }
 }

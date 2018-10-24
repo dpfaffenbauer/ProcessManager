@@ -217,7 +217,7 @@ pimcore.plugin.processmanager.processes = Class.create({
                             iconCls : 'pimcore_icon_download',
                             tooltip: t('processmanager_artifact_download'),
                             handler: function(grid, rowIndex) {
-                                var id = grid.getStore().getAt(rowIndex).get('id');
+                                var id = grid.getStore().getAt(rowIndex).get('artifact');
                                 pimcore.helpers.download("/admin/asset/download?id=" + id)
                             }.bind(this)
                         }

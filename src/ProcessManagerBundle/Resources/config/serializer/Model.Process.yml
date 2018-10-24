@@ -31,6 +31,11 @@ ProcessManagerBundle\Model\Process:
       expose: true
       type: int
       groups: [List, Detailed]
+    artifact:
+      expose: true
+      accessor:
+          getter: getArtifactId
+      groups: [List, Detailed]
   virtual_properties:
     getPercentage:
       serialized_name: percentage
