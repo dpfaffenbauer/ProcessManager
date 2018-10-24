@@ -47,13 +47,19 @@ class ArtifactListener
         $artifactPath = $record['context']['artifact'];
         $fileHandle = fopen($artifactPath, 'rb', false, FileHelper::getContext());
 
-        $artifact = new Asset();
-        $artifact->setParent(Asset\Service::createFolderByPath($artifactAssetPath));
-        $artifact->setStream($fileHandle);
-        // TODO: name the file something like "<executable name> artifact <current datetime>" or provide an artifact name template in the Executable config
-        $artifact->setFilename(pathinfo($artifactPath, PATHINFO_FILENAME));
-        // TODO: add an event listener which sets Artifact=null (or deletes the Process) if the user deletes this asset
+        $parent = Asset\Service::createFolderByPath($artifactAssetPath);
+        $filename = pathinfo($artifactPath, PATHINFO_BASENAME);
+        $fullPath = sprintf('%s/%s', $parent->getFullPath(), $filename);
+
+        $artifact = Asset::getByPath($fullPath);
+        if (null === $artifact) {
+            $artifact = new Asset();
+            $artifact->setParent($parent);
+            // TODO: name the file something like "[$executableName] artifact [$currentDatetime]" or provide an artifact name template in the Executable config
+            $artifact->setFilename($filename);
+        }
         $artifact->addMetadata(self::METADATA_MARKER, 'number', $process->getId());
+        $artifact->setStream($fileHandle);
         $artifact->save();
 
         fclose($fileHandle);
