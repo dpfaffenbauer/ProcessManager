@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace ProcessManagerBundle\EventListener;
 
+use Pimcore\File as FileHelper;
 use Pimcore\Model\Asset;
+use ProcessManagerBundle\Model\ProcessInterface;
 use ProcessManagerBundle\Monolog\ProcessLogEvent;
 
 /**
@@ -23,23 +25,27 @@ class ArtifactListener
         if (false === array_key_exists('artifact', $record['context'])) {
             return;
         }
-
-        // TODO: need asset path in Executable config, hardcoded for now
-        $artifactAssetPath = '/exports';
-
+        
         /** @var ProcessInterface $process */
         $process = $record['extra']['process'];
 
-        $artifactPath = $record['context']['artifact'];
-        $artifact = new Asset();
+        // ProcessInterface instance must have a relation to its ExecutableInterface instance
+        // TODO: need asset path in Executable config, hardcoded for now
+        $artifactAssetPath = '/exports';
 
-        // TODO: how to do this better?
-        // this loads the entire file in memory instead of just moving the file using the filesystem
-        $artifact->setData(file_get_contents($artifactPath));
-        $artifact->setFilename(pathinfo($artifactPath, PATHINFO_FILENAME));
+        $artifactPath = $record['context']['artifact'];
+        $fileHandle = fopen($artifactPath, 'rb', false, FileHelper::getContext());
+
+        $artifact = new Asset();
         $artifact->setParent(Asset\Service::createFolderByPath($artifactAssetPath));
+        $artifact->setStream($fileHandle);
+        // TODO: name the file something like "<executable name> artifact <current datetime>" or provide an artifact name template in the Executable config
+        $artifact->setFilename(pathinfo($artifactPath, PATHINFO_FILENAME));
+        // TODO: add an event listener which sets Artifact=null (or deletes the Process) if the user deletes this asset
         $artifact->addMetadata('process_manager.process', 'number', $process->getId());
         $artifact->save();
+
+        fclose($fileHandle);
 
         $process->setArtifact($artifact);
         $process->save();
