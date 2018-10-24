@@ -211,17 +211,29 @@ pimcore.plugin.processmanager.processes = Class.create({
                 {
                     text : t('processmanager_artifact_download'),
                     xtype:'actioncolumn',
-                    width:50,
-                    items: [
-                        {
-                            iconCls : 'pimcore_icon_download',
-                            tooltip: t('processmanager_artifact_download'),
-                            handler: function(grid, rowIndex) {
-                                var id = grid.getStore().getAt(rowIndex).get('artifact');
-                                pimcore.helpers.download("/admin/asset/download?id=" + id)
-                            }.bind(this)
+                    width: 50,
+                    renderer: function(value, metadata, record) {
+                        var artifact = record.data.artifact;
+                        if (!artifact) {
+                            return;
                         }
-                    ]
+
+                        var id = Ext.id();
+                        Ext.defer(function () {
+                            if (Ext.get(id)) {
+                                new Ext.button.Button({
+                                    renderTo: id,
+                                    iconCls: 'pimcore_icon_download',
+                                    cls: 'processmanager_artifact_download',
+                                    handler: function () {
+                                        pimcore.helpers.download("/admin/asset/download?id=" + artifact)
+                                    }
+                                });
+                            }
+                        }, 50);
+
+                        return Ext.String.format('<span id="{0}"></span>', id);
+                    }
                 },
                 {
                     xtype:'actioncolumn',
