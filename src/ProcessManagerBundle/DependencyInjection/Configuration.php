@@ -25,6 +25,7 @@ use ProcessManagerBundle\Model\Executable;
 use ProcessManagerBundle\Model\ExecutableInterface;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
+use ProcessManagerBundle\Repository\ProcessRepository;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -89,7 +90,7 @@ class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(ProcessInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ProcessController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(ProcessFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(ProcessRepository::class)->end()
                                     ->end()
                                 ->end()
                             ->end()

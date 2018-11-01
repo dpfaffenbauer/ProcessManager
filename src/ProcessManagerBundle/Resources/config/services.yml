@@ -41,12 +41,12 @@ services:
 
     ### Event listeners
     process_manager.event_listener.artifact:
-        class: ProcessManagerBundle\EventListener\ArtifactListener
-        tags:
-            - { name: kernel.event_listener, event: process_manager.process.log_event, method: onProcessLogEvent }
-            - { name: kernel.event_listener, event: pimcore.asset.postDelete, method: onArtifactAssetDelete }
+        class: ProcessManagerBundle\EventListener\ArtifactDeletionListener
         arguments:
-            - '@process_manager.registry.processes'
+            - '@process_manager.repository.process'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.asset.postDelete, method: onArtifactAssetDelete }
+
     process_manager.event_listener.cron:
         class: ProcessManagerBundle\EventListener\CronListener
         tags:
@@ -61,6 +61,7 @@ services:
 
     process_manager.monolog.processor:
         class: ProcessManagerBundle\Monolog\ProcessProcessor
+        lazy: true
         arguments:
             - '@process_manager.default_handler_factory'
             - '@process_manager.registry.process_handler_factories'
