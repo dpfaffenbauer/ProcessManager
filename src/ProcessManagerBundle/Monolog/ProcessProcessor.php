@@ -38,19 +38,13 @@ class ProcessProcessor
     private $registry;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
      * @param HandlerFactoryInterface  $defaultHandlerFactory
      * @param ServiceRegistryInterface $registry
      */
-    public function __construct(HandlerFactoryInterface $defaultHandlerFactory, ServiceRegistryInterface $registry, EventDispatcherInterface $eventDispatcher)
+    public function __construct(HandlerFactoryInterface $defaultHandlerFactory, ServiceRegistryInterface $registry)
     {
         $this->defaultHandlerFactory = $defaultHandlerFactory;
         $this->registry = $registry;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(array $record): array
@@ -89,9 +83,6 @@ class ProcessProcessor
         $record['extra']['process'] = $process;
 
         unset($record['context']['process']);
-
-        $event = new ProcessLogEvent($record);
-        $this->eventDispatcher->dispatch(ProcessLogEvent::PROCESS_LOG_EVENT, $event);
 
         $log->addRecord($record['level'], $record['message'], $record['context']);
 
