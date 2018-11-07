@@ -22,7 +22,7 @@ class Pimcore implements ProcessInterface
     /**
      * {@inheritdoc}
      */
-    function run(ExecutableInterface $executable) {
+    function run(ExecutableInterface $executable, array $params = null) {
         $settings = $executable->getSettings();
         $command = $settings['command'];
 

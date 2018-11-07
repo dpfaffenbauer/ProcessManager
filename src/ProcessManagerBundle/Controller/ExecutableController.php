@@ -65,7 +65,7 @@ class ExecutableController extends ResourceController
             ]);
         }
 
-        $this->get('process_manager.registry.processes')->get($exe->getType())->run($exe);
+        $this->get('process_manager.registry.processes')->get($exe->getType())->run($exe, $request->request->all());
 
         return $this->viewHandler->handle([
             'success' => true
