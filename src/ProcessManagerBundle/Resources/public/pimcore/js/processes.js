@@ -252,7 +252,9 @@ pimcore.plugin.processmanager.processes = Class.create({
                                     },
                                     method: 'delete',
                                     success: function () {
-                                        pimcore.globalmanager.get(this.storeId).reload();
+                                        //We don't reload the store here, this triggers a new timer, we just delete the
+                                        //record manually from the store
+                                        pimcore.globalmanager.get(this.storeId).remove(rec);
                                     }.bind(this)
                                 });
                             }.bind(this)
