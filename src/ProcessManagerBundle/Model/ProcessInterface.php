@@ -15,6 +15,7 @@
 namespace ProcessManagerBundle\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use Pimcore\Model\Asset;
 
 interface ProcessInterface extends ResourceInterface
 {
@@ -90,4 +91,14 @@ interface ProcessInterface extends ResourceInterface
      * @return float
      */
     public function getPercentage();
+
+    /**
+     * @param Asset $artifact
+     */
+    public function setArtifact(Asset $artifact);
+
+    /**
+     * @return null|Asset
+     */
+    public function getArtifact();
 }

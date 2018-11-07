@@ -40,6 +40,13 @@ services:
             - { name: process_manager.process, type: pimcore, form-type: ProcessManagerBundle\Form\Type\Processes\PimcoreType }
 
     ### Event listeners
+    process_manager.event_listener.artifact:
+        class: ProcessManagerBundle\EventListener\ArtifactDeletionListener
+        arguments:
+            - '@process_manager.repository.process'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.asset.postDelete, method: onArtifactAssetDelete }
+
     process_manager.event_listener.cron:
         class: ProcessManagerBundle\EventListener\CronListener
         tags:
@@ -54,6 +61,7 @@ services:
 
     process_manager.monolog.processor:
         class: ProcessManagerBundle\Monolog\ProcessProcessor
+        lazy: true
         arguments:
             - '@process_manager.default_handler_factory'
             - '@process_manager.registry.process_handler_factories'

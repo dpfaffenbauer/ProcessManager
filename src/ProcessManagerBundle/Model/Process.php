@@ -16,6 +16,7 @@ namespace ProcessManagerBundle\Model;
 
 use Pimcore\Logger;
 use Pimcore\Model\AbstractModel;
+use Pimcore\Model\Asset;
 
 class Process extends AbstractModel implements ProcessInterface
 {
@@ -58,6 +59,11 @@ class Process extends AbstractModel implements ProcessInterface
      * @var int
      */
     public $completed;
+
+    /**
+     * @var null|Asset
+     */
+    public $artifact;
 
     /**
      * @param string      $name
@@ -272,5 +278,33 @@ class Process extends AbstractModel implements ProcessInterface
         }
 
         return ((100 / $this->getTotal()) * $this->getProgress()) / 100;
+    }
+
+    /**
+     * @param null|Asset $artifact
+     */
+    public function setArtifact(?Asset $artifact)
+    {
+        $this->artifact = $artifact;
+    }
+
+    /**
+     * @return null|Asset
+     */
+    public function getArtifact()
+    {
+        return $this->artifact;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getArtifactId()
+    {
+        if (null === $this->artifact) {
+            return null;
+        }
+
+        return $this->artifact->getId();
     }
 }

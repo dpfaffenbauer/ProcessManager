@@ -53,7 +53,8 @@ pimcore.plugin.processmanager.processes = Class.create({
             { name:'progress' },
             { name:'total' },
             { name:'started' },
-            { name:'completed' }
+            { name:'completed' },
+            { name:'artifact' }
         ]);
 
         var store = new Ext.data.Store({
@@ -206,6 +207,33 @@ pimcore.plugin.processmanager.processes = Class.create({
                             }.bind(this)
                         }
                     ]
+                },
+                {
+                    text : t('processmanager_artifact_download'),
+                    xtype:'actioncolumn',
+                    width: 50,
+                    renderer: function(value, metadata, record) {
+                        var artifact = record.data.artifact;
+                        if (!artifact) {
+                            return;
+                        }
+
+                        var id = Ext.id();
+                        Ext.defer(function () {
+                            if (Ext.get(id)) {
+                                new Ext.button.Button({
+                                    renderTo: id,
+                                    iconCls: 'pimcore_icon_download',
+                                    cls: 'processmanager_artifact_download',
+                                    handler: function () {
+                                        pimcore.helpers.download("/admin/asset/download?id=" + artifact)
+                                    }
+                                });
+                            }
+                        }, 50);
+
+                        return Ext.String.format('<span id="{0}"></span>', id);
+                    }
                 },
                 {
                     xtype:'actioncolumn',
