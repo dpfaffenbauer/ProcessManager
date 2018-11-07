@@ -25,6 +25,7 @@ use ProcessManagerBundle\Model\Executable;
 use ProcessManagerBundle\Model\ExecutableInterface;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
+use ProcessManagerBundle\Repository\ExecutableRepository;
 use ProcessManagerBundle\Repository\ProcessRepository;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -73,7 +74,7 @@ class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(ExecutableInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ExecutableController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(ExecutableRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(ExecutableType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
