@@ -18,7 +18,6 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Monolog\Logger;
 use ProcessManagerBundle\Logger\HandlerFactoryInterface;
 use ProcessManagerBundle\Model\ProcessInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProcessProcessor
 {
