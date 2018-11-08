@@ -65,7 +65,28 @@ class ExecutableController extends ResourceController
             ]);
         }
 
-        $this->get('process_manager.registry.processes')->get($exe->getType())->run($exe, $request->request->all());
+        $params = [];
+        $form = $this->get('process_manager.startup_resolver')->resolveFormType($exe);
+
+        if ($form) {
+            $form = $this->createForm($form);
+            $startupConfig = $request->get('startupConfig', '{}');
+            $startupConfig = json_decode($startupConfig, true);
+            $handledForm = $form->submit($startupConfig);
+
+            if (!$handledForm->isValid()) {
+                $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
+
+                return $this->viewHandler->handle([
+                    'success' => false,
+                    'message' => 'Startup Parameters given are not valid'.PHP_EOL.PHP_EOL.implode(PHP_EOL, $errors),
+                ]);
+            }
+
+            $params = $form->getData();
+        }
+
+        $this->get('process_manager.registry.processes')->get($exe->getType())->run($exe, $params);
 
         return $this->viewHandler->handle([
             'success' => true
