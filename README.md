@@ -14,7 +14,6 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
  - [ImportDefinitions](https://github.com/w-vision/ImportDefinitions)
 
 ## Getting started
- * Since Process Manager depends on CoreShops ResourceBundle, and the ResourceBundle only exists in DEV yet, you need to set your "minimum-stability" to "dev" in your composer.json
  * Install via composer ```composer require dpfaffenbauer/process-manager:^2.0```
  * Enable via command-line (or inside the pimcore extension manager): ```bin/console pimcore:bundle:enable ProcessManagerBundle```
  * Install via command-line (or inside the pimcore extension manager): ```bin/console pimcore:bundle:install ProcessManagerBundle```
@@ -26,13 +25,19 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a ni
 ### Create new Process
 
 ```php
-
-$process = $container->get('process_manager.factory.process')->createNew();
-$process->setName('Task Name');         //Name of your Task
-$process->setTotal(100);                //Total steps of your Task
-$process->setMessage('Loading');        //Message
-$process->setProgress(0);               //Initial Progress
-$process->save();                       //Save
+$processFactory = $container->get('process_manager.factory.process');
+$process = $processFactory->createProcess(
+    sprintf(
+        'Process (%s): %s',
+        $date->formatLocalized('%A %d %B %Y'),
+        'Special Long Running Task'
+    ),                                                  //Name
+    'special_task',                                     //Type
+    'Message',                                          //Message Text
+    100,                                                //Total Steps
+    0                                                   //Current Step
+);
+$process->save();                                       //Save
 ```
 
 ### Advance the Progress
@@ -45,8 +50,47 @@ $process->save();
 ### Finish the Progress
 
 ```php
-$process->delete();
+$process->setProgress($process->getTotal());
+$process->save();
 ```
+
+## Using the Process Logger
+Process Manager also provides you with the ability to Log what exactly happens in your progress.
+
+```php
+$logger = $container->get('process_manager.logger');
+
+//Logs a emergency message
+$logger->emergency($process, 'Total of 100 entries found');
+
+//Logs a alert message
+$logger->alert($process, 'Total of 100 entries found');
+
+//Logs a critical message
+$logger->critical($process, 'Total of 100 entries found');
+
+//Logs a error message
+$logger->error($process, 'Total of 100 entries found');
+
+//Logs a warning message
+$logger->warning($process, 'Total of 100 entries found');
+
+//Logs a notice message
+$logger->notice($process, 'Total of 100 entries found');
+
+//Logs a info message
+$logger->info($process, 'Total of 100 entries found');
+
+//Logs a debug message
+$logger->debug($process, 'Total of 100 entries found');
+```
+
+## Reports
+You can also further process the log to create a pretty report. To do that, you have to create
+a new service and implement the interface `ProcessManagerBundle\Report\ReportInterface`.
+Import Definitions has an example implementation of that [Import Definition Report](https://github.com/w-vision/ImportDefinitions/blob/master/src/ImportDefinitionsBundle/ProcessManager/ImportDefinitionsReport.php)
+
+
 
 ## Add a new Process Type
  * Add a new Class to your Bundle and implement ``ProcessManagerBundle\Process\ProcessInterface``` Interface
