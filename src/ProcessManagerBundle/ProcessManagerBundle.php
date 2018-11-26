@@ -22,6 +22,7 @@ use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use ProcessManagerBundle\DependencyInjection\Compiler\MonologHandlerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessHandlerFactoryTypeRegistryCompilerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessReportTypeRegistryCompilerPass;
+use ProcessManagerBundle\DependencyInjection\Compiler\ProcessStartupFormRegistryCompilerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessTypeRegistryCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -58,6 +59,7 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
         $builder->addCompilerPass(new ProcessReportTypeRegistryCompilerPass());
         $builder->addCompilerPass(new ProcessHandlerFactoryTypeRegistryCompilerPass());
         $builder->addCompilerPass(new MonologHandlerPass());
+        $builder->addCompilerPass(new ProcessStartupFormRegistryCompilerPass());
     }
 
     /**

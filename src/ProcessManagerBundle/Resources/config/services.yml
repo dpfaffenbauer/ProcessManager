@@ -78,3 +78,15 @@ services:
 
     process_manager.default_report:
         class: ProcessManagerBundle\Report\DefaultReport
+
+    ### Startup Resolver
+    process_manager.registry.startup_form_resolver:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - ProcessManagerBundle\Process\ProcessStartupFormResolverInterface
+            - 'Process Startup Form Resolver'
+
+    process_manager.startup_resolver:
+        class: ProcessManagerBundle\Process\CompositeProcessStartupFormResolver
+        arguments:
+            - '@process_manager.registry.startup_form_resolver'

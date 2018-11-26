@@ -12,22 +12,21 @@
  * @license    https://github.com/dpfaffenbauer/ProcessManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace ProcessManagerBundle\Process;
+namespace ProcessManagerBundle\Form\Type;
 
-use Pimcore\Tool\Console;
-use ProcessManagerBundle\Model\ExecutableInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Pimcore implements ProcessInterface
+abstract class AbstractStartupFormType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    function run(ExecutableInterface $executable, array $params = null) {
-        $settings = $executable->getSettings();
-        $command = $settings['command'];
-
-        $command = PIMCORE_PROJECT_ROOT . "/bin/console " . $command;
-
-        return Console::runPhpScriptInBackground($command);
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'csrf_protection' => false
+        ]);
     }
 }

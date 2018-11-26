@@ -10,11 +10,12 @@ process_manager_admin_executables:
       run:
         path: run
         action: run
-        methods: [GET]
+        methods: [GET,POST]
       list-by-type:
         path: list-by-type
         action: listByType
         methods: [GET]
+
 
 process_manager_admin_processes:
   type: coreshop.resources

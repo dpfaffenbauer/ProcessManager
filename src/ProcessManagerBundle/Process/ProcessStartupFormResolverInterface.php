@@ -14,20 +14,19 @@
 
 namespace ProcessManagerBundle\Process;
 
-use Pimcore\Tool\Console;
 use ProcessManagerBundle\Model\ExecutableInterface;
 
-class Pimcore implements ProcessInterface
+interface ProcessStartupFormResolverInterface
 {
     /**
-     * {@inheritdoc}
+     * @param ExecutableInterface $executable
+     * @return boolean
      */
-    function run(ExecutableInterface $executable, array $params = null) {
-        $settings = $executable->getSettings();
-        $command = $settings['command'];
+    public function supports(ExecutableInterface $executable): bool;
 
-        $command = PIMCORE_PROJECT_ROOT . "/bin/console " . $command;
-
-        return Console::runPhpScriptInBackground($command);
-    }
+    /**
+     * @param ExecutableInterface $executable
+     * @return string
+     */
+    public function resolveFormType(ExecutableInterface $executable): ?string;
 }
