@@ -90,7 +90,7 @@ final class ExecutableType extends AbstractResourceType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
-        $form->add('settings', $configurationType);
+        $form->add('settings', $configurationType, ['compound' => true]);
     }
 
     /**
