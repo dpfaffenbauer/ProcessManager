@@ -38,7 +38,11 @@ class CronListener
     {
         /** @var Executable $executable */
         foreach ($this->getExecutables() as $executable) {
-            $cron = CronExpression::factory($executable->getCron());
+            try {
+                $cron = CronExpression::factory($executable->getCron());
+            } catch (\Exception $exception) {
+                continue;
+            }
             $lastrun =  new \DateTime();
             $lastrun->setTimestamp($executable->getLastrun());
 
