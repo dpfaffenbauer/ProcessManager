@@ -43,7 +43,7 @@ pimcore.plugin.processmanager.executable.item = Class.create({
             width: 800,
             height: 400,
             resizeable: true,
-            modal: true,
+            modal: false,
             layout: 'fit',
             title: t('processmanager_executables'),
             iconCls: 'processmanager_icon_executable',
