@@ -1,17 +1,21 @@
-.processmanager_icon_processes {
-    background: url(..//img/process.svg) center center no-repeat !important;
+.processmanager_icon_processes, .processmanager_nav_icon_processes {
+    background: url(../img/process.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .processmanager_nav_icon_processes {
+    background: url(../img/process_white.svg) center center no-repeat !important;
 }
 
 .processmanager_icon_executable {
-    background: url(..//img/executable.svg) center center no-repeat !important;
+    background: url(../img/executable.svg) center center no-repeat !important;
 }
 
 .processmanager_icon_executable_add {
-    background: url(..//img/executable_add.svg) center center no-repeat !important;
+    background: url(../img/executable_add.svg) center center no-repeat !important;
 }
 
 .processmanager_icon_executable_type_cli {
-    background: url(..//img/type_cli.svg) center center no-repeat !important;
+    background: url(../img/type_cli.svg) center center no-repeat !important;
 }
 
 .processmanager_icon_executable_type_pimcore {
