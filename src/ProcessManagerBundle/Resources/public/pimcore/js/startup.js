@@ -37,7 +37,7 @@ pimcore.plugin.processmanager = Class.create(pimcore.plugin.admin, {
             layoutToolbar.extrasMenu.add({xtype: 'menuseparator'});
             layoutToolbar.extrasMenu.add(exportMenu);
 
-            $(document).trigger('processmanager.ready');
+            this.trigger(document, 'processmanager.ready');
         }
     },
 
@@ -49,8 +49,18 @@ pimcore.plugin.processmanager = Class.create(pimcore.plugin.admin, {
         catch (e) {
             pimcore.globalmanager.add('processmanager_definition_processes', new pimcore.plugin.processmanager.panel());
         }
+    },
+
+    trigger: function (target, event, detail) {
+        return target.dispatchEvent(this.createEvent(event, true, true, detail));
+    },
+
+    createEvent: function (e, bubbles = true, cancelable = false, detail) {
+        const event = document.createEvent('CustomEvent');
+        event.initCustomEvent(e, bubbles, cancelable, detail);
+
+        return event;
     }
 });
 
 var processmanagerPlugin = new pimcore.plugin.processmanager();
-
