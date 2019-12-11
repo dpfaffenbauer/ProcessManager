@@ -47,10 +47,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: pimcore.asset.postDelete, method: onArtifactAssetDelete }
 
-    process_manager.event_listener.cron:
-        class: ProcessManagerBundle\EventListener\CronListener
+    ### Maintenance task
+    process_manager.maintenance.cron:
+        class: ProcessManagerBundle\Maintenance\CronTask
         tags:
-            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: run, arguments: }
+            - { name: pimcore.maintenance.task, type: process_manager.maintenance.cron }
         arguments:
             - '@process_manager.registry.processes'
 

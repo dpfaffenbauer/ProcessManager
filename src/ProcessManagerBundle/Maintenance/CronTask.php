@@ -12,13 +12,14 @@
  * @license    https://github.com/dpfaffenbauer/ProcessManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace ProcessManagerBundle\EventListener;
+namespace ProcessManagerBundle\Maintenance;
 
+use Pimcore\Maintenance\TaskInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use Cron\CronExpression;
 use ProcessManagerBundle\Model\Executable;
 
-class CronListener
+class CronTask implements TaskInterface
 {
     private $registry;
 
@@ -34,7 +35,7 @@ class CronListener
     /**
      * Runs waiting crons
      */
-    public function run()
+    public function execute()
     {
         /** @var Executable $executable */
         foreach ($this->getExecutables() as $executable) {
