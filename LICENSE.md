@@ -1,5 +1,5 @@
 # License
-Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
