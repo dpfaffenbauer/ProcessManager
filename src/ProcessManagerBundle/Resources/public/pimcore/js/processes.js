@@ -64,6 +64,11 @@ pimcore.plugin.processmanager.processes = Class.create({
             autoload:   true
         });
 
+        store.sort([{
+            property: 'id',
+            direction: 'DESC'
+        }]);
+
         pimcore.globalmanager.add(this.storeId, store);
         this.reloadProcesses();
     },
@@ -227,6 +232,49 @@ pimcore.plugin.processmanager.processes = Class.create({
                                     cls: 'processmanager_artifact_download',
                                     handler: function () {
                                         pimcore.helpers.download("/admin/asset/download?id=" + artifact)
+                                    }
+                                });
+                            }
+                        }, 50);
+
+                        return Ext.String.format('<span id="{0}"></span>', id);
+                    }
+                },
+                {
+                    text : t('processmanager_status'),
+                    width: 100,
+                    renderer: function (value, metadata, record) {
+                        if (record.data.status != '' && record.data.status != null) {
+                            return t('processmanager_' + record.data.status);
+                        }
+                    },
+                },
+                {
+                    text : t('processmanager_action'),
+                    xtype: 'actioncolumn',
+                    align: 'center',
+                    renderer: function(value, metadata, record) {
+                        var status = record.data.status;
+                        var stoppable = record.data.stoppable;
+                        var processId = record.data.id;
+
+                        var id = Ext.id();
+                        Ext.defer(function () {
+                            if (Ext.get(id) && stoppable && status == 'running') {
+                                new Ext.button.Button({
+                                    renderTo: id,
+                                    iconCls: 'processmanager_icon_process_stop',
+                                    cls: 'processmanager_grid_transparent_button',
+                                    backgroundColor: null,
+                                    handler: function (button) {
+                                        button.disable();
+                                        Ext.Ajax.request({
+                                            url: '/admin/process_manager/processes/stop-process?id=' + processId,
+                                            method: 'GET',
+                                            failure: function () {
+                                                button.enable();
+                                            }
+                                        }).bind(this);
                                     }
                                 });
                             }
