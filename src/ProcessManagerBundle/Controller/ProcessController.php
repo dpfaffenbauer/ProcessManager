@@ -15,6 +15,7 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,6 +65,24 @@ class ProcessController extends ResourceController
             [
                 'success' => true,
                 'report' => $content
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function stopAction(Request $request)
+    {
+        /** @var Process $process */
+        $process = $this->findOr404($request->get('id'));
+        $process->setStatus('stopping');
+        $process->save();
+
+        return $this->json(
+            [
+                'success' => true
             ]
         );
     }

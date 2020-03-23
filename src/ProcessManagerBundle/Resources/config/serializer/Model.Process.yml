@@ -36,6 +36,14 @@ ProcessManagerBundle\Model\Process:
       accessor:
           getter: getArtifactId
       groups: [List, Detailed]
+    stoppable:
+      expose: true
+      type: bool
+      groups: [List, Detailed]
+    status:
+      expose: true
+      type: string
+      groups: [List, Detailed]
   virtual_properties:
     getPercentage:
       serialized_name: percentage

@@ -66,13 +66,38 @@ class Process extends AbstractModel implements ProcessInterface
     public $artifact;
 
     /**
-     * @param string      $name
-     * @param string|null $type
-     * @param string      $message
-     * @param int         $total
-     * @param int         $progress
+     * @var null|bool
      */
-    public function __construct(string $name, string $type = null, string $message = '', int $total = 1, int $progress = 0, int $started = 0, int $completed = 0)
+    public $stoppable;
+
+    /**
+     * @var null|string
+     */
+    public $status;
+
+    /**
+     * Process constructor.
+     * @param string $name
+     * @param string|null $type
+     * @param string $message
+     * @param int $total
+     * @param int $progress
+     * @param int $started
+     * @param int $completed
+     * @param int $stoppable
+     * @param string|null $status
+     */
+    public function __construct(
+        string $name,
+        string $type = null,
+        string $message = '',
+        int $total = 1,
+        int $progress = 0,
+        int $started = 0,
+        int $completed = 0,
+        int $stoppable = 0,
+        string $status = null
+    )
     {
         $this->name = $name;
         $this->type = $type;
@@ -81,6 +106,8 @@ class Process extends AbstractModel implements ProcessInterface
         $this->total = $total;
         $this->started = $started;
         $this->completed = $completed;
+        $this->stoppable = $stoppable;
+        $this->status = $status;
     }
 
     /**
@@ -306,5 +333,37 @@ class Process extends AbstractModel implements ProcessInterface
         }
 
         return $this->artifact->getId();
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getStoppable(): ?bool
+    {
+        return $this->stoppable;
+    }
+
+    /**
+     * @param bool|null $stoppable
+     */
+    public function setStoppable(?bool $stoppable): void
+    {
+        $this->stoppable = $stoppable;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string|null $status
+     */
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
     }
 }

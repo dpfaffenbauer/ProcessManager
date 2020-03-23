@@ -30,6 +30,13 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
 {
     use PackageVersionTrait;
 
+    const STATUS_RUNNING = 'running';
+    const STATUS_STOPPED = 'stopped';
+    const STATUS_STOPPING = 'stopping';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_COMPLETED_WITH_EXCEPTIONS = 'completed_with_exceptions';
+    const STATUS_FAILED = 'failed';
+
     /**
      * {@inheritdoc}
      */
