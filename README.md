@@ -118,7 +118,7 @@ $process->save();
 Additionally, you need to implement stop logic to your process. Track the process status and stop your process if it's set to `ProcessManagerBundle::STATUS_STOPPING`:
 
 ```php
-$process = $this->processRepository->findOneBy(['id' => $processId]);
+$process = $this->processRepository->find($processId);
 if ($process->getStatus() == ProcessManagerBundle::STATUS_STOPPING) {
     // Here goes your process stop and cleanup logic
     ...
