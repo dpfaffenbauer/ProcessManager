@@ -15,6 +15,7 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use Pimcore\Db;
 use ProcessManagerBundle\Model\ProcessInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,17 +56,27 @@ class ProcessController extends ResourceController
 
         if ($registry->has($process->getType())) {
             $content = $registry->get($process->getType())->generateReport($process, $log);
-        }
-        else {
+        } else {
             $content = $this->get('process_manager.default_report')->generateReport($process, $log);
         }
 
         return $this->json(
             [
                 'success' => true,
-                'report' => $content
+                'report' => $content,
             ]
         );
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function clearAction()
+    {
+        $connection = Db::get();
+        $connection->exec('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 7 DAY))');
+
+        return $this->json(['success' => true]);
     }
 
     protected function getLog(ProcessInterface $process)
