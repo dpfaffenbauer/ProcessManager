@@ -19,14 +19,16 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 interface ProcessFactoryInterface extends FactoryInterface
 {
     /**
-     * @param string      $name
+     * @param string $name
      * @param string|null $type
-     * @param string      $message
-     * @param int         $total
-     * @param int         $progress
-     * @param int         $started
-     * @param int         $completed
+     * @param string $message
+     * @param int $total
+     * @param int $progress
+     * @param int $started
+     * @param int $completed
+     * @param int $stoppable
+     * @param string|null $status
      * @return mixed
      */
-    public function createProcess(string $name, string $type = null, string $message = '', int $total = 1, int $progress = 0, int $started = -1, int $completed = 0);
+    public function createProcess(string $name, string $type = null, string $message = '', int $total = 1, int $progress = 0, int $started = -1, int $completed = 0, int $stoppable = 0, string $status = null);
 }

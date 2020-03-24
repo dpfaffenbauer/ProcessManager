@@ -101,4 +101,14 @@ interface ProcessInterface extends ResourceInterface
      * @return null|Asset
      */
     public function getArtifact();
+
+    /**
+     * @return bool
+     */
+    public function getStoppable();
+
+    /**
+     * @return null|string
+     */
+    public function getStatus();
 }
