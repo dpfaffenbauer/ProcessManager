@@ -34,19 +34,25 @@ class ProcessController extends ResourceController
         $class = $this->repository->getClassName();
         $listingClass = $class.'\Listing';
 
-        $list = new $listingClass();
         /**
          * @var Process\Listing $list
          */
+        $list = new $listingClass();
+        if ($sort = $request->get('sort')) {
+            $sort = json_decode($sort)[0];
+            $list->setOrderKey($sort->property);
+            $list->setOrder($sort->direction);
+        }
+
         $data = $list->getItems(
             $request->get('start', 0),
-            $request->get('limit', 50)
+            $request->get('limit', 50),
         );
 
         return $this->viewHandler->handle(
             [
                 'data' => $data,
-                'total' => $list->getTotalCount()
+                'total' => $list->getTotalCount(),
             ],
             ['group' => 'List']
         );
