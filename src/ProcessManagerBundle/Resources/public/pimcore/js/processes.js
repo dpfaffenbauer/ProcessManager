@@ -248,6 +248,7 @@ pimcore.plugin.processmanager.processes = Class.create({
                 {
                     text : t('processmanager_status'),
                     width: 100,
+                    dataIndex: 'status',
                     renderer: function (value, metadata, record) {
                         if (record.data.status != '' && record.data.status != null) {
                             return t('processmanager_' + record.data.status);
