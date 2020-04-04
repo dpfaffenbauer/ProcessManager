@@ -43,6 +43,9 @@ class ProcessController extends ResourceController
             $sort = json_decode($sort)[0];
             $list->setOrderKey($sort->property);
             $list->setOrder($sort->direction);
+        } else {
+            $list->setOrderKey("id");
+            $list->setOrder("DESC");
         }
 
         $data = $list->getItems(
