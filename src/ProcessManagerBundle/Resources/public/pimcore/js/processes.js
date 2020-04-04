@@ -32,12 +32,23 @@ pimcore.plugin.processmanager.processes = Class.create({
     },
 
     clear: function() {
-        Ext.Ajax.request({
-            url: '/admin/process_manager/processes/clear',
-            method: 'post',
-            success: function () {
-                this.reloadProcesses();
-            }.bind(this)
+        Ext.MessageBox.show({
+            title: 'processmanager_processes_clear',
+            msg: 'processmanager_processes_clear_confirmation',
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.WARNING,
+            fn: function (btn) {
+                if(btn == 'ok') {
+                    Ext.Ajax.request({
+                        scope: this,
+                        url: '/admin/process_manager/processes/clear',
+                        method: 'post',
+                        success: function () {
+                            pimcore.helpers.showNotification(t('success'), t('processmanager_processes_clear_success'), 'success');
+                        }
+                    });
+                }
+            }
         });
     },
 
