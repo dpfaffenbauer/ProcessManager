@@ -35,3 +35,7 @@ process_manager_admin_processes:
         path: stop-process
         action: stop
         methods: [GET]
+      clear:
+        path: clear
+        action: clear
+        methods: [POST]
