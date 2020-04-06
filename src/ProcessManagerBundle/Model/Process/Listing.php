@@ -22,6 +22,20 @@ use Zend\Paginator\AdapterAggregateInterface;
 class Listing extends Model\Listing\AbstractListing implements AdapterInterface, AdapterAggregateInterface, \Iterator
 {
     /**
+     * List of valid order keys.
+     *
+     * @var array
+     */
+    public $validOrderKeys = array(
+        'id',
+        'name',
+        'message',
+        'started',
+        'completed',
+        'status',
+    );
+
+    /**
      * List of Logs.
      *
      * @var array
@@ -32,15 +46,6 @@ class Listing extends Model\Listing\AbstractListing implements AdapterInterface,
      * @var string
      */
     public $locale;
-
-    /**
-     * List of valid order keys.
-     *
-     * @var array
-     */
-    public $validOrderKeys = array(
-        'id'
-    );
 
     /**
      * Test if the passed key is valid.

@@ -32,12 +32,23 @@ pimcore.plugin.processmanager.processes = Class.create({
     },
 
     clear: function() {
-        Ext.Ajax.request({
-            url: '/admin/process_manager/processes/clear',
-            method: 'post',
-            success: function () {
-                this.reloadProcesses();
-            }.bind(this)
+        Ext.MessageBox.show({
+            title: 'processmanager_processes_clear',
+            msg: 'processmanager_processes_clear_confirmation',
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.WARNING,
+            fn: function (btn) {
+                if(btn == 'ok') {
+                    Ext.Ajax.request({
+                        scope: this,
+                        url: '/admin/process_manager/processes/clear',
+                        method: 'post',
+                        success: function () {
+                            pimcore.helpers.showNotification(t('success'), t('processmanager_processes_clear_success'), 'success');
+                        }
+                    });
+                }
+            }
         });
     },
 
@@ -52,32 +63,34 @@ pimcore.plugin.processmanager.processes = Class.create({
     },
 
     createStore : function () {
-        var proxy = new Ext.data.HttpProxy({
-            url : this.url.list
+        var store = new Ext.data.JsonStore({
+            remoteSort: true,
+            remoteFilter: true,
+            autoDestroy: true,
+            autoSync: true,
+            pageSize: pimcore.helpers.grid.getDefaultPageSize(),
+            proxy: {
+                type: 'ajax',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data',
+                    totalProperty: 'total'
+                },
+                api: {
+                    read: this.url.list,
+                }
+            },
+            fields: [
+                { name:'id' },
+                { name:'name' },
+                { name:'message' },
+                { name:'progress' },
+                { name:'total' },
+                { name:'started' },
+                { name:'completed' },
+                { name:'artifact' }
+            ]
         });
-
-        var reader = new Ext.data.JsonReader({}, [
-            { name:'id' },
-            { name:'name' },
-            { name:'message' },
-            { name:'progress' },
-            { name:'total' },
-            { name:'started' },
-            { name:'completed' },
-            { name:'artifact' }
-        ]);
-
-        var store = new Ext.data.Store({
-            restful:    false,
-            proxy:      proxy,
-            reader:     reader,
-            autoload:   true
-        });
-
-        store.sort([{
-            property: 'id',
-            direction: 'DESC'
-        }]);
 
         pimcore.globalmanager.add(this.storeId, store);
         this.reloadProcesses();
@@ -123,9 +136,12 @@ pimcore.plugin.processmanager.processes = Class.create({
     },
 
     getGrid: function () {
+        var store = pimcore.globalmanager.get(this.storeId);
+
         return {
             xtype: 'grid',
-            store: pimcore.globalmanager.get(this.storeId),
+            store: store,
+            bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store),
             columns: [
                 {
                     text: t('id'),
@@ -253,6 +269,7 @@ pimcore.plugin.processmanager.processes = Class.create({
                 {
                     text : t('processmanager_status'),
                     width: 100,
+                    dataIndex: 'status',
                     renderer: function (value, metadata, record) {
                         if (record.data.status != '' && record.data.status != null) {
                             return t('processmanager_' + record.data.status);
