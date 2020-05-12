@@ -76,6 +76,7 @@ services:
         class: ProcessManagerBundle\Logger\DefaultHandlerFactory
         arguments:
             - '%kernel.logs_dir%'
+            - '%process_manager.prevent_logfile_cleanup%'
 
     process_manager.default_report:
         class: ProcessManagerBundle\Report\DefaultReport

@@ -25,11 +25,18 @@ class DefaultHandlerFactory implements HandlerFactoryInterface
     private $logDirectory;
 
     /**
-     * @param string $logDirectory
+     * @var bool
      */
-    public function __construct(string $logDirectory)
+    private $preventLogfileCleanup;
+
+    /**
+     * @param string $logDirectory
+     * @param bool   $preventLogfileCleanup
+     */
+    public function __construct(string $logDirectory, bool $preventLogfileCleanup)
     {
         $this->logDirectory = $logDirectory;
+        $this->preventLogfileCleanup = $preventLogfileCleanup;
     }
 
     /**
@@ -37,6 +44,14 @@ class DefaultHandlerFactory implements HandlerFactoryInterface
      */
     public function getLogHandler(ProcessInterface $process)
     {
+        if ($this->preventLogfileCleanup) {
+            return new StreamHandler(sprintf(
+                '%s/processmanager/process_manager_%s.log',
+                $this->logDirectory,
+                $process->getId()
+            ));
+        }
+
         return new StreamHandler(sprintf('%s/process_manager_%s.log', $this->logDirectory, $process->getId()));
     }
 
@@ -46,6 +61,10 @@ class DefaultHandlerFactory implements HandlerFactoryInterface
     public function getLog(ProcessInterface $process)
     {
         $path = sprintf('%s/process_manager_%s.log', $this->logDirectory, $process->getId());
+
+        if ($this->preventLogfileCleanup) {
+            $path = sprintf('%s/processmanager/process_manager_%s.log', $this->logDirectory, $process->getId());
+        }
 
         if (file_exists($path)) {
             return file_get_contents($path);
@@ -60,6 +79,10 @@ class DefaultHandlerFactory implements HandlerFactoryInterface
     public function cleanup(ProcessInterface $process)
     {
         $path = sprintf('%s/process_manager_%s.log', $this->logDirectory, $process->getId());
+
+        if ($this->preventLogfileCleanup) {
+            $path = sprintf('%s/processmanager/process_manager_%s.log', $this->logDirectory, $process->getId());
+        }
 
         if (file_exists($path)) {
             unlink($path);
