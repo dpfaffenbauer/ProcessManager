@@ -17,8 +17,6 @@ namespace ProcessManagerBundle;
 use Doctrine\DBAL\Migrations\Version;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Extension\Bundle\Installer\MigrationInstaller;
-use Pimcore\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
 
 class Installer extends MigrationInstaller
 {
