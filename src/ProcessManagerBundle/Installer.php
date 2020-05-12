@@ -17,8 +17,7 @@ namespace ProcessManagerBundle;
 use Doctrine\DBAL\Migrations\Version;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Extension\Bundle\Installer\MigrationInstaller;
-use Pimcore\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
+use Pimcore\Model\User\Permission;
 
 class Installer extends MigrationInstaller
 {
@@ -27,6 +26,7 @@ class Installer extends MigrationInstaller
      */
     public function migrateInstall(Schema $schema, Version $version)
     {
+        // DB Tables
         $processTable = $schema->createTable('process_manager_processes');
         $processTable->addColumn('id', 'integer')
             ->setAutoincrement(true);
@@ -47,6 +47,15 @@ class Installer extends MigrationInstaller
         $execTable->addColumn('active', 'boolean')
             ->setDefault(1);
         $execTable->setPrimaryKey(['id']);
+
+        // Permissions
+        $permission = new Permission\Definition();
+        $permission->setKey('process_manager');
+
+        $res = new Permission\Definition\Dao();
+        $res->configure();
+        $res->setModel($permission);
+        $res->save();
     }
 
     /**

@@ -50,7 +50,7 @@ class ProcessController extends ResourceController
 
         $data = $list->getItems(
             $request->get('start', 0),
-            $request->get('limit', 50),
+            $request->get('limit', 50)
         );
 
         return $this->viewHandler->handle(
