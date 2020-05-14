@@ -44,6 +44,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_PIMCORE)->end()
+                ->scalarNode('log_directory')->defaultValue('%kernel.logs_dir%')->end()
             ->end()
         ;
 

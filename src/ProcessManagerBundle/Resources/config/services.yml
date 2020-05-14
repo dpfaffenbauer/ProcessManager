@@ -75,7 +75,7 @@ services:
     process_manager.default_handler_factory:
         class: ProcessManagerBundle\Logger\DefaultHandlerFactory
         arguments:
-            - '%kernel.logs_dir%'
+            - '%process_manager.log_directory%'
 
     process_manager.default_report:
         class: ProcessManagerBundle\Report\DefaultReport
