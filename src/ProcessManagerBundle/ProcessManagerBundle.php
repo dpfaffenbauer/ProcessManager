@@ -37,17 +37,11 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
     const STATUS_COMPLETED_WITH_EXCEPTIONS = 'completed_with_exceptions';
     const STATUS_FAILED = 'failed';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPackageName()
     {
         return 'dpfaffenbauer/process-manager';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -55,9 +49,6 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $builder)
     {
         parent::build($builder);
@@ -69,73 +60,46 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
         $builder->addCompilerPass(new ProcessStartupFormRegistryCompilerPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName()
     {
         return 'Process Manager';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'Process Manager helps you to see statuses for long running Processes';
     }
 
-        /**
-     * {@inheritdoc}
-     */
     protected function getComposerPackageName(): string
     {
         return 'dpfaffenbauer/process-manager';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInstaller()
     {
         return $this->container->get(Installer::class);
     }
 
-        /**
-     * {@inheritdoc}
-     */
     public function getAdminIframePath()
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCssPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeCssPaths()
     {
         return [];

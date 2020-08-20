@@ -17,14 +17,17 @@
     }
   ],
   "require": {
-    "coreshop/resource-bundle": "^2.1",
-    "pimcore/pimcore": "^5.8 | ^6.0",
+    "coreshop/resource-bundle": "^3.0",
+    "pimcore/pimcore": "^6.7",
     "dragonmantank/cron-expression": "^2.0"
   },
   "autoload": {
     "psr-4": {
       "ProcessManagerBundle\\": "src/ProcessManagerBundle"
-    }
+    },
+    "classmap": [
+      "app/AppKernel.php"
+    ]
   },
   "extra": {
     "pimcore": {
@@ -33,7 +36,9 @@
       ]
     },
     "branch-alias": {
-      "dev-master": "2.6-dev"
+      "dev-master": "3.0-dev"
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

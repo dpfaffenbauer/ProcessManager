@@ -50,3 +50,8 @@ TestController.php
 tests/output
 tests/tmp
 generate-and-copy.sh
+var
+app/config/config.yml
+composer.lock
+docker-compose.yml
+app/config/local

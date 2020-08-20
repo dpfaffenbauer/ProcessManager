@@ -25,24 +25,15 @@ use Symfony\Component\Form\FormInterface;
 
 final class ExecutableType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $formTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($dataClass, array $validationGroups = [], FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -110,13 +101,5 @@ final class ExecutableType extends AbstractResourceType
         }
 
         return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'process_manager_executable';
     }
 }

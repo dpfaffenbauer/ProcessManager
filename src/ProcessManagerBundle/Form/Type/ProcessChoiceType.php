@@ -20,22 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProcessChoiceType extends AbstractType
 {
-    /**
-     * @var array
-     */
     private $processes;
 
-    /**
-     * @param array $processes
-     */
     public function __construct(array $processes)
     {
         $this->processes = $processes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -43,19 +34,8 @@ final class ProcessChoiceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return ChoiceType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'process_manager_processes';
     }
 }

@@ -16,30 +16,18 @@ namespace ProcessManagerBundle\Factory;
 
 class ProcessFactory implements ProcessFactoryInterface
 {
-    /**
-     * @var string
-     */
     private $model;
 
-    /**
-     * @param string $model
-     */
     public function __construct(string $model)
     {
         $this->model = $model;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createNew()
     {
         throw new \InvalidArgumentException('use createProcess instead');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createProcess(
         string $name,
         string $type = null,

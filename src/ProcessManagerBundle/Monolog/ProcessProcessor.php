@@ -21,25 +21,10 @@ use ProcessManagerBundle\Model\ProcessInterface;
 
 class ProcessProcessor
 {
-    /**
-     * @var HandlerFactoryInterface
-     */
     private $defaultHandlerFactory;
-
-    /**
-     * @var array
-     */
     private $loggers = [];
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $registry;
 
-    /**
-     * @param HandlerFactoryInterface  $defaultHandlerFactory
-     * @param ServiceRegistryInterface $registry
-     */
     public function __construct(HandlerFactoryInterface $defaultHandlerFactory, ServiceRegistryInterface $registry)
     {
         $this->defaultHandlerFactory = $defaultHandlerFactory;

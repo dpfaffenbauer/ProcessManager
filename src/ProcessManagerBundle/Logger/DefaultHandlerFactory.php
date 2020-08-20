@@ -19,30 +19,18 @@ use ProcessManagerBundle\Model\ProcessInterface;
 
 class DefaultHandlerFactory implements HandlerFactoryInterface
 {
-    /**
-     * @var string
-     */
     private $logDirectory;
 
-    /**
-     * @param string $logDirectory
-     */
     public function __construct(string $logDirectory)
     {
         $this->logDirectory = $logDirectory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLogHandler(ProcessInterface $process)
     {
         return new StreamHandler(sprintf('%s/process_manager_%s.log', $this->logDirectory, $process->getId()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLog(ProcessInterface $process)
     {
         $path = sprintf('%s/process_manager_%s.log', $this->logDirectory, $process->getId());
@@ -54,9 +42,6 @@ class DefaultHandlerFactory implements HandlerFactoryInterface
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function cleanup(ProcessInterface $process)
     {
         $path = sprintf('%s/process_manager_%s.log', $this->logDirectory, $process->getId());

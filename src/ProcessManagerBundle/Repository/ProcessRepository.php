@@ -19,9 +19,6 @@ use Pimcore\Model\Asset;
 
 class ProcessRepository extends PimcoreRepository implements ProcessRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByArtifact(Asset $artifact)
     {
         $list = $this->getList();

@@ -19,22 +19,13 @@ use Psr\Log\LoggerInterface;
 
 class ProcessLogger implements ProcessLoggerInterface
 {
-    /**
-     * @var LoggerInterface
-     */
     private $logger;
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function emergency(ProcessInterface $process, $message, array $context = array())
     {
         $context['process'] = $process;
@@ -42,9 +33,6 @@ class ProcessLogger implements ProcessLoggerInterface
         $this->logger->emergency($message, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function alert(ProcessInterface $process, $message, array $context = array())
     {
         $context['process'] = $process;
@@ -52,9 +40,6 @@ class ProcessLogger implements ProcessLoggerInterface
         $this->logger->alert($message, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function critical(ProcessInterface $process, $message, array $context = array())
     {
         $context['process'] = $process;
@@ -62,9 +47,6 @@ class ProcessLogger implements ProcessLoggerInterface
         $this->logger->critical($message, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function error(ProcessInterface $process, $message, array $context = array())
     {
         $context['process'] = $process;
@@ -72,9 +54,6 @@ class ProcessLogger implements ProcessLoggerInterface
         $this->logger->error($message, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function warning(ProcessInterface $process, $message, array $context = array())
     {
         $context['process'] = $process;
@@ -82,9 +61,6 @@ class ProcessLogger implements ProcessLoggerInterface
         $this->logger->warning($message, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function notice(ProcessInterface $process, $message, array $context = array())
     {
         $context['process'] = $process;
@@ -92,9 +68,6 @@ class ProcessLogger implements ProcessLoggerInterface
         $this->logger->notice($message, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function info(ProcessInterface $process, $message, array $context = array())
     {
         $context['process'] = $process;
@@ -102,9 +75,6 @@ class ProcessLogger implements ProcessLoggerInterface
         $this->logger->info($message, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function debug(ProcessInterface $process, $message, array $context = array())
     {
         $context['process'] = $process;
@@ -112,9 +82,6 @@ class ProcessLogger implements ProcessLoggerInterface
         $this->logger->debug($message, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function log(ProcessInterface $process, $level, $message, array $context = array())
     {
         $context['process'] = $process;

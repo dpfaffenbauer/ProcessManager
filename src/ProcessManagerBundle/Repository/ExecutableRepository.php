@@ -19,9 +19,6 @@ use Pimcore\Model\Asset;
 
 class ExecutableRepository extends PimcoreRepository implements ExecutableRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByType(string $type)
     {
         $list = $this->getList();

@@ -23,18 +23,11 @@ class CronTask implements TaskInterface
 {
     private $registry;
 
-    /**
-     * CronListener constructor.
-     * @param ServiceRegistry $registry
-     */
     public function __construct(ServiceRegistry $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * Runs waiting crons
-     */
     public function execute()
     {
         /** @var Executable $executable */

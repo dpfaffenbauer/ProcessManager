@@ -20,9 +20,6 @@ use Pimcore\Extension\Bundle\Installer\MigrationInstaller;
 
 class Installer extends MigrationInstaller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function migrateInstall(Schema $schema, Version $version)
     {
         $processTable = $schema->createTable('process_manager_processes');
@@ -47,9 +44,6 @@ class Installer extends MigrationInstaller
         $execTable->setPrimaryKey(['id']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function migrateUninstall(Schema $schema, Version $version)
     {
         $tables = [
