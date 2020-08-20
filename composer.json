@@ -24,7 +24,9 @@
   "autoload": {
     "psr-4": {
       "ProcessManagerBundle\\": "src/ProcessManagerBundle"
-    },
+    }
+  },
+  "autoload-dev": {
     "classmap": [
       "app/AppKernel.php"
     ]
