@@ -1,0 +1,45 @@
+QueueItemManagerBundle\Model\QueueItem:
+  exclusion_policy: ALL
+  xml_root_name: executable
+  properties:
+    id:
+      expose: true
+      type: integer
+      xml_attribute: true
+      groups: [List, Detailed]
+    name:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    description:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    type:
+      expose: true
+      type: string
+      groups: [Detailed]
+    queue:
+      expose: true
+      type: string
+      groups: [List, Detailed]
+    class:
+      expose: true
+      type: string
+      groups: [Detailed]
+    settings:
+      expose: true
+      type: array
+      groups: [Detailed]
+    created:
+      expose: true
+      type: integer
+      groups: [List, Detailed]
+    started:
+      expose: true
+      type: integer
+      groups: [List, Detailed]
+    completed:
+      expose: true
+      type: integer
+      groups: [List, Detailed]              

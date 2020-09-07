@@ -17,15 +17,15 @@ namespace ProcessManagerBundle\DependencyInjection;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
-use ProcessManagerBundle\Controller\ExecutableController;
+use ProcessManagerBundle\Controller\QueueItemController;
 use ProcessManagerBundle\Controller\ProcessController;
 use ProcessManagerBundle\Factory\ProcessFactory;
-use ProcessManagerBundle\Form\Type\ExecutableType;
-use ProcessManagerBundle\Model\Executable;
-use ProcessManagerBundle\Model\ExecutableInterface;
+use ProcessManagerBundle\Form\Type\QueueItemType;
+use ProcessManagerBundle\Model\QueueItem;
+use ProcessManagerBundle\Model\QueueItemInterface;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
-use ProcessManagerBundle\Repository\ExecutableRepository;
+use ProcessManagerBundle\Repository\QueueItemRepository;
 use ProcessManagerBundle\Repository\ProcessRepository;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -65,12 +65,12 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(Executable::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(ExecutableInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ExecutableController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(QueueItem::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(QueueItemInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(QueueItemController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(ExecutableRepository::class)->end()
-                                        ->scalarNode('form')->defaultValue(ExecutableType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(QueueItemRepository::class)->end()
+                                        ->scalarNode('form')->defaultValue(QueueItemType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -91,6 +91,24 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+                        ->arrayNode('queueitem')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->variableNode('options')->end()
+                            ->arrayNode('classes')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode('model')->defaultValue(QueueItem::class)->cannotBeEmpty()->end()
+                                    ->scalarNode('interface')->defaultValue(QueueItemInterface::class)->cannotBeEmpty()->end()
+                                    ->scalarNode('admin_controller')->defaultValue(QueueItemController::class)->cannotBeEmpty()->end()
+                                    ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                    ->scalarNode('repository')->defaultValue(QueueItemRepository::class)->end()
+                                    ->scalarNode('form')->defaultValue(QueueItemType::class)->cannotBeEmpty()->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+
                     ->end()
                 ->end()
             ->end()
