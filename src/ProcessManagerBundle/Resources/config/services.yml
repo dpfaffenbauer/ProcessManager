@@ -91,3 +91,13 @@ services:
         class: ProcessManagerBundle\Process\CompositeProcessStartupFormResolver
         arguments:
             - '@process_manager.registry.startup_form_resolver'
+
+
+    ### Cli command
+    process_manager.commands.queuerun:
+        class: ProcessManagerBundle\Command\QueueRunCommand
+        arguments:
+            - '@process_manager.registry.processes'
+        tags:
+            - { name: 'console.command', command: 'process_manager:queue:run' }
+
