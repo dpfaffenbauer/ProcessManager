@@ -73,10 +73,10 @@ class QueueItem extends AbstractModel implements QueueItemInterface
     /**
      * @param string $type
      * @param string $name
-     * @param string $status
-     * @param string $description
      * @param array $settings
+     * @param string $description
      * @param string $queue
+     * @param string $status
      * @param integer|null $created
      * @param integer|null $started
      * @param integer|null $completed
@@ -84,10 +84,10 @@ class QueueItem extends AbstractModel implements QueueItemInterface
     public function __construct(
         string $type,
         string $name,
-        string $status,
-        string $description,
         array $settings,
+        string $description,
         string $queue,
+        string $status,
         ?int $created = null,
         ?int $started = null,
         ?int $completed = null
@@ -283,5 +283,19 @@ class QueueItem extends AbstractModel implements QueueItemInterface
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    public function start($status = QueueItemInterface::STATUS_RUNNING) 
+    {
+        $this->setStarted(time());
+        $this->setStatus($status);
+        $this->save();
+    }
+
+    public function complete($status = QueueItemInterface::STATUS_SUCCESS) 
+    {
+        $this->setCompleted(time());
+        $this->setStatus($status);
+        $this->save();
     }
 }

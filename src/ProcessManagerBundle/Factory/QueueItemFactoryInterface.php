@@ -12,23 +12,24 @@
  * @license    https://github.com/dpfaffenbauer/QueueItemManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace QueueItemManagerBundle\Factory;
+namespace ProcessManagerBundle\Factory;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use ProcessManagerBundle\Model\QueueItemInterface;
 
 interface QueueItemFactoryInterface extends FactoryInterface
 {
     /**
      * @param string $type
      * @param string $name
-     * @param string $status
-     * @param string $description
      * @param array $settings
+     * @param string $description
      * @param string $queue
+     * @param string $status
      * @param integer|null $created
      * @param integer|null $started
      * @param integer|null $completed
-     * @return mixed
+     * @return QueueItemInterface
      */
-    public function createQueueItem(string $type, string $name, string $status, string $description, array $settings, string $queue, ?int $created = null, ?int $started = null, ?int $completed = null);
+    public function createQueueItem(string $type, string $name, array $settings, string $description, string $queue, string $status=QueueItemInterface::STATUS_QUEUED, ?int $created = null, ?int $started = null, ?int $completed = null);
 }

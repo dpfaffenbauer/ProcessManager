@@ -19,13 +19,19 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
 use ProcessManagerBundle\Controller\QueueItemController;
 use ProcessManagerBundle\Controller\ProcessController;
+use ProcessManagerBundle\Controller\ExecutableController;
 use ProcessManagerBundle\Factory\ProcessFactory;
+use ProcessManagerBundle\Factory\QueueItemFactory;
 use ProcessManagerBundle\Form\Type\QueueItemType;
+use ProcessManagerBundle\Form\Type\ExecutableType;
 use ProcessManagerBundle\Model\QueueItem;
 use ProcessManagerBundle\Model\QueueItemInterface;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
+use ProcessManagerBundle\Model\Executable;
+use ProcessManagerBundle\Model\ExecutableInterface;
 use ProcessManagerBundle\Repository\QueueItemRepository;
+use ProcessManagerBundle\Repository\ExecutableRepository;
 use ProcessManagerBundle\Repository\ProcessRepository;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -65,12 +71,12 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(QueueItem::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(QueueItemInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(QueueItemController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(Executable::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ExecutableInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ExecutableController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(QueueItemRepository::class)->end()
-                                        ->scalarNode('form')->defaultValue(QueueItemType::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(ExecutableRepository::class)->end()
+                                        ->scalarNode('form')->defaultValue(ExecutableType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -92,23 +98,22 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->arrayNode('queueitem')
-                        ->addDefaultsIfNotSet()
-                        ->children()
-                            ->variableNode('options')->end()
-                            ->arrayNode('classes')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->scalarNode('model')->defaultValue(QueueItem::class)->cannotBeEmpty()->end()
-                                    ->scalarNode('interface')->defaultValue(QueueItemInterface::class)->cannotBeEmpty()->end()
-                                    ->scalarNode('admin_controller')->defaultValue(QueueItemController::class)->cannotBeEmpty()->end()
-                                    ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                    ->scalarNode('repository')->defaultValue(QueueItemRepository::class)->end()
-                                    ->scalarNode('form')->defaultValue(QueueItemType::class)->cannotBeEmpty()->end()
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(QueueItem::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(QueueItemInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(QueueItemController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(QueueItemFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(QueueItemRepository::class)->end()
+                                        ->scalarNode('form')->defaultValue(QueueItemType::class)->cannotBeEmpty()->end()
+                                    ->end()
                                 ->end()
                             ->end()
                         ->end()
-                    ->end()
-
                     ->end()
                 ->end()
             ->end()
@@ -134,6 +139,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('executable_abstractType')->defaultValue('/bundles/processmanager/pimcore/js/executable/abstractType.js')->end()
                             ->scalarNode('executable_type_cli')->defaultValue('/bundles/processmanager/pimcore/js/executable/types/cli.js')->end()
                             ->scalarNode('executable_type_pimcore')->defaultValue('/bundles/processmanager/pimcore/js/executable/types/pimcore.js')->end()
+                            ->scalarNode('queueitems')->defaultValue('/bundles/processmanager/pimcore/js/queueitems.js')->end()                            
                         ->end()
                     ->end()
                     ->arrayNode('css')

@@ -1,6 +1,6 @@
-QueueItemManagerBundle\Model\QueueItem:
+ProcessManagerBundle\Model\QueueItem:
   exclusion_policy: ALL
-  xml_root_name: executable
+  xml_root_name: queueitem
   properties:
     id:
       expose: true
@@ -18,15 +18,15 @@ QueueItemManagerBundle\Model\QueueItem:
     type:
       expose: true
       type: string
-      groups: [Detailed]
+      groups: [List, Detailed]
     queue:
       expose: true
       type: string
       groups: [List, Detailed]
-    class:
+    status:
       expose: true
       type: string
-      groups: [Detailed]
+      groups: [List, Detailed]
     settings:
       expose: true
       type: array

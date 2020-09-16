@@ -15,11 +15,45 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use ProcessManagerBundle\Form\Type\QueueItemFilterType;
-use ProcessManagerBundle\Model\QueueItemInterface;
 use Symfony\Component\HttpFoundation\Request;
+use ProcessManagerBundle\Model\QueueItem;
 
 class QueueItemController extends ResourceController
 {
-    
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function listAction(Request $request)
+    {
+        $class = $this->repository->getClassName();
+        $listingClass = $class.'\Listing';
+
+        /**
+         * @var QueueItem\Listing $list
+         */
+        $list = new $listingClass();
+        if ($sort = $request->get('sort')) {
+            $sort = json_decode($sort)[0];
+            $list->setOrderKey($sort->property);
+            $list->setOrder($sort->direction);
+        } else {
+            $list->setOrderKey("id");
+            $list->setOrder("DESC");
+        }
+
+        $data = $list->getItems(
+            $request->get('start', 0),
+            $request->get('limit', 50)
+        );
+
+        return $this->viewHandler->handle(
+            [
+                'data' => $data,
+                'total' => $list->getTotalCount(),
+            ],
+            ['group' => 'List']
+        );
+    }
 }

@@ -12,7 +12,9 @@
  * @license    https://github.com/dpfaffenbauer/QueueItemManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace QueueItemManagerBundle\Factory;
+namespace ProcessManagerBundle\Factory;
+
+use ProcessManagerBundle\Model\QueueItemInterface;
 
 class QueueItemFactory implements QueueItemFactoryInterface
 {
@@ -28,20 +30,23 @@ class QueueItemFactory implements QueueItemFactoryInterface
         throw new \InvalidArgumentException('use createQueueItem instead');
     }
 
-    public function createQueueItem(
-        string $name,
-        string $type = null,
-        string $message = '',
-        int $total = 1,
-        int $progress = 0,
-        int $started = -1,
-        int $completed = 0,
-        int $stoppable = 0,
-        string $status = null
-    ) {
-        if($started == -1){
-            $started = time();
+    /**
+     * @param string $type
+     * @param string $name
+     * @param array $settings
+     * @param string $description
+     * @param string $queue
+     * @param string $status
+     * @param integer|null $created
+     * @param integer|null $started
+     * @param integer|null $completed
+     * @return QueueItemInterface
+     */
+    public function createQueueItem(string $type, string $name, array $settings, string $description, string $queue, string $status=QueueItemInterface::STATUS_QUEUED, ?int $created = null, ?int $started = null, ?int $completed = null)
+    {
+        if ($created === null) {
+            $created = time();
         }
-        return new $this->model($name, $type, $message, $total, $progress, $started, $completed, $stoppable, $status);
+        return new $this->model($type, $name, $settings, $description, $queue, $status, $created, $started, $completed);
     }
 }

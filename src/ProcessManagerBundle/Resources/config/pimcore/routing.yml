@@ -39,3 +39,24 @@ process_manager_admin_processes:
         path: clear
         action: clear
         methods: [POST]
+
+
+process_manager_admin_queueitem:
+  type: coreshop.resources
+  resource: |
+    alias: process_manager.queueitem
+    additional_routes:
+      getConfig:
+        path: get-config
+        action: getConfig
+        methods: [GET]
+      run:
+        path: run
+        action: run
+        methods: [GET,POST]
+      list-by-type:
+        path: list-by-type
+        action: listByType
+        methods: [GET]
+
+

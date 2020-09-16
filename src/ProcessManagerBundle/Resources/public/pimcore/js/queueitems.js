@@ -41,7 +41,7 @@ pimcore.plugin.processmanager.queueitems = Class.create({
                 if(btn == 'ok') {
                     Ext.Ajax.request({
                         scope: this,
-                        url: '/admin/process_manager/queueitems/clear',
+                        url: '/admin/process_manager/queueitem/clear',
                         method: 'post',
                         success: function () {
                             pimcore.helpers.showNotification(t('success'), t('processmanager_queueitems_clear_success'), 'success');
@@ -155,18 +155,18 @@ pimcore.plugin.processmanager.queueitems = Class.create({
                     width: 300
                 },
                 {
-                    text: t('processmanager_description'),
+                    text: t('description'),
                     dataIndex: 'description',
                     flex : 1
                 },
                 {
-                    text: t('processmanager_type'),
-                    dataIndex: 'description',
+                    text: t('type'),
+                    dataIndex: 'type',
                     flex : 1
                 },
                 {
                     text: t('processmanager_queue'),
-                    dataIndex: 'description',
+                    dataIndex: 'queue',
                     flex : 1
                 },
                 {
