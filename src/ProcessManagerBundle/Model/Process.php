@@ -15,10 +15,10 @@
 namespace ProcessManagerBundle\Model;
 
 use Pimcore\Logger;
-use Pimcore\Model\AbstractModel;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Asset;
 
-class Process extends AbstractModel implements ProcessInterface
+class Process extends Concrete implements ProcessInterface
 {
     /**
      * @var int
@@ -114,9 +114,10 @@ class Process extends AbstractModel implements ProcessInterface
      * get Log by id
      *
      * @param $id
+     * @param $force
      * @return null|Process
      */
-    public static function getById($id)
+    public static function getById($id, $force = false)
     {
         try {
             $reflection = new \ReflectionClass(get_called_class());
