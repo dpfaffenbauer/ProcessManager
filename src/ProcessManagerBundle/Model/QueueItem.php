@@ -285,17 +285,4 @@ class QueueItem extends AbstractModel implements QueueItemInterface
         $this->status = $status;
     }
 
-    public function start($status = QueueItemInterface::STATUS_RUNNING) 
-    {
-        $this->setStarted(time());
-        $this->setStatus($status);
-        $this->save();
-    }
-
-    public function complete($status = QueueItemInterface::STATUS_SUCCESS) 
-    {
-        $this->setCompleted(time());
-        $this->setStatus($status);
-        $this->save();
-    }
 }

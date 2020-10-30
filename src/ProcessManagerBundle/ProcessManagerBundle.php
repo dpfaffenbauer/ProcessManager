@@ -30,12 +30,16 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
 {
     use PackageVersionTrait;
 
+    const STATUS_QUEUED = 'queued';
+    const STATUS_STARTING = 'starting';
     const STATUS_RUNNING = 'running';
     const STATUS_STOPPED = 'stopped';
     const STATUS_STOPPING = 'stopping';
     const STATUS_COMPLETED = 'completed';
     const STATUS_COMPLETED_WITH_EXCEPTIONS = 'completed_with_exceptions';
     const STATUS_FAILED = 'failed';
+
+    const ENV_QUEUE_ITEM_ID = 'PIMCORE_PROCESS_MANAGER_BUNDLE_QUEUE_ITEM_ID';
 
     public function getPackageName()
     {

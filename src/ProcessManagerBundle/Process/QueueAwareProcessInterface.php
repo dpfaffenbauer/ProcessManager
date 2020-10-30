@@ -22,17 +22,15 @@ interface QueueAwareProcessInterface extends ProcessInterface
      * Determine if this process can run right now or not
      *
      * @param QueueItemInterface $queueItem
-     * @param array $params
      * @return boolean
      */
-    function canRun(QueueItemInterface $queueItem, array $params = null);
+    function canRun(QueueItemInterface $queueItem);
 
     /**
-     * Runs the process in foreground! This way the queue runner can set status of the queue item after execution.
+     * Run the queued process.
      *
      * @param QueueItemInterface $queueItem
-     * @param array $params
      * @return void
      */
-    function runFromQueue(QueueItemInterface $queueItem, array $params = null);
+    function runFromQueue(QueueItemInterface $queueItem);
 }

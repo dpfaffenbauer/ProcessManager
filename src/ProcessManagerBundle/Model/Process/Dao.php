@@ -16,6 +16,7 @@ namespace ProcessManagerBundle\Model\Process;
 
 use Pimcore\Model\Asset;
 use Pimcore\Model\Dao\AbstractDao;
+use ProcessManagerBundle\Model\QueueItem;
 
 class Dao extends AbstractDao
 {
@@ -69,10 +70,11 @@ class Dao extends AbstractDao
                 }
 
                 $value = $this->model->$getter();
-
                 if (is_bool($value)) {
                     $value = (int)$value;
                 } elseif ($value instanceof Asset) {
+                    $value = $value->getId();
+                } elseif ($value instanceof QueueItem) {
                     $value = $value->getId();
                 }
 
@@ -105,6 +107,9 @@ class Dao extends AbstractDao
         foreach($data as $key => &$value) {
             if ($key === "artifact") {
                 $value = Asset::getById($value);
+            }
+            else if ($key === "queueitem") {
+                $value = QueueItem::getById($value);
             }
         }
 

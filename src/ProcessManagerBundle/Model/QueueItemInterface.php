@@ -18,12 +18,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface QueueItemInterface extends ResourceInterface
 {
-
-    const STATUS_QUEUED = 'queued';
-    const STATUS_RUNNING = 'running';
-    const STATUS_SUCCESS = 'success';
-    const STATUS_FAILED = 'failed';
-
     /**
      * @return int
      */
