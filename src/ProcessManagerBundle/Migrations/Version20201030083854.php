@@ -16,7 +16,7 @@ class Version20201030083854 extends AbstractPimcoreMigration
     public function up(Schema $schema)
     {
         $processesTable = $schema->getTable("process_manager_processes");
-        $processesTable->addColumn("queueitem", "integer");
+        $processesTable->addColumn("queueitem", "integer")->setNotnull(false);
     }
 
     /**
