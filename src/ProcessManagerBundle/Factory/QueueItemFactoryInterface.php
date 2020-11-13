@@ -16,6 +16,7 @@ namespace ProcessManagerBundle\Factory;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use ProcessManagerBundle\Model\QueueItemInterface;
+use ProcessManagerBundle\ProcessManagerBundle;
 
 interface QueueItemFactoryInterface extends FactoryInterface
 {
@@ -31,5 +32,5 @@ interface QueueItemFactoryInterface extends FactoryInterface
      * @param integer|null $completed
      * @return QueueItemInterface
      */
-    public function createQueueItem(string $type, string $name, array $settings, string $description, string $queue, string $status=QueueItemInterface::STATUS_QUEUED, ?int $created = null, ?int $started = null, ?int $completed = null);
+    public function createQueueItem(string $type, string $name, array $settings, string $description, string $queue, string $status=ProcessManagerBundle::STATUS_QUEUED, ?int $created = null, ?int $started = null, ?int $completed = null);
 }
