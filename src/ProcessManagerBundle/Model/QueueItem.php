@@ -113,13 +113,15 @@ class QueueItem extends AbstractModel implements QueueItemInterface
      */
     public static function getById($id)
     {
-        try {
-            $reflection = new \ReflectionClass(get_called_class());
-            $obj = $reflection->newInstanceWithoutConstructor();
-            $obj->getDao()->getById($id);
-            return $obj;
-        } catch (\Exception $ex) {
-            Logger::warn(sprintf("Process with id %s not found", $id));
+        if ($id) {
+            try {
+                $reflection = new \ReflectionClass(get_called_class());
+                $obj = $reflection->newInstanceWithoutConstructor();
+                $obj->getDao()->getById($id);
+                return $obj;
+            } catch (\Exception $ex) {
+                Logger::warn(sprintf("Queue item with id %s not found", $id));
+            }    
         }
 
         return null;
