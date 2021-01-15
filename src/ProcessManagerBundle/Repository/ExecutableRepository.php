@@ -14,10 +14,10 @@
 
 namespace ProcessManagerBundle\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreDaoRepository;
 use Pimcore\Model\Asset;
 
-class ExecutableRepository extends PimcoreRepository implements ExecutableRepositoryInterface
+class ExecutableRepository extends PimcoreDaoRepository implements ExecutableRepositoryInterface
 {
     public function findByType(string $type)
     {
