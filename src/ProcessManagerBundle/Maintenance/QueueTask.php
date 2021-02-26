@@ -34,6 +34,9 @@ class QueueTask implements TaskInterface
     {
         /** @var QueueItemInterface $queueItem */        
         foreach ($this->getQueueItems() as $queueItem) {
+            if (!$this->registry->has($queueItem->getType())) {
+                continue;
+            }
             $process = $this->registry->get($queueItem->getType());
 
             if ($process instanceof QueueAwareProcessInterface) {
@@ -43,7 +46,6 @@ class QueueTask implements TaskInterface
                 $canRun = $this->canRun($queueItem);
                 $method = 'run';
             }
-        
             if ($canRun) {
                 // Set env variable for queue id which allows process to know it was started from queue.
                 putenv(sprintf('%s=%s', ProcessManagerBundle::ENV_QUEUE_ITEM_ID, $queueItem->getId()));
@@ -52,7 +54,6 @@ class QueueTask implements TaskInterface
                 $queueItem->setStatus(ProcessManagerBundle::STATUS_STARTING);
                 $queueItem->setStarted(time());
                 $queueItem->save();
-
                 // Run the process
                 $process->{$method}($queueItem);
             }
@@ -60,7 +61,7 @@ class QueueTask implements TaskInterface
     }
 
     /**
-     * Get all queued items or if queueId is set only that one item
+     * Get all queued items
      *
      * @return QueueItem[]
      */
@@ -80,7 +81,7 @@ class QueueTask implements TaskInterface
      */
     protected function canRun(QueueItemInterface $queueItem) : bool {
         $queueItems = new \ProcessManagerBundle\Model\QueueItem\Listing();
-        $queueItems->setCondition('queue = ? AND status = ?', [$this->queueName, ProcessManagerBundle::STATUS_RUNNING]);
+        $queueItems->setCondition('queue = ? AND (status = ? OR status = ?)', [$queueItem->getQueue(), ProcessManagerBundle::STATUS_RUNNING, ProcessManagerBundle::STATUS_STARTING]);
         return $queueItems->count() == 0 && $queueItem->getStatus() == ProcessManagerBundle::STATUS_QUEUED;
     }
 }
