@@ -287,4 +287,35 @@ class QueueItem extends AbstractModel implements QueueItemInterface
         $this->status = $status;
     }
 
+    public function getActive()
+    {
+        return true;
+    }
+
+    public function setActive($active)
+    {
+        
+    }
+
+    public function getCron()
+    {
+        return "";
+    }
+
+    public function setCron($cron)
+    {
+        
+    }
+
+    public function getLastrun()
+    {
+        return "";
+    }
+
+    public function setLastrun($lastrun)
+    {
+        
+    }
+
+
 }

@@ -14,9 +14,9 @@
 
 namespace ProcessManagerBundle\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
+// use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface QueueItemInterface extends ResourceInterface
+interface QueueItemInterface extends ExecutableInterface
 {
     /**
      * @return int
