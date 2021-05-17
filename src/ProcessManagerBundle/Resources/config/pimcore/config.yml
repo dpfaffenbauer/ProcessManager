@@ -4,3 +4,7 @@ jms_serializer:
             process-manager:
                 namespace_prefix: "ProcessManagerBundle"
                 path: "@ProcessManagerBundle/Resources/config/serializer"
+
+doctrine_migrations:
+    migrations_paths:
+        'ProcessManagerBundle\Migrations': '@ProcessManagerBundle/Migrations'

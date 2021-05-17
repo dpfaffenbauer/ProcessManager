@@ -32,7 +32,7 @@ class QueueTask implements TaskInterface
 
     public function execute()
     {
-        /** @var QueueItemInterface $queueItem */        
+        /** @var QueueItemInterface $queueItem */
         foreach ($this->getQueueItems() as $queueItem) {
             if (!$this->registry->has($queueItem->getType())) {
                 continue;
@@ -49,11 +49,12 @@ class QueueTask implements TaskInterface
             if ($canRun) {
                 // Set env variable for queue id which allows process to know it was started from queue.
                 putenv(sprintf('%s=%s', ProcessManagerBundle::ENV_QUEUE_ITEM_ID, $queueItem->getId()));
-                
-                // Mark queue item as starting up. The process itself is responsible for setting all further statuses. 
+
+                // Mark queue item as starting up. The process itself is responsible for setting all further statuses.
                 $queueItem->setStatus(ProcessManagerBundle::STATUS_STARTING);
                 $queueItem->setStarted(time());
                 $queueItem->save();
+
                 // Run the process
                 $process->{$method}($queueItem);
             }
@@ -73,15 +74,17 @@ class QueueTask implements TaskInterface
     }
 
     /**
-     * Default canRun logic for processes that are not aware of the queue. Can run if status 
+     * Default canRun logic for processes that are not aware of the queue. Can run if status
      * is STATUS_QUEUED and there are no processes, from same queue, with status STATUS_RUNNING.
      *
      * @param QueueItemInterface $queueItem
      * @return bool
      */
-    protected function canRun(QueueItemInterface $queueItem) : bool {
+    protected function canRun(QueueItemInterface $queueItem) : bool
+    {
         $queueItems = new \ProcessManagerBundle\Model\QueueItem\Listing();
         $queueItems->setCondition('queue = ? AND (status = ? OR status = ?)', [$queueItem->getQueue(), ProcessManagerBundle::STATUS_RUNNING, ProcessManagerBundle::STATUS_STARTING]);
-        return $queueItems->count() == 0 && $queueItem->getStatus() == ProcessManagerBundle::STATUS_QUEUED;
+
+        return $queueItems->count() === 0 && $queueItem->getStatus() === ProcessManagerBundle::STATUS_QUEUED;
     }
 }

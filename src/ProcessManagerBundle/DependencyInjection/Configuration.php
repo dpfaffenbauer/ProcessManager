@@ -41,8 +41,8 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('process_manager');
+        $treeBuilder = new TreeBuilder('wvisiprocess_manageron_data_definitions');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

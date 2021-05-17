@@ -69,7 +69,6 @@ class QueueItem extends AbstractModel implements QueueItemInterface
      */
     public $completed;
 
-
     /**
      * @param string $type
      * @param string $name
@@ -100,16 +99,15 @@ class QueueItem extends AbstractModel implements QueueItemInterface
         $this->settings = $settings;
         $this->queue = $queue;
         $this->created = $created;
-        $this->started = $started;        
+        $this->started = $started;
         $this->completed = $completed;
     }
-
 
     /**
      * get Log by id
      *
      * @param $id
-     * @return null|Process
+     * @return null|QueueItem
      */
     public static function getById($id)
     {
@@ -118,10 +116,11 @@ class QueueItem extends AbstractModel implements QueueItemInterface
                 $reflection = new \ReflectionClass(get_called_class());
                 $obj = $reflection->newInstanceWithoutConstructor();
                 $obj->getDao()->getById($id);
+
                 return $obj;
             } catch (\Exception $ex) {
                 Logger::warn(sprintf("Queue item with id %s not found", $id));
-            }    
+            }
         }
 
         return null;
@@ -294,7 +293,7 @@ class QueueItem extends AbstractModel implements QueueItemInterface
 
     public function setActive($active)
     {
-        
+
     }
 
     public function getCron()
@@ -304,7 +303,7 @@ class QueueItem extends AbstractModel implements QueueItemInterface
 
     public function setCron($cron)
     {
-        
+
     }
 
     public function getLastrun()
@@ -314,7 +313,7 @@ class QueueItem extends AbstractModel implements QueueItemInterface
 
     public function setLastrun($lastrun)
     {
-        
+
     }
 
 

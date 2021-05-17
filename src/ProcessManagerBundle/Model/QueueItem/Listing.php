@@ -15,11 +15,9 @@
 namespace ProcessManagerBundle\Model\QueueItem;
 
 use ProcessManagerBundle\Model\QueueItem;
-use ProcessManagerBundle\Model\Process;
 use Pimcore\Model;
-use Zend\Paginator\AdapterAggregateInterface;
 
-class Listing extends Model\Listing\AbstractListing implements \Zend\Paginator\Adapter\AdapterInterface, AdapterAggregateInterface, \Iterator
+class Listing extends Model\Listing\AbstractListing
 {
     /**
      * List of Logs.
@@ -73,10 +71,6 @@ class Listing extends Model\Listing\AbstractListing implements \Zend\Paginator\A
     {
         $this->data = $data;
     }
-
-    /**
-     * Methods for \Zend_Paginator_Adapter_Interface.
-     */
 
     /**
      * get total count.

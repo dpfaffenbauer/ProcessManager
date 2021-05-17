@@ -19,7 +19,6 @@ use Pimcore\Tool\Serialize;
 
 class Dao extends AbstractDao
 {
-
     protected $tableName = 'process_manager_queueitems';
 
     /**
@@ -53,7 +52,7 @@ class Dao extends AbstractDao
                 $value = Serialize::unserialize($value);
             }
             if($key === "active") {
-                $value = boolval($value);
+                $value = (bool)$value;
             }
         }
 
