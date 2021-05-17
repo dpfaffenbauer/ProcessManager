@@ -18,7 +18,7 @@
   ],
   "require": {
     "coreshop/resource-bundle": "^3.0",
-    "pimcore/pimcore": "^6.6",
+    "pimcore/pimcore": "^10.0",
     "dragonmantank/cron-expression": "^3.0"
   },
   "autoload": {
@@ -28,7 +28,7 @@
   },
   "autoload-dev": {
     "classmap": [
-      "app/AppKernel.php"
+      "src/Kernel.php"
     ]
   },
   "extra": {

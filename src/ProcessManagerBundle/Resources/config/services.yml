@@ -29,56 +29,47 @@ services:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
     ### Processes
-    process_manager.process.cli:
-        class: ProcessManagerBundle\Process\Cli
+    ProcessManagerBundle\Process\Cli:
         tags:
             - { name: process_manager.process, type: cli, form-type: ProcessManagerBundle\Form\Type\Processes\CliType }
 
-    process_manager.process.pimcore:
-        class: ProcessManagerBundle\Process\Pimcore
+    ProcessManagerBundle\Process\Pimcore:
         tags:
             - { name: process_manager.process, type: pimcore, form-type: ProcessManagerBundle\Form\Type\Processes\PimcoreType }
 
     ### Event listeners
-    process_manager.event_listener.artifact:
-        class: ProcessManagerBundle\EventListener\ArtifactDeletionListener
+    ProcessManagerBundle\EventListener\ArtifactDeletionListener:
         arguments:
             - '@process_manager.repository.process'
         tags:
             - { name: kernel.event_listener, event: pimcore.asset.postDelete, method: onArtifactAssetDelete }
 
     ### Maintenance task
-    process_manager.maintenance.cron:
-        class: ProcessManagerBundle\Maintenance\CronTask
-        tags:
-            - { name: pimcore.maintenance.task, type: process_manager.maintenance.cron }
+    ProcessManagerBundle\Maintenance\CronTask:
         arguments:
             - '@process_manager.registry.processes'
+        tags:
+            - { name: pimcore.maintenance.task, type: process_manager.maintenance.cron }
 
-    process_manager.logger:
-        class: ProcessManagerBundle\Logger\ProcessLogger
+    ProcessManagerBundle\Logger\ProcessLogger:
         arguments:
             - '@logger'
 
-    process_manager.monolog.processor:
-        class: ProcessManagerBundle\Monolog\ProcessProcessor
+    ProcessManagerBundle\Monolog\ProcessProcessor:
         lazy: true
         arguments:
-            - '@process_manager.default_handler_factory'
+            - '@ProcessManagerBundle\Logger\DefaultHandlerFactory'
             - '@process_manager.registry.process_handler_factories'
         tags:
             - { name: monolog.processor }
 
-    process_manager.monolog.handler:
-        class: ProcessManagerBundle\Monolog\ProcessHandler
+    ProcessManagerBundle\Monolog\ProcessHandler: ~
 
-    process_manager.default_handler_factory:
-        class: ProcessManagerBundle\Logger\DefaultHandlerFactory
+    ProcessManagerBundle\Logger\DefaultHandlerFactory:
         arguments:
             - '%process_manager.log_directory%'
 
-    process_manager.default_report:
-        class: ProcessManagerBundle\Report\DefaultReport
+    ProcessManagerBundle\Report\DefaultReport: ~
 
     ### Startup Resolver
     process_manager.registry.startup_form_resolver:
@@ -87,7 +78,6 @@ services:
             - ProcessManagerBundle\Process\ProcessStartupFormResolverInterface
             - 'Process Startup Form Resolver'
 
-    process_manager.startup_resolver:
-        class: ProcessManagerBundle\Process\CompositeProcessStartupFormResolver
+    ProcessManagerBundle\Process\CompositeProcessStartupFormResolver:
         arguments:
             - '@process_manager.registry.startup_form_resolver'

@@ -14,14 +14,16 @@
 
 namespace ProcessManagerBundle;
 
-use Doctrine\DBAL\Migrations\Version;
-use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Extension\Bundle\Installer\MigrationInstaller;
+use Pimcore\Db;
+use Pimcore\Extension\Bundle\Installer\SettingsStoreAwareInstaller;
+use Pimcore\Model\User\Permission;
 
-class Installer extends MigrationInstaller
+class Installer extends SettingsStoreAwareInstaller
 {
-    public function migrateInstall(Schema $schema, Version $version)
+    public function install(): void
     {
+        $schema = Db::get()->getSchemaManager()->createSchema();
+
         $processTable = $schema->createTable('process_manager_processes');
         $processTable->addColumn('id', 'integer')
             ->setAutoincrement(true);
@@ -29,6 +31,12 @@ class Installer extends MigrationInstaller
         $processTable->addColumn('message', 'text');
         $processTable->addColumn('progress', 'integer');
         $processTable->addColumn('total', 'integer');
+        $processTable->addColumn('type', 'string');
+        $processTable->addColumn('started', 'bigint')->setDefault(0)->setNotnull(false);
+        $processTable->addColumn('completed', 'bigint')->setDefault(0)->setNotnull(false);
+        $processTable->addColumn('artifact', 'integer')->setNotnull(false);
+        $processTable->addColumn('stoppable', 'boolean')->setDefault(false)->setNotnull(false);
+        $processTable->addColumn('status', 'string')->setNotnull(false);
         $processTable->setPrimaryKey(['id']);
 
         $execTable = $schema->createTable('process_manager_executables');
@@ -39,13 +47,23 @@ class Installer extends MigrationInstaller
         $execTable->addColumn('type', 'string');
         $execTable->addColumn('cron', 'string');
         $execTable->addColumn('settings', 'text');
-        $execTable->addColumn('active', 'boolean')
-            ->setDefault(1);
+        $execTable->addColumn('active', 'boolean')->setDefault(1);
+        $execTable->addColumn('lastrun', 'bitint')->setDefault(0)->setNotnull(false);
         $execTable->setPrimaryKey(['id']);
+
+        $permission = new Permission\Definition();
+        $permission->setKey('process_manager');
+
+        $res = new Permission\Definition\Dao();
+        $res->configure();
+        $res->setModel($permission);
+        $res->save();
     }
 
-    public function migrateUninstall(Schema $schema, Version $version)
+    public function uninstall(): void
     {
+        $schema = Db::get()->getSchemaManager()->createSchema();
+
         $tables = [
             'process_manager_processes',
             'process_manager_executables'
