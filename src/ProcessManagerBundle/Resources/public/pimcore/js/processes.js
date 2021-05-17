@@ -33,8 +33,8 @@ pimcore.plugin.processmanager.processes = Class.create({
 
     clear: function() {
         Ext.MessageBox.show({
-            title: 'processmanager_processes_clear',
-            msg: 'processmanager_processes_clear_confirmation',
+            title: t('processmanager_processes_clear'),
+            msg: t('processmanager_processes_clear_confirmation'),
             buttons: Ext.MessageBox.OKCANCEL,
             icon: Ext.MessageBox.WARNING,
             fn: function (btn) {
@@ -311,31 +311,40 @@ pimcore.plugin.processmanager.processes = Class.create({
                     }
                 },
                 {
-                    xtype:'actioncolumn',
-                    width:50,
-                    items: [
-                        {
-                            iconCls : 'pimcore_icon_delete',
-                            tooltip: t('delete'),
-                            handler: function(grid, rowIndex) {
-                                var rec = grid.getStore().getAt(rowIndex);
+                    xtype: 'actioncolumn',
+                    width: 50,
+                    renderer: function (value, metadata, record) {
+                        var status = record.data.status;
+                        var processId = record.data.id;
 
-                                Ext.Ajax.request({
-                                    url: '/admin/process_manager/processes/delete',
-                                    jsonData : {
-                                        id : rec.get("id")
-                                    },
-                                    method: 'delete',
-                                    success: function () {
-                                        //We don't reload the store here, this triggers a new timer, we just delete the
-                                        //record manually from the store
-                                        pimcore.globalmanager.get(this.storeId).remove(rec);
-                                    }.bind(this)
+                        var id = Ext.id();
+                        Ext.defer(function () {
+                            if (Ext.get(id)) {
+                                new Ext.button.Button({
+                                    renderTo: id,
+                                    iconCls: 'pimcore_icon_delete',
+                                    cls: 'processmanager_grid_transparent_button',
+                                    backgroundColor: null,
+                                    handler: function (button) {
+                                        button.disable();
+                                        Ext.Ajax.request({
+                                            url: '/admin/process_manager/processes/delete',
+                                            method: 'delete',
+                                            jsonData: {
+                                                id: processId
+                                            },
+                                            failure: function () {
+                                                button.enable();
+                                            }
+                                        }).bind(this);
+                                    }
                                 });
-                            }.bind(this)
-                        }
-                    ]
-                },
+                            }
+                        }, 50);
+
+                        return Ext.String.format('<span id="{0}"></span>', id);
+                    }
+                }
             ],
             useArrows: true,
             autoScroll: true,
