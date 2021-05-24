@@ -19,7 +19,7 @@ use Monolog\Logger;
 
 class ProcessHandler extends AbstractHandler
 {
-    private $logProcessIntoRegularLogFile = false;
+    private bool $logProcessIntoRegularLogFile;
 
     public function __construct(
         bool $logProcessIntoRegularLogFile = false,
@@ -32,7 +32,7 @@ class ProcessHandler extends AbstractHandler
         $this->logProcessIntoRegularLogFile = $logProcessIntoRegularLogFile;
     }
 
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
         if (!array_key_exists('process', $record['extra'])) {
             return true;

@@ -2,6 +2,7 @@
 
 namespace ProcessManagerBundle\DependencyInjection\Compiler;
 
+use ProcessManagerBundle\Monolog\ProcessHandler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -18,7 +19,7 @@ final class MonologHandlerPass implements CompilerPassInterface
         $logger->addMethodCall(
             'pushHandler',
             [
-                new Reference('process_manager.monolog.handler'),
+                new Reference(ProcessHandler::class),
             ]
         );
     }

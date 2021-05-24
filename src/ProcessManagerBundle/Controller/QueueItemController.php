@@ -15,17 +15,13 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use ProcessManagerBundle\Model\QueueItem;
 
 class QueueItemController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $class = $this->repository->getClassName();
         $listingClass = $class.'\Listing';

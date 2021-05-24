@@ -14,6 +14,7 @@
 
 namespace ProcessManagerBundle\Factory;
 
+use ProcessManagerBundle\Model\QueueItemInterface;
 use ProcessManagerBundle\ProcessManagerBundle;
 
 class QueueItemFactory implements QueueItemFactoryInterface
@@ -30,23 +31,22 @@ class QueueItemFactory implements QueueItemFactoryInterface
         throw new \InvalidArgumentException('use createQueueItem instead');
     }
 
-    /**
-     * @param string $type
-     * @param string $name
-     * @param array $settings
-     * @param string $description
-     * @param string $queue
-     * @param string $status
-     * @param integer|null $created
-     * @param integer|null $started
-     * @param integer|null $completed
-     * @return QueueItemInterface
-     */
-    public function createQueueItem(string $type, string $name, array $settings, string $description, string $queue, string $status=ProcessManagerBundle::STATUS_QUEUED, ?int $created = null, ?int $started = null, ?int $completed = null)
+    public function createQueueItem(
+        string $type,
+        string $name,
+        array $settings,
+        string $description,
+        string $queue,
+        string $status = ProcessManagerBundle::STATUS_QUEUED,
+        ?int $created = null,
+        ?int $started = null,
+        ?int $completed = null
+    ): QueueItemInterface
     {
         if ($created === null) {
             $created = time();
         }
+
         return new $this->model($type, $name, $settings, $description, $queue, $status, $created, $started, $completed);
     }
 }
