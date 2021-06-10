@@ -48,7 +48,7 @@ class Installer extends SettingsStoreAwareInstaller
         $execTable->addColumn('cron', 'string');
         $execTable->addColumn('settings', 'text');
         $execTable->addColumn('active', 'boolean')->setDefault(1);
-        $execTable->addColumn('lastrun', 'bitint')->setDefault(0)->setNotnull(false);
+        $execTable->addColumn('lastrun', 'bigint')->setDefault(0)->setNotnull(false);
         $execTable->setPrimaryKey(['id']);
 
         $permission = new Permission\Definition();
