@@ -12,16 +12,14 @@
  * @license    https://github.com/dpfaffenbauer/ProcessManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace ProcessManagerBundle\Model\Process;
+namespace ProcessManagerBundle\Model\QueueItem;
 
-use Pimcore\Model\Asset;
 use Pimcore\Model\Dao\AbstractDao;
-use ProcessManagerBundle\Model\QueueItem;
+use Pimcore\Tool\Serialize;
 
 class Dao extends AbstractDao
 {
-
-    protected $tableName = 'process_manager_processes';
+    protected $tableName = 'process_manager_queueitems';
 
     /**
      * get log by id
@@ -38,10 +36,27 @@ class Dao extends AbstractDao
         $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE id = ?', [$this->model->getId()]);
 
         if (!$data["id"]) {
-            throw new \Exception("Process with the ID " . $this->model->getId() . " doesn't exists");
+            throw new \Exception("QueueItem with the ID " . $this->model->getId() . " doesn't exists");
         }
 
         $this->assignVariablesToModel($data);
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function assignVariablesToModel($data)
+    {
+        foreach($data as $key => &$value) {
+            if($key === "settings") {
+                $value = Serialize::unserialize($value);
+            }
+            if($key === "active") {
+                $value = (bool)$value;
+            }
+        }
+
+        $this->model->setValues($data);
     }
 
     /**
@@ -70,12 +85,12 @@ class Dao extends AbstractDao
                 }
 
                 $value = $this->model->$getter();
+
                 if (is_bool($value)) {
                     $value = (int)$value;
-                } elseif ($value instanceof Asset) {
-                    $value = $value->getId();
-                } elseif ($value instanceof QueueItem) {
-                    $value = $value->getId();
+                }
+                if(is_array($value)) {
+                    $value = Serialize::serialize($value);
                 }
 
                 $buffer[$k] = $value;
@@ -97,22 +112,5 @@ class Dao extends AbstractDao
     public function delete()
     {
         $this->db->delete($this->tableName, ['id' => $this->model->getId()]);
-    }
-
-    /**
-     * @param array $data
-     */
-    protected function assignVariablesToModel($data)
-    {
-        foreach($data as $key => &$value) {
-            if ($key === "artifact") {
-                $value = Asset::getById($value);
-            }
-            else if ($key === "queueitem") {
-                $value = QueueItem::getById($value);
-            }
-        }
-
-        $this->model->setValues($data);
     }
 }

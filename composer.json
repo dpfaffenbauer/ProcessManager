@@ -17,6 +17,7 @@
     }
   ],
   "require": {
+    "ext-json": "*",
     "coreshop/resource-bundle": "^3.0",
     "pimcore/pimcore": "^10.0",
     "dragonmantank/cron-expression": "^3.0"

@@ -14,16 +14,23 @@
 
 namespace ProcessManagerBundle\Process;
 
-use Pimcore\Tool\Console;
-use ProcessManagerBundle\Model\ExecutableInterface;
+use ProcessManagerBundle\Model\QueueItemInterface;
 
-final class Cli implements ProcessInterface
+interface QueueAwareProcessInterface extends ProcessInterface
 {
-    function run(ExecutableInterface $executable, array $params = null)
-    {
-        $settings = $executable->getSettings();
-        $command = $settings['command'];
+    /**
+     * Determine if this process can run right now or not
+     *
+     * @param QueueItemInterface $queueItem
+     * @return boolean
+     */
+    function canRun(QueueItemInterface $queueItem);
 
-        return Console::execInBackground($command);
-    }
+    /**
+     * Run the queued process.
+     *
+     * @param QueueItemInterface $queueItem
+     * @return void
+     */
+    function runFromQueue(QueueItemInterface $queueItem);
 }

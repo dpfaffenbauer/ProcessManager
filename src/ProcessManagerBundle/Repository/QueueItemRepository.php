@@ -12,18 +12,18 @@
  * @license    https://github.com/dpfaffenbauer/ProcessManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace ProcessManagerBundle\Process;
+namespace ProcessManagerBundle\Repository;
 
-use Pimcore\Tool\Console;
-use ProcessManagerBundle\Model\ExecutableInterface;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use Pimcore\Model\Asset;
 
-final class Cli implements ProcessInterface
+class QueueItemRepository extends PimcoreRepository implements QueueItemRepositoryInterface
 {
-    function run(ExecutableInterface $executable, array $params = null)
+    public function findByType(string $type)
     {
-        $settings = $executable->getSettings();
-        $command = $settings['command'];
+        $list = $this->getList();
+        $list->setCondition('type = ?', [$type]);
 
-        return Console::execInBackground($command);
+        return $list->load();
     }
 }

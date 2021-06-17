@@ -43,6 +43,7 @@ pimcore.plugin.processmanager.panel = Class.create({
 
             var processPanel = new pimcore.plugin.processmanager.processes();
             var executablesPanel = new pimcore.plugin.processmanager.executables(this.types);
+            var queueitemsPanel = new pimcore.plugin.processmanager.queueitems();
 
             var tabPanel = new Ext.tab.Panel({
                 items : [
@@ -54,7 +55,15 @@ pimcore.plugin.processmanager.panel = Class.create({
                         items : [
                             processPanel.getGrid()
                         ]
-                    }
+                    },
+                    {
+                        layout : 'fit',
+                        title: t('processmanager_queueitems'),
+                        iconCls: this.iconCls,
+                        items : [
+                            queueitemsPanel.getGrid()
+                        ]
+                    }                    
                 ]
             });
 

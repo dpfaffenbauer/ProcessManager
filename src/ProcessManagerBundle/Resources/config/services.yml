@@ -51,6 +51,13 @@ services:
         tags:
             - { name: pimcore.maintenance.task, type: process_manager.maintenance.cron }
 
+    ProcessManagerBundle\Maintenance\QueueTask:
+        class: ProcessManagerBundle\Maintenance\QueueTask
+        tags:
+            - { name: pimcore.maintenance.task, type: process_manager.maintenance.queue }
+        arguments:
+            - '@process_manager.registry.processes'
+
     ProcessManagerBundle\Logger\ProcessLogger:
         arguments:
             - '@logger'

@@ -14,6 +14,9 @@
 
 namespace ProcessManagerBundle\Factory;
 
+use ProcessManagerBundle\Model\QueueItem;
+use ProcessManagerBundle\ProcessManagerBundle;
+
 class ProcessFactory implements ProcessFactoryInterface
 {
     private $model;
@@ -42,6 +45,14 @@ class ProcessFactory implements ProcessFactoryInterface
         if($started == -1){
             $started = time();
         }
-        return new $this->model($name, $type, $message, $total, $progress, $started, $completed, $stoppable, $status);
+
+        $process = new $this->model($name, $type, $message, $total, $progress, $started, $completed, $stoppable, $status);
+
+        $queueitemId = getenv(ProcessManagerBundle::ENV_QUEUE_ITEM_ID);
+        if ($queueitemId) {
+            $process->setQueueitem(QueueItem::getById($queueitemId));
+        }
+
+        return $process;
     }
 }

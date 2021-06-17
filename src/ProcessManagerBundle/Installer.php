@@ -14,6 +14,7 @@
 
 namespace ProcessManagerBundle;
 
+use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Db;
 use Pimcore\Extension\Bundle\Installer\SettingsStoreAwareInstaller;
 use Pimcore\Model\User\Permission;
@@ -22,7 +23,8 @@ class Installer extends SettingsStoreAwareInstaller
 {
     public function install(): void
     {
-        $schema = Db::get()->getSchemaManager()->createSchema();
+        $db = Db::get();
+        $schema = new Schema();
 
         $processTable = $schema->createTable('process_manager_processes');
         $processTable->addColumn('id', 'integer')
@@ -37,6 +39,7 @@ class Installer extends SettingsStoreAwareInstaller
         $processTable->addColumn('artifact', 'integer')->setNotnull(false);
         $processTable->addColumn('stoppable', 'boolean')->setDefault(false)->setNotnull(false);
         $processTable->addColumn('status', 'string')->setNotnull(false);
+        $processTable->addColumn('queueitem', 'integer')->setNotnull(false);
         $processTable->setPrimaryKey(['id']);
 
         $execTable = $schema->createTable('process_manager_executables');
@@ -51,6 +54,20 @@ class Installer extends SettingsStoreAwareInstaller
         $execTable->addColumn('lastrun', 'bigint')->setDefault(0)->setNotnull(false);
         $execTable->setPrimaryKey(['id']);
 
+        $queueItemTable = $schema->createTable('process_manager_queueitems');
+        $queueItemTable->addColumn('id', 'integer')
+            ->setAutoincrement(true);
+        $queueItemTable->addColumn('name', 'string');
+        $queueItemTable->addColumn('description', 'text');
+        $queueItemTable->addColumn('type', 'string');
+        $queueItemTable->addColumn('queue', 'string');
+        $queueItemTable->addColumn('status', 'string');
+        $queueItemTable->addColumn('settings', 'text');
+        $queueItemTable->addColumn("created", "bigint", ['default' => 0, 'notnull' => false]);
+        $queueItemTable->addColumn("started", "bigint", ['default' => 0, 'notnull' => false]);
+        $queueItemTable->addColumn("completed", "bigint", ['default' => 0, 'notnull' => false]);
+        $queueItemTable->setPrimaryKey(['id']);
+
         $permission = new Permission\Definition();
         $permission->setKey('process_manager');
 
@@ -58,6 +75,10 @@ class Installer extends SettingsStoreAwareInstaller
         $res->configure();
         $res->setModel($permission);
         $res->save();
+
+        foreach ($schema->toSql($db->getDatabasePlatform()) as $sql) {
+            $db->exec($sql);
+        }
     }
 
     public function uninstall(): void

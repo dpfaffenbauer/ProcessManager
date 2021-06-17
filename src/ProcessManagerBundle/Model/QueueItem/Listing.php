@@ -12,27 +12,13 @@
  * @license    https://github.com/dpfaffenbauer/ProcessManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace ProcessManagerBundle\Model\Process;
+namespace ProcessManagerBundle\Model\QueueItem;
 
-use ProcessManagerBundle\Model\Process;
+use ProcessManagerBundle\Model\QueueItem;
 use Pimcore\Model;
 
 class Listing extends Model\Listing\AbstractListing
 {
-    /**
-     * List of valid order keys.
-     *
-     * @var array
-     */
-    public $validOrderKeys = array(
-        'id',
-        'name',
-        'message',
-        'started',
-        'completed',
-        'status',
-    );
-
     /**
      * List of Logs.
      *
@@ -44,6 +30,15 @@ class Listing extends Model\Listing\AbstractListing
      * @var string
      */
     public $locale;
+
+    /**
+     * List of valid order keys.
+     *
+     * @var array
+     */
+    public $validOrderKeys = array(
+        'id'
+    );
 
     /**
      * Test if the passed key is valid.
@@ -58,7 +53,7 @@ class Listing extends Model\Listing\AbstractListing
     }
 
     /**
-     * @return Process[]
+     * @return QueueItem[]
      */
     public function getObjects()
     {

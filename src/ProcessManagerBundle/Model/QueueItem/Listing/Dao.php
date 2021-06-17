@@ -12,30 +12,30 @@
  * @license    https://github.com/dpfaffenbauer/ProcessManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace ProcessManagerBundle\Model\Process\Listing;
+namespace ProcessManagerBundle\Model\QueueItem\Listing;
 
-use ProcessManagerBundle\Model\Process;
+use ProcessManagerBundle\Model\Executable;
 use Pimcore\Model\Listing;
 
 class Dao extends Listing\Dao\AbstractDao
 {
     public function load()
     {
-        $processesData = $this->db->fetchCol('SELECT id FROM process_manager_processes ' . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
-        $processes = [];
+        $queueItemsData = $this->db->fetchCol('SELECT id FROM process_manager_queueitems ' . $this->getCondition() . $this->getOrder() . $this->getOffsetLimit(), $this->model->getConditionVariables());
+        $queueItems = [];
 
-        foreach ($processesData as $processData) {
-            $processes[] = Process::getById($processData);
+        foreach ($queueItemsData as $executableData) {
+            $queueItems[] = Executable::getById($executableData);
         }
 
-        $this->model->setObjects($processes);
+        $this->model->setObjects($queueItems);
 
-        return $processes;
+        return $queueItems;
     }
 
     public function getTotalCount()
     {
-        $amount = (int) $this->db->fetchOne('SELECT COUNT(*) as amount FROM process_manager_processes '.$this->getCondition(), $this->model->getConditionVariables());
+        $amount = (int) $this->db->fetchOne('SELECT COUNT(*) as amount FROM process_manager_queueitems '.$this->getCondition(), $this->model->getConditionVariables());
 
         return $amount;
     }

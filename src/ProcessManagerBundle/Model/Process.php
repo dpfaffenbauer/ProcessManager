@@ -76,6 +76,11 @@ class Process extends AbstractModel implements ProcessInterface
     public $status;
 
     /**
+     * @var QueueItemInterface
+     */
+    public $queueitem;
+
+    /**
      * Process constructor.
      * @param string $name
      * @param string|null $type
@@ -294,6 +299,10 @@ class Process extends AbstractModel implements ProcessInterface
     public function setCompleted($completed)
     {
         $this->completed = $completed;
+        if ($this->queueitem) {
+            $this->queueitem->setCompleted($completed);
+            $this->queueitem->save();
+        }
     }
 
     /**
@@ -365,5 +374,29 @@ class Process extends AbstractModel implements ProcessInterface
     public function setStatus(?string $status): void
     {
         $this->status = $status;
+        if ($this->queueitem) {
+            $this->queueitem->setStatus($status);
+            $this->queueitem->save();
+        }
+    }
+
+    /**
+     * @return QueueItemInterface|null
+     */
+    public function getQueueitem(): ?QueueItemInterface
+    {
+        return $this->queueitem;
+    }
+
+    /**
+     * @param QueueItemInterface|null $status
+     */
+    public function setQueueitem(?QueueItemInterface $queueitem): void
+    {
+        $this->queueitem = $queueitem;
+        if ($this->queueitem) {
+            $this->queueitem->setStatus($this->getStatus());
+            $this->queueitem->save();
+        }
     }
 }
