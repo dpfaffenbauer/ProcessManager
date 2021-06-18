@@ -34,4 +34,4 @@ ProcessManagerBundle\Model\Executable:
     cron:
       expose: true
       type: string
-      groups: [Detailed]
+      groups: [List, Detailed]
