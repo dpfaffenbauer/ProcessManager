@@ -19,7 +19,7 @@ use ProcessManagerBundle\Repository\ProcessRepositoryInterface;
 
 class ArtifactDeletionListener
 {
-    private $repository;
+    private ProcessRepositoryInterface $repository;
 
     public function __construct(ProcessRepositoryInterface $repository)
     {

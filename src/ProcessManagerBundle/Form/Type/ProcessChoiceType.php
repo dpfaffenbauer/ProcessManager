@@ -20,21 +20,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProcessChoiceType extends AbstractType
 {
-    private $processes;
+    private array $processes;
 
     public function __construct(array $processes)
     {
         $this->processes = $processes;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_flip($this->processes),
         ]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

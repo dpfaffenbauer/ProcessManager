@@ -19,7 +19,7 @@ use ProcessManagerBundle\Model\ExecutableInterface;
 
 final class CompositeProcessStartupFormResolver implements ProcessStartupFormResolverInterface
 {
-    private $registry;
+    private ServiceRegistryInterface $registry;
 
     public function __construct(ServiceRegistryInterface $registry)
     {

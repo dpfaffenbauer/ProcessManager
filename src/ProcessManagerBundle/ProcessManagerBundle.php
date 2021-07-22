@@ -30,26 +30,26 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
 {
     use PackageVersionTrait;
 
-    const STATUS_RUNNING = 'running';
-    const STATUS_STOPPED = 'stopped';
-    const STATUS_STOPPING = 'stopping';
-    const STATUS_COMPLETED = 'completed';
-    const STATUS_COMPLETED_WITH_EXCEPTIONS = 'completed_with_exceptions';
-    const STATUS_FAILED = 'failed';
+    public const STATUS_RUNNING = 'running';
+    public const STATUS_STOPPED = 'stopped';
+    public const STATUS_STOPPING = 'stopping';
+    public const STATUS_COMPLETED = 'completed';
+    public const STATUS_COMPLETED_WITH_EXCEPTIONS = 'completed_with_exceptions';
+    public const STATUS_FAILED = 'failed';
 
-    public function getPackageName()
+    public function getPackageName(): string
     {
         return 'dpfaffenbauer/process-manager';
     }
 
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_PIMCORE,
         ];
     }
 
-    public function build(ContainerBuilder $builder)
+    public function build(ContainerBuilder $builder): void
     {
         parent::build($builder);
 
@@ -60,12 +60,12 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
         $builder->addCompilerPass(new ProcessStartupFormRegistryCompilerPass());
     }
 
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'Process Manager';
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Process Manager helps you to see statuses for long running Processes';
     }
@@ -75,32 +75,32 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
         return 'dpfaffenbauer/process-manager';
     }
 
-    public function getInstaller()
+    public function getInstaller(): Installer
     {
         return $this->container->get(Installer::class);
     }
 
-    public function getAdminIframePath()
+    public function getAdminIframePath(): ?string
     {
         return null;
     }
 
-    public function getJsPaths()
+    public function getJsPaths(): array
     {
         return [];
     }
 
-    public function getCssPaths()
+    public function getCssPaths(): array
     {
         return [];
     }
 
-    public function getEditmodeJsPaths()
+    public function getEditmodeJsPaths(): array
     {
         return [];
     }
 
-    public function getEditmodeCssPaths()
+    public function getEditmodeCssPaths(): array
     {
         return [];
     }

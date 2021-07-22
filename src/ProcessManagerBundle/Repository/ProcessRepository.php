@@ -19,7 +19,7 @@ use Pimcore\Model\Asset;
 
 class ProcessRepository extends PimcoreDaoRepository implements ProcessRepositoryInterface
 {
-    public function findByArtifact(Asset $artifact)
+    public function findByArtifact(Asset $artifact): array
     {
         $list = $this->getList();
         $list->setCondition('artifact = ?', [$artifact->getId()]);

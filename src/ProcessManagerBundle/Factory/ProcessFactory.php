@@ -16,7 +16,7 @@ namespace ProcessManagerBundle\Factory;
 
 class ProcessFactory implements ProcessFactoryInterface
 {
-    private $model;
+    private string $model;
 
     public function __construct(string $model)
     {

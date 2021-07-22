@@ -23,8 +23,8 @@ class ProcessHandler extends AbstractHandler
 
     public function __construct(
         bool $logProcessIntoRegularLogFile = false,
-        $level = Logger::DEBUG,
-        $bubble = true
+        int $level = Logger::DEBUG,
+        bool $bubble = true
     )
     {
         parent::__construct($level, $bubble);

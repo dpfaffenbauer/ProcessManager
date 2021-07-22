@@ -21,7 +21,7 @@ use ProcessManagerBundle\Model\Executable;
 
 class CronTask implements TaskInterface
 {
-    private $registry;
+    private ServiceRegistry $registry;
 
     public function __construct(ServiceRegistry $registry)
     {
@@ -51,7 +51,7 @@ class CronTask implements TaskInterface
     /**
      * @return Executable[]
      */
-    protected function getExecutables()
+    protected function getExecutables(): array
     {
         $executables = new Executable\Listing();
         $executables->setCondition('active = 1 && cron != ""');

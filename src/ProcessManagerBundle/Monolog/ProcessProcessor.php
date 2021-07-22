@@ -21,9 +21,9 @@ use ProcessManagerBundle\Model\ProcessInterface;
 
 class ProcessProcessor
 {
-    private $defaultHandlerFactory;
-    private $loggers = [];
-    private $registry;
+    private HandlerFactoryInterface $defaultHandlerFactory;
+    private ServiceRegistryInterface $registry;
+    private array $loggers = [];
 
     public function __construct(HandlerFactoryInterface $defaultHandlerFactory, ServiceRegistryInterface $registry)
     {

@@ -18,15 +18,7 @@ use ProcessManagerBundle\Model\ExecutableInterface;
 
 interface ProcessStartupFormResolverInterface
 {
-    /**
-     * @param ExecutableInterface $executable
-     * @return boolean
-     */
     public function supports(ExecutableInterface $executable): bool;
 
-    /**
-     * @param ExecutableInterface $executable
-     * @return string
-     */
     public function resolveFormType(ExecutableInterface $executable): ?string;
 }

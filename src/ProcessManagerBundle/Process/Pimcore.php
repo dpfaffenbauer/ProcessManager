@@ -19,7 +19,8 @@ use ProcessManagerBundle\Model\ExecutableInterface;
 
 class Pimcore implements ProcessInterface
 {
-    function run(ExecutableInterface $executable, array $params = null) {
+    function run(ExecutableInterface $executable, array $params = []): int
+    {
         $settings = $executable->getSettings();
         $command = $settings['command'];
 

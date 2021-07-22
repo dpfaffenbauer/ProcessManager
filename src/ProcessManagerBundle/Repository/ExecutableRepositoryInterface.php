@@ -22,8 +22,7 @@ use ProcessManagerBundle\Model\ProcessInterface;
 interface ExecutableRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param string $type
      * @return ExecutableInterface[]
      */
-    public function findByType(string $type);
+    public function findByType(string $type): array;
 }

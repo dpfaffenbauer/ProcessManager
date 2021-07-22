@@ -19,20 +19,9 @@ use ProcessManagerBundle\Model\ProcessInterface;
 
 interface HandlerFactoryInterface
 {
-    /**
-     * @param ProcessInterface $process
-     * @return HandlerInterface
-     */
-    public function getLogHandler(ProcessInterface $process);
+    public function getLogHandler(ProcessInterface $process): HandlerInterface;
 
-    /**
-     * @param ProcessInterface $process
-     * @return mixed
-     */
-    public function getLog(ProcessInterface $process);
+    public function getLog(ProcessInterface $process): string;
 
-    /**
-     * @param ProcessInterface $process
-     */
-    public function cleanup(ProcessInterface $process);
+    public function cleanup(ProcessInterface $process): void;
 }

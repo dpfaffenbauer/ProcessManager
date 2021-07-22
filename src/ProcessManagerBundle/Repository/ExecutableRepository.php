@@ -19,7 +19,7 @@ use Pimcore\Model\Asset;
 
 class ExecutableRepository extends PimcoreDaoRepository implements ExecutableRepositoryInterface
 {
-    public function findByType(string $type)
+    public function findByType(string $type): array
     {
         $list = $this->getList();
         $list->setCondition('type = ?', [$type]);

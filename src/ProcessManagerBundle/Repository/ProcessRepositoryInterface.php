@@ -21,8 +21,7 @@ use ProcessManagerBundle\Model\ProcessInterface;
 interface ProcessRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Asset $artifact
      * @return ProcessInterface[]
      */
-    public function findByArtifact(Asset $artifact);
+    public function findByArtifact(Asset $artifact): array;
 }

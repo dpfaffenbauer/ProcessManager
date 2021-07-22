@@ -18,10 +18,5 @@ use ProcessManagerBundle\Model\ProcessInterface;
 
 interface ReportInterface
 {
-    /**
-     * @param ProcessInterface $process
-     * @param                  $log
-     * @return mixed
-     */
-    public function generateReport(ProcessInterface $process, $log);
+    public function generateReport(ProcessInterface $process, string $log): string;
 }

@@ -25,12 +25,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ProcessController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $class = $this->repository->getClassName();
         $listingClass = $class.'\Listing';
@@ -62,12 +57,7 @@ class ProcessController extends ResourceController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     * @return JsonResponse
-     */
-    public function logDownloadAction(Request $request)
+    public function logDownloadAction(Request $request): JsonResponse
     {
         $process = $this->findOr404($request->get('id'));
 
@@ -82,11 +72,7 @@ class ProcessController extends ResourceController
         return $response;
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function logReportAction(Request $request)
+    public function logReportAction(Request $request): JsonResponse
     {
         $process = $this->findOr404($request->get('id'));
         $registry = $this->get('process_manager.registry.process_reports');
@@ -106,11 +92,7 @@ class ProcessController extends ResourceController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function stopAction(Request $request)
+    public function stopAction(Request $request): JsonResponse
     {
         /** @var Process $process */
         $process = $this->findOr404($request->get('id'));
@@ -124,10 +106,7 @@ class ProcessController extends ResourceController
         );
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function clearAction()
+    public function clearAction(): JsonResponse
     {
         $connection = Db::get();
         $connection->exec('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 7 DAY))');
@@ -135,7 +114,7 @@ class ProcessController extends ResourceController
         return $this->json(['success' => true]);
     }
 
-    protected function getLog(ProcessInterface $process)
+    protected function getLog(ProcessInterface $process): JsonResponse
     {
         $registry = $this->get('process_manager.registry.process_handler_factories');
         $handler = $registry->has($process->getType()) ? $registry->get($process->getType()) : $this->get(
