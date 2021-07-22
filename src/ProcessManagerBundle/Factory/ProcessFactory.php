@@ -14,6 +14,8 @@
 
 namespace ProcessManagerBundle\Factory;
 
+use ProcessManagerBundle\Model\ProcessInterface;
+
 class ProcessFactory implements ProcessFactoryInterface
 {
     private string $model;
@@ -38,7 +40,7 @@ class ProcessFactory implements ProcessFactoryInterface
         int $completed = 0,
         int $stoppable = 0,
         string $status = null
-    ) {
+    ): ProcessInterface {
         if($started == -1){
             $started = time();
         }

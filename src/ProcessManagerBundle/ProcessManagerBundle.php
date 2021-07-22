@@ -14,11 +14,10 @@
 
 namespace ProcessManagerBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
-use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use ProcessManagerBundle\DependencyInjection\Compiler\MonologHandlerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessHandlerFactoryTypeRegistryCompilerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessReportTypeRegistryCompilerPass;
@@ -26,21 +25,14 @@ use ProcessManagerBundle\DependencyInjection\Compiler\ProcessStartupFormRegistry
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessTypeRegistryCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBundleInterface, ComposerPackageBundleInterface
+class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    use PackageVersionTrait;
-
     public const STATUS_RUNNING = 'running';
     public const STATUS_STOPPED = 'stopped';
     public const STATUS_STOPPING = 'stopping';
     public const STATUS_COMPLETED = 'completed';
     public const STATUS_COMPLETED_WITH_EXCEPTIONS = 'completed_with_exceptions';
     public const STATUS_FAILED = 'failed';
-
-    public function getPackageName(): string
-    {
-        return 'dpfaffenbauer/process-manager';
-    }
 
     public function getSupportedDrivers(): array
     {
@@ -60,6 +52,15 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
         $builder->addCompilerPass(new ProcessStartupFormRegistryCompilerPass());
     }
 
+    public function getVersion(): string
+    {
+        if (InstalledVersions::isInstalled('dpfaffenbauer/process-manager')) {
+            return InstalledVersions::getVersion('dpfaffenbauer/process-manager');
+        }
+
+        return '';
+    }
+
     public function getNiceName(): string
     {
         return 'Process Manager';
@@ -68,11 +69,6 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
     public function getDescription(): string
     {
         return 'Process Manager helps you to see statuses for long running Processes';
-    }
-
-    protected function getComposerPackageName(): string
-    {
-        return 'dpfaffenbauer/process-manager';
     }
 
     public function getInstaller(): Installer
