@@ -15,8 +15,8 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use ProcessManagerBundle\Form\Type\ExecutableFilterType;
 use ProcessManagerBundle\Model\ExecutableInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExecutableController extends ResourceController

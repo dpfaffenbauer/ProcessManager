@@ -57,7 +57,7 @@ class ProcessController extends ResourceController
         );
     }
 
-    public function logDownloadAction(Request $request): JsonResponse
+    public function logDownloadAction(Request $request): Response
     {
         $process = $this->findOr404($request->get('id'));
 

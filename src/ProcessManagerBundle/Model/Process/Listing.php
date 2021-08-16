@@ -14,12 +14,11 @@
 
 namespace ProcessManagerBundle\Model\Process;
 
+use Pimcore\Model\Paginator\PaginateListingInterface;
 use ProcessManagerBundle\Model\Process;
 use Pimcore\Model;
-use Zend\Paginator\Adapter\AdapterInterface;
-use Zend\Paginator\AdapterAggregateInterface;
 
-class Listing extends Model\Listing\AbstractListing implements AdapterInterface, AdapterAggregateInterface, \Iterator
+class Listing extends Model\Listing\AbstractListing implements PaginateListingInterface
 {
     /**
      * List of valid order keys.

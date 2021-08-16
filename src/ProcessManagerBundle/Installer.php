@@ -24,32 +24,42 @@ class Installer extends SettingsStoreAwareInstaller
     {
         $schema = Db::get()->getSchemaManager()->createSchema();
 
-        $processTable = $schema->createTable('process_manager_processes');
-        $processTable->addColumn('id', 'integer')
-            ->setAutoincrement(true);
-        $processTable->addColumn('name', 'string');
-        $processTable->addColumn('message', 'text');
-        $processTable->addColumn('progress', 'integer');
-        $processTable->addColumn('total', 'integer');
-        $processTable->addColumn('type', 'string');
-        $processTable->addColumn('started', 'bigint')->setDefault(0)->setNotnull(false);
-        $processTable->addColumn('completed', 'bigint')->setDefault(0)->setNotnull(false);
-        $processTable->addColumn('artifact', 'integer')->setNotnull(false);
-        $processTable->addColumn('stoppable', 'boolean')->setDefault(false)->setNotnull(false);
-        $processTable->addColumn('status', 'string')->setNotnull(false);
-        $processTable->setPrimaryKey(['id']);
+        if (!$schema->hasTable('process_manager_processes')) {
+            $processTable = $schema->createTable('process_manager_processes');
+            $processTable->addColumn('id', 'integer')
+                ->setAutoincrement(true);
+            $processTable->addColumn('name', 'string');
+            $processTable->addColumn('message', 'text');
+            $processTable->addColumn('progress', 'integer');
+            $processTable->addColumn('total', 'integer');
+            $processTable->addColumn('type', 'string');
+            $processTable->addColumn('started', 'bigint')->setDefault(0)->setNotnull(false);
+            $processTable->addColumn('completed', 'bigint')->setDefault(0)->setNotnull(false);
+            $processTable->addColumn('artifact', 'integer')->setNotnull(false);
+            $processTable->addColumn('stoppable', 'boolean')->setDefault(false)->setNotnull(false);
+            $processTable->addColumn('status', 'string')->setNotnull(false);
+            $processTable->setPrimaryKey(['id']);
+        }
 
-        $execTable = $schema->createTable('process_manager_executables');
-        $execTable->addColumn('id', 'integer')
-            ->setAutoincrement(true);
-        $execTable->addColumn('name', 'string');
-        $execTable->addColumn('description', 'text');
-        $execTable->addColumn('type', 'string');
-        $execTable->addColumn('cron', 'string');
-        $execTable->addColumn('settings', 'text');
-        $execTable->addColumn('active', 'boolean')->setDefault(1);
-        $execTable->addColumn('lastrun', 'bigint')->setDefault(0)->setNotnull(false);
-        $execTable->setPrimaryKey(['id']);
+        if (!$schema->hasTable('process_manager_executables')) {
+            $execTable = $schema->createTable('process_manager_executables');
+            $execTable->addColumn('id', 'integer')
+                ->setAutoincrement(true);
+            $execTable->addColumn('name', 'string');
+            $execTable->addColumn('description', 'text');
+            $execTable->addColumn('type', 'string');
+            $execTable->addColumn('cron', 'string');
+            $execTable->addColumn('settings', 'text');
+            $execTable->addColumn('active', 'boolean')->setDefault(1);
+            $execTable->addColumn('lastrun', 'bigint')->setDefault(0)->setNotnull(false);
+            $execTable->setPrimaryKey(['id']);
+        }
+
+        $sqls = $schema->getMigrateFromSql(Db::get()->getSchemaManager()->createSchema(), Db::get()->getDatabasePlatform());
+
+        foreach ($sqls as $sql) {
+            Db::get()->exec($sql);
+        }
 
         $permission = new Permission\Definition();
         $permission->setKey('process_manager');
@@ -58,6 +68,8 @@ class Installer extends SettingsStoreAwareInstaller
         $res->configure();
         $res->setModel($permission);
         $res->save();
+
+        parent::install();
     }
 
     public function uninstall(): void
@@ -74,5 +86,7 @@ class Installer extends SettingsStoreAwareInstaller
                 $schema->dropTable($table);
             }
         }
+
+        parent::uninstall();
     }
 }
