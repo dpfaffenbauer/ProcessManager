@@ -14,12 +14,16 @@
 
 namespace ProcessManagerBundle\Model\Executable\Listing;
 
-use Pimcore\Db\ZendCompatibility\Expression;
+use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
+use Pimcore\Model\Listing\Dao\QueryBuilderHelperTrait;
 use ProcessManagerBundle\Model\Executable;
 use Pimcore\Model\Listing;
+use ProcessManagerBundle\Model\ExecutableInterface;
 
 class Dao extends Listing\Dao\AbstractDao
 {
+    use QueryBuilderHelperTrait;
+
     /**
      * @var string
      */
@@ -35,42 +39,20 @@ class Dao extends Listing\Dao\AbstractDao
         return $this->tableName;
     }
 
-    /**
-     * get select query.
-     */
-    public function getQuery()
+    public function getQueryBuilder(...$columns): DoctrineQueryBuilder
     {
+        $queryBuilder = $this->db->createQueryBuilder();
+        $queryBuilder->select(...$columns)->from($this->getTableName());
 
-        // init
-        $select = $this->db->select();
+        $this->applyListingParametersToQueryBuilder($queryBuilder);
 
-        // create base
-        $field = $this->getTableName().'.id';
-        $select->from(
-            [$this->getTableName()], [
-                new Expression(sprintf('SQL_CALC_FOUND_ROWS %s as id', $field, 'o_type')),
-            ]
-        );
-
-        // add condition
-        $this->addConditions($select);
-
-        // group by
-        $this->addGroupBy($select);
-
-        // order
-        $this->addOrder($select);
-
-        // limit
-        $this->addLimit($select);
-
-        return $select;
+        return $queryBuilder;
     }
 
     /**
      * Loads objects from the database.
      *
-     * @return Log[]
+     * @return ExecutableInterface[]
      */
     public function load()
     {
@@ -97,15 +79,10 @@ class Dao extends Listing\Dao\AbstractDao
      */
     public function loadIdList()
     {
-        try {
-            $query = $this->getQuery();
-            $objectIds = $this->db->fetchCol($query, $this->model->getConditionVariables());
-            $this->totalCount = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $queryBuilder = $this->getQueryBuilder([sprintf('%s as id', $this->getTableName() . '.id')]);
+        $objectIds = $this->db->fetchCol((string) $queryBuilder, $this->model->getConditionVariables(), $this->model->getConditionVariableTypes());
 
-            return $objectIds;
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        return array_map('intval', $objectIds);
     }
 
     /**
@@ -117,9 +94,13 @@ class Dao extends Listing\Dao\AbstractDao
      */
     public function getCount()
     {
-        $amount = (int) $this->db->fetchOne('SELECT COUNT(*) as amount FROM '.$this->getTableName().$this->getCondition().$this->getOffsetLimit(), $this->model->getConditionVariables());
+       if ($this->model->isLoaded()) {
+            return count($this->model->getObjects());
+        } else {
+            $idList = $this->loadIdList();
 
-        return $amount;
+            return count($idList);
+        }
     }
 
     /**
@@ -131,8 +112,11 @@ class Dao extends Listing\Dao\AbstractDao
      */
     public function getTotalCount()
     {
-        $amount = (int) $this->db->fetchOne('SELECT COUNT(*) as amount FROM '.$this->getTableName().$this->getCondition(), $this->model->getConditionVariables());
+        $queryBuilder = $this->getQueryBuilder();
+        $this->prepareQueryBuilderForTotalCount($queryBuilder);
 
-        return $amount;
+        $totalCount = $this->db->fetchOne((string) $queryBuilder, $this->model->getConditionVariables(), $this->model->getConditionVariableTypes());
+
+        return (int) $totalCount;
     }
 }

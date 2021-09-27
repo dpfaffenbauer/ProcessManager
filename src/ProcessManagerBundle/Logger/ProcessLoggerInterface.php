@@ -20,112 +20,51 @@ interface ProcessLoggerInterface
 {
     /**
      * System is unusable.
-     *
-     * @param ProcessInterface $process
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
-    public function emergency(ProcessInterface $process, $message, array $context = array());
+    public function emergency(ProcessInterface $process, string $message, array $context = []): void;
 
     /**
      * Action must be taken immediately.
-     *
-     * Example: Entire website down, database unavailable, etc. This should
-     * trigger the SMS alerts and wake you up.
-     *
-     * @param ProcessInterface $process
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
-    public function alert(ProcessInterface $process, $message, array $context = array());
+    public function alert(ProcessInterface $process, string $message, array $context = []): void;
 
     /**
      * Critical conditions.
-     *
-     * Example: Application component unavailable, unexpected exception.
-     *
-     * @param ProcessInterface $process
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
-    public function critical(ProcessInterface $process, $message, array $context = array());
+    public function critical(ProcessInterface $process, string $message, array $context = []): void;
 
     /**
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
-     *
-     * @param ProcessInterface $process
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
-    public function error(ProcessInterface $process, $message, array $context = array());
+    public function error(ProcessInterface $process, string $message, array $context = []): void;
 
     /**
      * Exceptional occurrences that are not errors.
      *
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
-     *
-     * @param ProcessInterface $process
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
-    public function warning(ProcessInterface $process, $message, array $context = array());
+    public function warning(ProcessInterface $process, string $message, array $context = []): void;
 
     /**
      * Normal but significant events.
-     *
-     * @param ProcessInterface $process
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
-    public function notice(ProcessInterface $process, $message, array $context = array());
+    public function notice(ProcessInterface $process, string $message, array $context = []): void;
 
     /**
      * Interesting events.
-     *
-     * Example: User logs in, SQL logs.
-     *
-     * @param ProcessInterface $process
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
-    public function info(ProcessInterface $process, $message, array $context = array());
+    public function info(ProcessInterface $process, string $message, array $context = []): void;
 
     /**
      * Detailed debug information.
-     *
-     * @param ProcessInterface $process
-     * @param string $message
-     * @param array  $context
-     *
      * @return void
      */
-    public function debug(ProcessInterface $process, $message, array $context = array());
+    public function debug(ProcessInterface $process, string $message, array $context = []): void;
 
     /**
      * Logs with an arbitrary level.
-     *
-     * @param ProcessInterface $process
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
-     *
-     * @return void
      */
-    public function log(ProcessInterface $process, $level, $message, array $context = array());
+    public function log(ProcessInterface $process, int $level, string $message, array $context = []): void;
 }

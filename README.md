@@ -7,7 +7,7 @@
 
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 
-Process Manager Plugin keeps track of all your "long running jobs". It adds a nive GUI and a new portlet for your Dashboard. You can also create Executables and run them with one click. (It's planned to integrate a CRON like Syntax for recurring tasks)
+Process Manager Plugin keeps track of all your "long running jobs". It adds a native GUI and a new portlet for your Dashboard. You can also create Executables and run them with one click. (It's planned to integrate a CRON like Syntax for recurring tasks)
 
 ## Plugins using Process Manager
 
@@ -104,6 +104,29 @@ Import Definitions has an example implementation of that [Import Definition Repo
   ```
  * Thats it, done. (You still need to handle Process creation within your Bundle yourself, there is no magic behind it)
 
+## Stoppable processes
+You can implement your process to be stoppable by user via the admin panel.
+You need to set the stoppable flag of the process to true and it's status to `ProcessManagerBundle::STATUS_RUNNING`
+for the stop button to shop up:
+
+```
+$process->setStoppable(true);
+$process->setStatus(ProcessManagerBundle::STATUS_RUNNING);
+$process->save();
+```
+
+Additionally, you need to implement stop logic to your process. Track the process status and stop your process if it's set to `ProcessManagerBundle::STATUS_STOPPING`:
+
+```php
+$process = $this->processRepository->find($processId);
+if ($process->getStatus() == ProcessManagerBundle::STATUS_STOPPING) {
+    // Here goes your process stop and cleanup logic
+    ...
+    
+    $process->setStatus(ProcessManagerBundle::STATUS_STOPPED); // remember to set the status to stopped.
+    $process->save();    
+}
+```
 
 ## Copyright and license 
 Copyright: [lineofcode.at](http://www.lineofcode.at)

@@ -18,10 +18,7 @@ use ProcessManagerBundle\Model\ProcessInterface;
 
 class DefaultReport implements ReportInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function generateReport(ProcessInterface $process, $log)
+    public function generateReport(ProcessInterface $process, string $log): string
     {
         return nl2br($log);
     }

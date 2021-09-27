@@ -19,22 +19,13 @@ use ProcessManagerBundle\Repository\ProcessRepositoryInterface;
 
 class ArtifactDeletionListener
 {
-    /**
-     * @var ProcessRepositoryInterface
-     */
-    private $repository;
+    private ProcessRepositoryInterface $repository;
 
-    /**
-     * @param ProcessRepositoryInterface $repository
-     */
     public function __construct(ProcessRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * @param AssetEvent $event
-     */
     public function onArtifactAssetDelete(AssetEvent $event)
     {
         $asset = $event->getAsset();

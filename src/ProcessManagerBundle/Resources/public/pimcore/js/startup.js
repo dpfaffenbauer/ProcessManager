@@ -26,7 +26,7 @@ pimcore.plugin.processmanager = Class.create(pimcore.plugin.admin, {
 
         var user = pimcore.globalmanager.get('user');
 
-        if (user.isAllowed('plugins')) {
+        if (user.isAllowed('process_manager')) {
 
             var exportMenu = new Ext.Action({
                 text: t('processmanager'),

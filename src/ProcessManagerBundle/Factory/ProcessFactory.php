@@ -14,32 +14,22 @@
 
 namespace ProcessManagerBundle\Factory;
 
+use ProcessManagerBundle\Model\ProcessInterface;
+
 class ProcessFactory implements ProcessFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $model;
+    private string $model;
 
-    /**
-     * @param string $model
-     */
     public function __construct(string $model)
     {
         $this->model = $model;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createNew()
     {
         throw new \InvalidArgumentException('use createProcess instead');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createProcess(
         string $name,
         string $type = null,
@@ -47,11 +37,13 @@ class ProcessFactory implements ProcessFactoryInterface
         int $total = 1,
         int $progress = 0,
         int $started = -1,
-        int $completed = 0
-    ) {
+        int $completed = 0,
+        int $stoppable = 0,
+        string $status = null
+    ): ProcessInterface {
         if($started == -1){
             $started = time();
         }
-        return new $this->model($name, $type, $message, $total, $progress, $started, $completed);
+        return new $this->model($name, $type, $message, $total, $progress, $started, $completed, $stoppable, $status);
     }
 }

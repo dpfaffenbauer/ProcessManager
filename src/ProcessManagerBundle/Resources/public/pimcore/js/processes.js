@@ -31,6 +31,27 @@ pimcore.plugin.processmanager.processes = Class.create({
         }.bind(this));
     },
 
+    clear: function() {
+        Ext.MessageBox.show({
+            title: t('processmanager_processes_clear'),
+            msg: t('processmanager_processes_clear_confirmation'),
+            buttons: Ext.MessageBox.OKCANCEL,
+            icon: Ext.MessageBox.WARNING,
+            fn: function (btn) {
+                if(btn == 'ok') {
+                    Ext.Ajax.request({
+                        scope: this,
+                        url: '/admin/process_manager/processes/clear',
+                        method: 'post',
+                        success: function () {
+                            pimcore.helpers.showNotification(t('success'), t('processmanager_processes_clear_success'), 'success');
+                        }
+                    });
+                }
+            }
+        });
+    },
+
     createInterval : function() {
         this.task = setTimeout(function () {
             this.reloadProcesses();
@@ -42,26 +63,33 @@ pimcore.plugin.processmanager.processes = Class.create({
     },
 
     createStore : function () {
-        var proxy = new Ext.data.HttpProxy({
-            url : this.url.list
-        });
-
-        var reader = new Ext.data.JsonReader({}, [
-            { name:'id' },
-            { name:'name' },
-            { name:'message' },
-            { name:'progress' },
-            { name:'total' },
-            { name:'started' },
-            { name:'completed' },
-            { name:'artifact' }
-        ]);
-
-        var store = new Ext.data.Store({
-            restful:    false,
-            proxy:      proxy,
-            reader:     reader,
-            autoload:   true
+        var store = new Ext.data.JsonStore({
+            remoteSort: true,
+            remoteFilter: true,
+            autoDestroy: true,
+            autoSync: true,
+            pageSize: pimcore.helpers.grid.getDefaultPageSize(),
+            proxy: {
+                type: 'ajax',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data',
+                    totalProperty: 'total'
+                },
+                api: {
+                    read: this.url.list,
+                }
+            },
+            fields: [
+                { name:'id' },
+                { name:'name' },
+                { name:'message' },
+                { name:'progress' },
+                { name:'total' },
+                { name:'started' },
+                { name:'completed' },
+                { name:'artifact' }
+            ]
         });
 
         pimcore.globalmanager.add(this.storeId, store);
@@ -108,9 +136,12 @@ pimcore.plugin.processmanager.processes = Class.create({
     },
 
     getGrid: function () {
+        var store = pimcore.globalmanager.get(this.storeId);
+
         return {
             xtype: 'grid',
-            store: pimcore.globalmanager.get(this.storeId),
+            store: store,
+            bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store),
             columns: [
                 {
                     text: t('id'),
@@ -236,31 +267,84 @@ pimcore.plugin.processmanager.processes = Class.create({
                     }
                 },
                 {
-                    xtype:'actioncolumn',
-                    width:50,
-                    items: [
-                        {
-                            iconCls : 'pimcore_icon_delete',
-                            tooltip: t('delete'),
-                            handler: function(grid, rowIndex) {
-                                var rec = grid.getStore().getAt(rowIndex);
-
-                                Ext.Ajax.request({
-                                    url: '/admin/process_manager/processes/delete',
-                                    jsonData : {
-                                        id : rec.get("id")
-                                    },
-                                    method: 'delete',
-                                    success: function () {
-                                        //We don't reload the store here, this triggers a new timer, we just delete the
-                                        //record manually from the store
-                                        pimcore.globalmanager.get(this.storeId).remove(rec);
-                                    }.bind(this)
-                                });
-                            }.bind(this)
+                    text : t('processmanager_status'),
+                    width: 100,
+                    dataIndex: 'status',
+                    renderer: function (value, metadata, record) {
+                        if (record.data.status != '' && record.data.status != null) {
+                            return t('processmanager_' + record.data.status);
                         }
-                    ]
+                    },
                 },
+                {
+                    text : t('processmanager_action'),
+                    xtype: 'actioncolumn',
+                    align: 'center',
+                    renderer: function(value, metadata, record) {
+                        var status = record.data.status;
+                        var stoppable = record.data.stoppable;
+                        var processId = record.data.id;
+
+                        var id = Ext.id();
+                        Ext.defer(function () {
+                            if (Ext.get(id) && stoppable && status == 'running') {
+                                new Ext.button.Button({
+                                    renderTo: id,
+                                    iconCls: 'processmanager_icon_process_stop',
+                                    cls: 'processmanager_grid_transparent_button',
+                                    backgroundColor: null,
+                                    handler: function (button) {
+                                        button.disable();
+                                        Ext.Ajax.request({
+                                            url: '/admin/process_manager/processes/stop-process?id=' + processId,
+                                            method: 'GET',
+                                            failure: function () {
+                                                button.enable();
+                                            }
+                                        }).bind(this);
+                                    }
+                                });
+                            }
+                        }, 50);
+
+                        return Ext.String.format('<span id="{0}"></span>', id);
+                    }
+                },
+                {
+                    xtype: 'actioncolumn',
+                    width: 50,
+                    renderer: function (value, metadata, record) {
+                        var status = record.data.status;
+                        var processId = record.data.id;
+
+                        var id = Ext.id();
+                        Ext.defer(function () {
+                            if (Ext.get(id)) {
+                                new Ext.button.Button({
+                                    renderTo: id,
+                                    iconCls: 'pimcore_icon_delete',
+                                    cls: 'processmanager_grid_transparent_button',
+                                    backgroundColor: null,
+                                    handler: function (button) {
+                                        button.disable();
+                                        Ext.Ajax.request({
+                                            url: '/admin/process_manager/processes/delete',
+                                            method: 'delete',
+                                            jsonData: {
+                                                id: processId
+                                            },
+                                            failure: function () {
+                                                button.enable();
+                                            }
+                                        }).bind(this);
+                                    }
+                                });
+                            }
+                        }, 50);
+
+                        return Ext.String.format('<span id="{0}"></span>', id);
+                    }
+                }
             ],
             useArrows: true,
             autoScroll: true,
@@ -268,7 +352,15 @@ pimcore.plugin.processmanager.processes = Class.create({
             containerScroll: true,
             viewConfig: {
                 loadMask: false
-            }
+            },
+            tbar: [
+                {
+                    xtype: 'button',
+                    text: t('processmanager_processes_clear'),
+                    iconCls: 'pimcore_icon_delete',
+                    handler: this.clear
+                }
+            ]
         };
     }
 });

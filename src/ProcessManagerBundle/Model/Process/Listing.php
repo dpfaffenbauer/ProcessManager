@@ -14,13 +14,26 @@
 
 namespace ProcessManagerBundle\Model\Process;
 
+use Pimcore\Model\Paginator\PaginateListingInterface;
 use ProcessManagerBundle\Model\Process;
 use Pimcore\Model;
-use Zend\Paginator\Adapter\AdapterInterface;
-use Zend\Paginator\AdapterAggregateInterface;
 
-class Listing extends Model\Listing\AbstractListing implements AdapterInterface, AdapterAggregateInterface, \Iterator
+class Listing extends Model\Listing\AbstractListing implements PaginateListingInterface
 {
+    /**
+     * List of valid order keys.
+     *
+     * @var array
+     */
+    public $validOrderKeys = array(
+        'id',
+        'name',
+        'message',
+        'started',
+        'completed',
+        'status',
+    );
+
     /**
      * List of Logs.
      *
@@ -32,15 +45,6 @@ class Listing extends Model\Listing\AbstractListing implements AdapterInterface,
      * @var string
      */
     public $locale;
-
-    /**
-     * List of valid order keys.
-     *
-     * @var array
-     */
-    public $validOrderKeys = array(
-        'id'
-    );
 
     /**
      * Test if the passed key is valid.

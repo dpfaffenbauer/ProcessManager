@@ -25,25 +25,16 @@ use Symfony\Component\Form\FormInterface;
 
 final class ExecutableType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $formTypeRegistry;
+    private FormTypeRegistryInterface $formTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($dataClass, array $validationGroups = [], FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('type', ProcessChoiceType::class)
@@ -84,22 +75,12 @@ final class ExecutableType extends AbstractResourceType
         ;
     }
 
-    /**
-     * @param FormInterface $form
-     * @param string        $configurationType
-     */
-    protected function addConfigurationFields(FormInterface $form, $configurationType)
+    protected function addConfigurationFields(FormInterface $form, string $configurationType): void
     {
         $form->add('settings', $configurationType, ['compound' => true]);
     }
 
-    /**
-     * @param FormInterface $form
-     * @param mixed         $data
-     *
-     * @return string|null
-     */
-    protected function getRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getRegistryIdentifier(FormInterface $form, mixed $data = null): ?string
     {
         if (null !== $data && null !== $data->getType()) {
             return $data->getType();
@@ -110,13 +91,5 @@ final class ExecutableType extends AbstractResourceType
         }
 
         return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'process_manager_executable';
     }
 }

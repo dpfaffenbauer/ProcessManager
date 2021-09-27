@@ -47,8 +47,13 @@ pimcore.plugin.processmanager.executables = Class.create({
             restful: false,
             proxy: proxy,
             reader: reader,
-            autoload: true
+            autoload: true,
         });
+
+        store.sort([{
+            property: 'id',
+            direction: 'DESC'
+        }]);
 
         pimcore.globalmanager.add(this.storeId, store);
         store.load();

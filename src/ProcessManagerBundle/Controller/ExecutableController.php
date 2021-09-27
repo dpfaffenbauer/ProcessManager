@@ -15,17 +15,13 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use ProcessManagerBundle\Form\Type\ExecutableFilterType;
 use ProcessManagerBundle\Model\ExecutableInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExecutableController extends ResourceController
 {
-    /**
-     * @param Request $request
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction(Request $request)
+    public function getConfigAction(Request $request): JsonResponse
     {
         $types = $this->getConfigTypes();
 
@@ -34,11 +30,7 @@ class ExecutableController extends ResourceController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function listByTypeAction(Request $request)
+    public function listByTypeAction(Request $request): JsonResponse
     {
         $type = $request->get('type');
 
@@ -51,11 +43,7 @@ class ExecutableController extends ResourceController
         return $this->viewHandler->handle(['success' => false, 'message' => 'No type given']);
     }
 
-    /**
-     * @param Request $request
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function runAction(Request $request)
+    public function runAction(Request $request): JsonResponse
     {
         $exe = $this->repository->find($request->get('id'));
 
@@ -93,10 +81,7 @@ class ExecutableController extends ResourceController
         ]);
     }
 
-    /**
-     * @return array
-     */
-    protected function getConfigTypes()
+    protected function getConfigTypes(): array
     {
         return $this->getParameter('process_manager.processes');
     }

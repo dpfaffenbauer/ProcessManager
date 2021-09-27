@@ -14,15 +14,12 @@
 
 namespace ProcessManagerBundle\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreDaoRepository;
 use Pimcore\Model\Asset;
 
-class ProcessRepository extends PimcoreRepository implements ProcessRepositoryInterface
+class ProcessRepository extends PimcoreDaoRepository implements ProcessRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findByArtifact(Asset $artifact)
+    public function findByArtifact(Asset $artifact): array
     {
         $list = $this->getList();
         $list->setCondition('artifact = ?', [$artifact->getId()]);

@@ -19,30 +19,18 @@ use ProcessManagerBundle\Model\ExecutableInterface;
 
 final class CompositeProcessStartupFormResolver implements ProcessStartupFormResolverInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $registry;
+    private ServiceRegistryInterface $registry;
 
-    /**
-     * @param ServiceRegistryInterface $registry
-     */
     public function __construct(ServiceRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(ExecutableInterface $executable): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolveFormType(ExecutableInterface $executable): ?string
     {
         foreach ($this->registry->all() as $resolver) {

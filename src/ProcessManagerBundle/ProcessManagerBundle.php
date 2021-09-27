@@ -14,11 +14,10 @@
 
 namespace ProcessManagerBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ComposerPackageBundleInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
-use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use ProcessManagerBundle\DependencyInjection\Compiler\MonologHandlerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessHandlerFactoryTypeRegistryCompilerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessReportTypeRegistryCompilerPass;
@@ -26,32 +25,23 @@ use ProcessManagerBundle\DependencyInjection\Compiler\ProcessStartupFormRegistry
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessTypeRegistryCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBundleInterface, ComposerPackageBundleInterface
+class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    use PackageVersionTrait;
+    public const STATUS_RUNNING = 'running';
+    public const STATUS_STOPPED = 'stopped';
+    public const STATUS_STOPPING = 'stopping';
+    public const STATUS_COMPLETED = 'completed';
+    public const STATUS_COMPLETED_WITH_EXCEPTIONS = 'completed_with_exceptions';
+    public const STATUS_FAILED = 'failed';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPackageName()
-    {
-        return 'dpfaffenbauer/process-manager';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_PIMCORE,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $builder)
+    public function build(ContainerBuilder $builder): void
     {
         parent::build($builder);
 
@@ -62,74 +52,51 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
         $builder->addCompilerPass(new ProcessStartupFormRegistryCompilerPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNiceName()
+    public function getVersion(): string
+    {
+        if (InstalledVersions::isInstalled('dpfaffenbauer/process-manager')) {
+            return InstalledVersions::getVersion('dpfaffenbauer/process-manager');
+        }
+
+        return '';
+    }
+
+    public function getNiceName(): string
     {
         return 'Process Manager';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Process Manager helps you to see statuses for long running Processes';
     }
 
-        /**
-     * {@inheritdoc}
-     */
-    protected function getComposerPackageName(): string
-    {
-        return 'dpfaffenbauer/process-manager';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getInstaller()
+    public function getInstaller(): Installer
     {
         return $this->container->get(Installer::class);
     }
 
-        /**
-     * {@inheritdoc}
-     */
-    public function getAdminIframePath()
+    public function getAdminIframePath(): ?string
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsPaths()
+    public function getJsPaths(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCssPaths()
+    public function getCssPaths(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEditmodeJsPaths()
+    public function getEditmodeJsPaths(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEditmodeCssPaths()
+    public function getEditmodeCssPaths(): array
     {
         return [];
     }

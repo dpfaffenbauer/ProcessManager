@@ -14,15 +14,12 @@
 
 namespace ProcessManagerBundle\Repository;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreDaoRepository;
 use Pimcore\Model\Asset;
 
-class ExecutableRepository extends PimcoreRepository implements ExecutableRepositoryInterface
+class ExecutableRepository extends PimcoreDaoRepository implements ExecutableRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findByType(string $type)
+    public function findByType(string $type): array
     {
         $list = $this->getList();
         $list->setCondition('type = ?', [$type]);

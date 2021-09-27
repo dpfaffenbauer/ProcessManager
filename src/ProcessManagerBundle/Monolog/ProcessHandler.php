@@ -19,27 +19,20 @@ use Monolog\Logger;
 
 class ProcessHandler extends AbstractHandler
 {
-    /**
-     * @var bool
-     */
-    private $logProcessIntoRegularLogFile = false;
+    private bool $logProcessIntoRegularLogFile;
 
-    /**
-     * @param bool $logProcessIntoRegularLogFile
-     * @param int  $level
-     * @param bool $bubble
-     */
-    public function __construct(bool $logProcessIntoRegularLogFile = false, $level = Logger::DEBUG, $bubble = true)
+    public function __construct(
+        bool $logProcessIntoRegularLogFile = false,
+        int $level = Logger::DEBUG,
+        bool $bubble = true
+    )
     {
         parent::__construct($level, $bubble);
 
         $this->logProcessIntoRegularLogFile = $logProcessIntoRegularLogFile;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
         if (!array_key_exists('process', $record['extra'])) {
             return true;

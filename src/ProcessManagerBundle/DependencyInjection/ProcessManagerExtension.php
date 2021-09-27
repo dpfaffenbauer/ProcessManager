@@ -21,16 +21,15 @@ use Symfony\Component\DependencyInjection\Loader;
 
 class ProcessManagerExtension extends AbstractModelExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
         $this->registerResources('process_manager', $config['driver'], $config['resources'], $container);
         $this->registerPimcoreResources('process_manager', $config['pimcore_admin'], $container);
+
+        $container->setParameter('process_manager.log_directory', $config['log_directory']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

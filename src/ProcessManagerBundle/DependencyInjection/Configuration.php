@@ -33,17 +33,15 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('process_manager');
+        $treeBuilder = new TreeBuilder('wvisiprocess_manageron_data_definitions');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_PIMCORE)->end()
+                ->scalarNode('log_directory')->defaultValue('%kernel.logs_dir%')->end()
             ->end()
         ;
 
@@ -53,10 +51,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -102,10 +97,7 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')
