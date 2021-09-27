@@ -14,6 +14,7 @@
 
 namespace ProcessManagerBundle\Process;
 
+use Pimcore\Config;
 use Pimcore\Tool\Console;
 use ProcessManagerBundle\Model\ExecutableInterface;
 
@@ -26,8 +27,15 @@ class Pimcore implements ProcessInterface
         $settings = $executable->getSettings();
         $command = $settings['command'];
 
-        $command = PIMCORE_PROJECT_ROOT . "/bin/console " . $command;
+        $script = PIMCORE_PROJECT_ROOT . "/bin/console " . $command;
 
-        return Console::runPhpScriptInBackground($command);
+        $phpCli = Console::getPhpCli();
+        $cmd = [$phpCli, $script];
+
+        if (Config::getEnvironment()) {
+            $cmd[] = '--env='.Config::getEnvironment();
+        }
+
+        return Console::execInBackground(implode(' ', $cmd));
     }
 }
