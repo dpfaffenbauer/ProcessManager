@@ -27,7 +27,7 @@ class Dao extends Listing\Dao\AbstractDao
     /**
      * @var string
      */
-    protected $tableName = 'process_manager_executables';
+    protected $tableName = 'process_manager_processes';
 
     /**
      * Get tableName, either for localized or non-localized data.
