@@ -114,7 +114,7 @@ class ProcessController extends ResourceController
         return $this->json(['success' => true]);
     }
 
-    protected function getLog(ProcessInterface $process): JsonResponse
+    protected function getLog(ProcessInterface $process): string
     {
         $registry = $this->get('process_manager.registry.process_handler_factories');
         $handler = $registry->has($process->getType()) ? $registry->get($process->getType()) : $this->get(

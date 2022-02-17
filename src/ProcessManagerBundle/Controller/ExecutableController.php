@@ -83,6 +83,6 @@ class ExecutableController extends ResourceController
 
     protected function getConfigTypes(): array
     {
-        return $this->getParameter('process_manager.processes');
+        return $this->container->getParameter('process_manager.processes');
     }
 }
