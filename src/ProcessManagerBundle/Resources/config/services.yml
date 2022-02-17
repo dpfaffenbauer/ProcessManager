@@ -81,3 +81,8 @@ services:
     ProcessManagerBundle\Process\CompositeProcessStartupFormResolver:
         arguments:
             - '@process_manager.registry.startup_form_resolver'
+
+    # service IDs used by the codebase directly
+    process_manager.startup_resolver: '@ProcessManagerBundle\Process\CompositeProcessStartupFormResolver'
+    process_manager.default_report: '@ProcessManagerBundle\Report\DefaultReport'
+    process_manager.default_handler_factory: '@ProcessManagerBundle\Logger\DefaultHandlerFactory'
