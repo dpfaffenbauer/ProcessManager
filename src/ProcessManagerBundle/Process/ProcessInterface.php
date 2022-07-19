@@ -18,5 +18,5 @@ use ProcessManagerBundle\Model\ExecutableInterface;
 
 interface ProcessInterface
 {
-    function run(ExecutableInterface $executable, array $params = []): int;
+    function run(ExecutableInterface $executable, ?array $params = []): int;
 }
