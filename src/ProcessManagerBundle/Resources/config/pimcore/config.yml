@@ -8,3 +8,8 @@ jms_serializer:
 doctrine_migrations:
     migrations_paths:
         'ProcessManagerBundle\Migrations': '@ProcessManagerBundle/Migrations'
+
+framework:
+    messenger:
+        routing:
+            'ProcessManagerBundle\Message\ProcessMessage': pimcore_core

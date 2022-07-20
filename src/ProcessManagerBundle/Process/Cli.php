@@ -19,7 +19,7 @@ use ProcessManagerBundle\Model\ExecutableInterface;
 
 final class Cli implements ProcessInterface
 {
-    function run(ExecutableInterface $executable, array $params = []): int
+    public function run(ExecutableInterface $executable, array $params = []): int
     {
         $settings = $executable->getSettings();
         $command = $settings['command'];

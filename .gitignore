@@ -66,3 +66,6 @@ var/classes
 var/config
 test.csv
 web
+.docker
+docker-compose.yaml
+cache

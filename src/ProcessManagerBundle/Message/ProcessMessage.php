@@ -8,15 +8,25 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2018 Jakub Płaskonka (jplaskonka@divante.pl)
  * @license    https://github.com/dpfaffenbauer/ProcessManager/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
  */
 
-namespace ProcessManagerBundle\Process;
+namespace ProcessManagerBundle\Message;
 
-use ProcessManagerBundle\Model\ExecutableInterface;
-
-interface ProcessInterface
+class ProcessMessage
 {
-    public function run(ExecutableInterface $executable, array $params = []): int;
+    public function __construct(protected int $executableId, protected array $params = [])
+    {
+    }
+
+    public function getExecutableId(): int
+    {
+        return $this->executableId;
+    }
+
+    public function getParams(): array
+    {
+        return $this->params;
+    }
 }

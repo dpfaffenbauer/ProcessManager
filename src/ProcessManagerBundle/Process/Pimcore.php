@@ -19,11 +19,11 @@ use ProcessManagerBundle\Model\ExecutableInterface;
 
 class Pimcore implements ProcessInterface
 {
-    function run(ExecutableInterface $executable, array $params = []): int
+    public function run(ExecutableInterface $executable, array $params = []): int
     {
         $settings = $executable->getSettings();
         $command = $settings['command'];
 
-        return Console::runPhpScriptInBackground(PIMCORE_PROJECT_ROOT . "/bin/console", $command);
+        return Console::runPhpScriptInBackground(PIMCORE_PROJECT_ROOT . "/bin/console", [$command]);
     }
 }

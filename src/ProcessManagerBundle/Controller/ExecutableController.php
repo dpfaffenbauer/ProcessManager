@@ -15,9 +15,12 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use ProcessManagerBundle\Message\ProcessMessage;
 use ProcessManagerBundle\Model\ExecutableInterface;
+use ProcessManagerBundle\Process\ProcessStartupFormResolverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class ExecutableController extends ResourceController
 {
@@ -54,7 +57,7 @@ class ExecutableController extends ResourceController
         }
 
         $params = [];
-        $form = $this->get('process_manager.startup_resolver')->resolveFormType($exe);
+        $form = $this->get(ProcessStartupFormResolverInterface::class)->resolveFormType($exe);
 
         if ($form) {
             $form = $this->createForm($form);
@@ -74,7 +77,7 @@ class ExecutableController extends ResourceController
             $params = $form->getData();
         }
 
-        $this->get('process_manager.registry.processes')->get($exe->getType())->run($exe, $params);
+        $this->get('messenger.default_bus')->dispatch(new ProcessMessage($exe->getId(), $params));
 
         return $this->viewHandler->handle([
             'success' => true
