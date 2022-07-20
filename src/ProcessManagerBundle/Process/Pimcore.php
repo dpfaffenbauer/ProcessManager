@@ -22,8 +22,8 @@ class Pimcore implements ProcessInterface
     public function run(ExecutableInterface $executable, array $params = []): int
     {
         $settings = $executable->getSettings();
-        $command = $settings['command'];
+        $command = (array) $settings['command'];
 
-        return Console::runPhpScriptInBackground(PIMCORE_PROJECT_ROOT . "/bin/console", [$command]);
+        return Console::runPhpScriptInBackground(PIMCORE_PROJECT_ROOT . "/bin/console", $command);
     }
 }
