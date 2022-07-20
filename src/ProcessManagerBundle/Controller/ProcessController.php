@@ -106,10 +106,11 @@ class ProcessController extends ResourceController
         );
     }
 
-    public function clearAction(): JsonResponse
+    public function clearAction(Request $request): JsonResponse
     {
+        $seconds = (int)$request->get('seconds', 604_800);
         $connection = Db::get();
-        $connection->exec('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 7 DAY))');
+        $connection->executeStatement('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ? SECOND))', [$seconds]);
 
         return $this->json(['success' => true]);
     }

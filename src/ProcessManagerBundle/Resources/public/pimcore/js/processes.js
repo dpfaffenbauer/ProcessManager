@@ -31,10 +31,10 @@ pimcore.plugin.processmanager.processes = Class.create({
         }.bind(this));
     },
 
-    clear: function() {
+    clear: function(seconds, msg) {
         Ext.MessageBox.show({
             title: t('processmanager_processes_clear'),
-            msg: t('processmanager_processes_clear_confirmation'),
+            msg: t(msg),
             buttons: Ext.MessageBox.OKCANCEL,
             icon: Ext.MessageBox.WARNING,
             fn: function (btn) {
@@ -42,6 +42,9 @@ pimcore.plugin.processmanager.processes = Class.create({
                     Ext.Ajax.request({
                         scope: this,
                         url: '/admin/process_manager/processes/clear',
+                        params: {
+                            seconds: seconds
+                        },
                         method: 'post',
                         success: function () {
                             pimcore.helpers.showNotification(t('success'), t('processmanager_processes_clear_success'), 'success');
@@ -355,10 +358,28 @@ pimcore.plugin.processmanager.processes = Class.create({
             },
             tbar: [
                 {
-                    xtype: 'button',
-                    text: t('processmanager_processes_clear'),
-                    iconCls: 'pimcore_icon_delete',
-                    handler: this.clear
+                    xtype: 'splitbutton',
+                    text: t("processmanager_processes_clear"),
+                    iconCls: "pimcore_icon_delete",
+                    menu: [
+                        {
+                            text: t('processmanager_processes_clear_7days'),
+                            iconCls: "pimcore_icon_delete",
+                            handler: this.clear.bind(this, 604_800, 'processmanager_processes_clear_confirmation_7days')
+                        }, {
+                            text: t('processmanager_processes_clear_1day'),
+                            iconCls: "pimcore_icon_delete",
+                            handler: this.clear.bind(this, 86_400, 'processmanager_processes_clear_confirmation_1day')
+                        }, {
+                            text: t('processmanager_processes_clear_12hours'),
+                            iconCls: "pimcore_icon_delete",
+                            handler: this.clear.bind(this, 43_200, 'processmanager_processes_clear_confirmation_12hours')
+                        }, {
+                            text: t('processmanager_processes_clear_all'),
+                            iconCls: "pimcore_icon_delete",
+                            handler: this.clear.bind(this, 0, 'processmanager_processes_clear_confirmation_all')
+                        }
+                    ]
                 }
             ]
         };
