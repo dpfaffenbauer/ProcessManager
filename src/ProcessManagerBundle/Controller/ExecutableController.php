@@ -61,9 +61,10 @@ class ExecutableController extends ResourceController
 
         if ($form) {
             $form = $this->createForm($form);
+            $form->setData(json_decode($exe->getSettings()['params'] ?? '{}', true));
             $startupConfig = $request->get('startupConfig', '{}');
             $startupConfig = json_decode($startupConfig, true);
-            $handledForm = $form->submit($startupConfig);
+            $handledForm = $form->submit($startupConfig, false);
 
             if (!$handledForm->isValid()) {
                 $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
