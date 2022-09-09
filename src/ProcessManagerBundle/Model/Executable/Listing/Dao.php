@@ -39,12 +39,14 @@ class Dao extends Listing\Dao\AbstractDao
         return $this->tableName;
     }
 
-    public function getQueryBuilder(...$columns): DoctrineQueryBuilder
+    public function getQueryBuilder($addListingParameters = true, ...$columns): DoctrineQueryBuilder
     {
         $queryBuilder = $this->db->createQueryBuilder();
         $queryBuilder->select(...$columns)->from($this->getTableName());
 
-        $this->applyListingParametersToQueryBuilder($queryBuilder);
+        if($addListingParameters) {
+            $this->applyListingParametersToQueryBuilder($queryBuilder);
+        }
 
         return $queryBuilder;
     }
@@ -79,7 +81,7 @@ class Dao extends Listing\Dao\AbstractDao
      */
     public function loadIdList()
     {
-        $queryBuilder = $this->getQueryBuilder([sprintf('%s as id', $this->getTableName() . '.id')]);
+        $queryBuilder = $this->getQueryBuilder(true, [sprintf('%s as id', $this->getTableName() . '.id')]);
         $objectIds = $this->db->fetchCol((string) $queryBuilder, $this->model->getConditionVariables(), $this->model->getConditionVariableTypes());
 
         return array_map('intval', $objectIds);
@@ -94,7 +96,7 @@ class Dao extends Listing\Dao\AbstractDao
      */
     public function getCount()
     {
-       if ($this->model->isLoaded()) {
+        if ($this->model->isLoaded()) {
             return count($this->model->getObjects());
         } else {
             $idList = $this->loadIdList();
@@ -112,11 +114,7 @@ class Dao extends Listing\Dao\AbstractDao
      */
     public function getTotalCount()
     {
-        $queryBuilder = $this->getQueryBuilder();
-        $this->prepareQueryBuilderForTotalCount($queryBuilder);
-
-        $totalCount = $this->db->fetchOne((string) $queryBuilder, $this->model->getConditionVariables(), $this->model->getConditionVariableTypes());
-
-        return (int) $totalCount;
+        $queryBuilder = $this->getQueryBuilder(false, 'id');
+        return $queryBuilder->execute()->rowCount();
     }
 }
