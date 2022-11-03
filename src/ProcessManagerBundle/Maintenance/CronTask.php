@@ -17,15 +17,19 @@ namespace ProcessManagerBundle\Maintenance;
 use Pimcore\Maintenance\TaskInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use Cron\CronExpression;
+use ProcessManagerBundle\Message\ProcessMessage;
 use ProcessManagerBundle\Model\Executable;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CronTask implements TaskInterface
 {
     private ServiceRegistry $registry;
+    private MessageBusInterface $messageBus;
 
-    public function __construct(ServiceRegistry $registry)
+    public function __construct(ServiceRegistry $registry, MessageBusInterface $messageBus)
     {
         $this->registry = $registry;
+        $this->messageBus = $messageBus;
     }
 
     public function execute()
@@ -43,7 +47,8 @@ class CronTask implements TaskInterface
             if($cron->getPreviousRunDate() > $lastrun) {
                 $executable->setLastrun($cron->getPreviousRunDate()->getTimestamp());
                 $executable->save();
-                $this->registry->get($executable->getType())->run($executable);
+
+                $this->messageBus->dispatch(new ProcessMessage($exe->getId()));
             }
         }
     }

@@ -48,6 +48,7 @@ services:
     ProcessManagerBundle\Maintenance\CronTask:
         arguments:
             - '@process_manager.registry.processes'
+            - '@messenger.default_bus'
         tags:
             - { name: pimcore.maintenance.task, type: process_manager.maintenance.cron }
 
