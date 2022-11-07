@@ -48,7 +48,7 @@ class CronTask implements TaskInterface
                 $executable->setLastrun($cron->getPreviousRunDate()->getTimestamp());
                 $executable->save();
 
-                $this->messageBus->dispatch(new ProcessMessage($exe->getId()));
+                $this->messageBus->dispatch(new ProcessMessage($executable->getId()));
             }
         }
     }
