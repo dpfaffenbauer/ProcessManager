@@ -3,7 +3,7 @@
 **Looking for the current stable (version 1)? See https://github.com/dpfaffenbauer/ProcessManager/tree/1.1**
 
 ## Requirements
- - Pimcore 5
+ - Pimcore 10
 
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 
@@ -11,7 +11,7 @@ Process Manager Plugin keeps track of all your "long running jobs". It adds a na
 
 ## Plugins using Process Manager
 
- - [ImportDefinitions](https://github.com/w-vision/ImportDefinitions)
+ - [DataDefinitions](https://github.com/w-vision/DataDefinitions)
 
 ## Getting started
  * Install via composer ```composer require dpfaffenbauer/process-manager:^2.0```
