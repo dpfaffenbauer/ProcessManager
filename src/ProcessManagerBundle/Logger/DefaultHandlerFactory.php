@@ -20,12 +20,12 @@ use ProcessManagerBundle\Model\ProcessInterface;
 class DefaultHandlerFactory implements HandlerFactoryInterface
 {
     private string $logDirectory;
-    private bool $cleanup_log_directory;
+    private bool $keepLogs;
 
-    public function __construct(string $logDirectory, bool $cleanup_log_directory)
+    public function __construct(string $logDirectory, bool $keepLogs)
     {
         $this->logDirectory = $logDirectory;
-        $this->cleanup_log_directory = $cleanup_log_directory;
+        $this->keepLogs = $keepLogs;
     }
 
     public function getLogHandler(ProcessInterface $process): StreamHandler
@@ -48,7 +48,7 @@ class DefaultHandlerFactory implements HandlerFactoryInterface
     {
         $path = sprintf('%s/process_manager_%s.log', $this->logDirectory, $process->getId());
 
-        if ($this->cleanup_log_directory && file_exists($path)) {
+        if (!$this->keepLogs && file_exists($path)) {
             unlink($path);
         }
     }

@@ -30,7 +30,7 @@ class ProcessManagerExtension extends AbstractModelExtension
         $this->registerPimcoreResources('process_manager', $config['pimcore_admin'], $container);
 
         $container->setParameter('process_manager.log_directory', $config['log_directory']);
-        $container->setParameter('process_manager.cleanup_log_directory', $config['cleanup_log_directory']);
+        $container->setParameter('process_manager.keep_logs', $config['keep_logs']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

@@ -42,11 +42,10 @@ The <info>%command.name%</info> cleanup process data from the database and from 
 EOT
             )
             ->addOption(
-                'logfiles',
-                'l',
-                InputOption::VALUE_OPTIONAL,
-                'Cleanup log files (default "true")',
-                true
+                'keeplogs',
+                'k',
+                InputOption::VALUE_NONE,
+                'Keep log files',
             )
             ->addOption(
                 'seconds',
@@ -67,9 +66,7 @@ EOT
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($input->getOption('logfiles')) {
-            $included = (bool)$input->getOption('logfiles');
-        }
+        $keepLogs = $input->getOption('keeplogs');
         if ($input->getOption('seconds')) {
             $seconds = (int)$input->getOption('seconds');
         }
@@ -81,20 +78,21 @@ EOT
         $this->output->writeln('finish cleaning database entries older than ' . $seconds . ' seconds');
 
         // start deleting log files older than x seconds
-        $this->output->writeln('start cleaning log files older than ' . $seconds . ' seconds');
-        if (is_dir($this->logDirectory)) {
+        if (!$keepLogs && is_dir($this->logDirectory)) {
+            $this->output->writeln('start cleaning log files older than ' . $seconds . ' seconds');
             $files = scandir($this->logDirectory);
             foreach ($files as $file) {
+                $filePath = $this->logDirectory . '/' . $file;
                 if (
-                    file_exists($file) &&
+                    file_exists($filePath) &&
                     str_contains($file, 'process_manager_') &&
-                    filemtime($file) < time() - $seconds
+                    filemtime($filePath) < time() - $seconds
                 ) {
-                    unlink($file);
+                    unlink($filePath);
                 }
             }
+            $this->output->writeln('finish cleaning logfile entries older than ' . $seconds . ' seconds');
         }
-        $this->output->writeln('finish cleaning logfile entries older than ' . $seconds . ' seconds');
         return Command::SUCCESS;
     }
 }

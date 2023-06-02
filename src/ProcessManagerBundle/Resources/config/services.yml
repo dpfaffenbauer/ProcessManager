@@ -70,7 +70,7 @@ services:
     ProcessManagerBundle\Logger\DefaultHandlerFactory:
         arguments:
             - '%process_manager.log_directory%'
-            - '%process_manager.cleanup_log_directory%'
+            - '%process_manager.keep_logs%'
 
     ProcessManagerBundle\Report\DefaultReport: ~
 
