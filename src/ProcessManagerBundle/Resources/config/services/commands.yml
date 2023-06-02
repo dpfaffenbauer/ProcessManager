@@ -1,0 +1,6 @@
+services:
+  ProcessManagerBundle\Command\CleanupProcessDataCommand:
+    arguments:
+      - '%process_manager.log_directory%'
+    tags:
+      - { name: 'console.command', command: 'process-manager:cleanup-process-data' }

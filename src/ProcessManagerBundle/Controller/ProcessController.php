@@ -112,6 +112,21 @@ class ProcessController extends ResourceController
         $connection = Db::get();
         $connection->executeStatement('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ? SECOND))', [$seconds]);
 
+        $logDirectory = \Pimcore::getContainer()->getParameter('process_manager.log_directory');
+        $cleanupLogDirectory = \Pimcore::getContainer()->getParameter('process_manager.cleanup_log_directory');
+        if ($cleanupLogDirectory && is_dir($logDirectory)) {
+            $files = scandir($logDirectory);
+            foreach ($files as $file) {
+                if (
+                    file_exists($file) &&
+                    str_contains($file, 'process_manager_') &&
+                    filemtime($file) < time() - $seconds
+                ) {
+                    unlink($file);
+                }
+            }
+        }
+
         return $this->json(['success' => true]);
     }
 

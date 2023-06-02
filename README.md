@@ -125,6 +125,20 @@ if ($process->getStatus() == ProcessManagerBundle::STATUS_STOPPING) {
     $process->save();    
 }
 ```
+## Cleanup command
+
+You can execute a cleanup command from the console to delete old process entries and log files. To do this on a regular basis, you can add it as a cronjob. 
+
+```bash
+# delete all process lo entries from the database and log files older than 604800 seconds (7 days)
+$ ./bin/console process-manager:cleanup-process-data
+ 
+# delete all process lo entries from the database and log files older than 86400 seconds (1 days)
+$ ./bin/console process-manager:cleanup-process-data --seconds=86400
+
+# delete only process lo entries from the database older than 604800 seconds (7 days) and keep the log files
+$ ./bin/console process-manager:cleanup-process-data --logfiles=false
+```
 
 ## Copyright and license 
 Copyright: [lineofcode.at](http://www.lineofcode.at)

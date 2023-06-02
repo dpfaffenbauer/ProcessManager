@@ -1,6 +1,7 @@
 imports:
     - { resource: "services/forms.yml" }
     - { resource: "services/installer.yml" }
+    - { resource: "services/commands.yml" }
 
 services:
     _defaults:
@@ -69,6 +70,7 @@ services:
     ProcessManagerBundle\Logger\DefaultHandlerFactory:
         arguments:
             - '%process_manager.log_directory%'
+            - '%process_manager.cleanup_log_directory%'
 
     ProcessManagerBundle\Report\DefaultReport: ~
 
