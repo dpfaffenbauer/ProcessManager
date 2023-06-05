@@ -18,6 +18,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Pimcore\Db;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,14 +107,14 @@ class ProcessController extends ResourceController
         );
     }
 
-    public function clearAction(Request $request): JsonResponse
+    public function clearAction(Request $request, ParameterBagInterface $parameterBag): JsonResponse
     {
         $seconds = (int)$request->get('seconds', 604_800);
         $connection = Db::get();
         $connection->executeStatement('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ? SECOND))', [$seconds]);
 
-        $logDirectory = \Pimcore::getContainer()->getParameter('process_manager.log_directory');
-        $keepLogs = \Pimcore::getContainer()->getParameter('process_manager.keep_logs');
+        $logDirectory = $parameterBag->get('process_manager.log_directory');
+        $keepLogs = $parameterBag->get('process_manager.keep_logs');
         if (!$keepLogs && is_dir($logDirectory)) {
             $files = scandir($logDirectory);
             foreach ($files as $file) {
