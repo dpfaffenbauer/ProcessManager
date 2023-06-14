@@ -31,6 +31,7 @@ class ProcessManagerExtension extends AbstractModelExtension
 
         $container->setParameter('process_manager.log_directory', $config['log_directory']);
         $container->setParameter('process_manager.keep_logs', $config['keep_logs']);
+        $container->setParameter('process_manager.seconds', $config['seconds']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

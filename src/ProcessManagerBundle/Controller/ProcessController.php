@@ -15,9 +15,9 @@
 namespace ProcessManagerBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use Pimcore\Db;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
+use ProcessManagerBundle\Service\CleanupService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -109,25 +109,13 @@ class ProcessController extends ResourceController
     public function clearAction(Request $request): JsonResponse
     {
         $seconds = (int)$request->get('seconds', 604_800);
-        $connection = Db::get();
-        $connection->executeStatement('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ? SECOND))', [$seconds]);
+        $logDirectory = $this->container->getParameter('process_manager.log_directory');
+        $keepLogs = $this->container->getParameter('process_manager.keep_logs');
 
-        $logDirectory = \Pimcore::getContainer()->getParameter('process_manager.log_directory');
-        $keepLogs = \Pimcore::getContainer()->getParameter('process_manager.keep_logs');
-        if (!$keepLogs && is_dir($logDirectory)) {
-            $files = scandir($logDirectory);
-            foreach ($files as $file) {
-                $filePath = $logDirectory . '/' . $file;
-                if (
-                    file_exists($filePath) &&
-                    str_contains($file, 'process_manager_') &&
-                    filemtime($filePath) < time() - $seconds
-                ) {
-                    unlink($filePath);
-                }
-            }
-        }
-
+        /** @var CleanupService $cleanupService */
+        $cleanupService = $this->get('process_manager.cleanup_service');
+        $cleanupService->cleanupDbEntries($seconds);
+        $cleanupService->cleanupLogFiles($logDirectory, $seconds, $keepLogs);
         return $this->json(['success' => true]);
     }
 

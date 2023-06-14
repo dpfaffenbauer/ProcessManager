@@ -18,6 +18,7 @@ namespace ProcessManagerBundle\Command;
 use Doctrine\DBAL\Exception;
 use Pimcore\Console\AbstractCommand;
 use Pimcore\Db;
+use ProcessManagerBundle\Service\CleanupService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,12 +26,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanupProcessDataCommand extends AbstractCommand
 {
+    private CleanupService $cleanupService;
     private string $logDirectory;
 
-    public function __construct(string $logDirectory) {
+    public function __construct(CleanupService $cleanupService, string $logDirectory) {
         parent::__construct();
+        $this->cleanupService = $cleanupService;
         $this->logDirectory = $logDirectory;
     }
+
     protected function configure(): void
     {
         $this
@@ -73,26 +77,13 @@ EOT
 
         // start deleting database entries older than x seconds
         $this->output->writeln('start cleaning database entries older than ' . $seconds . ' seconds');
-        $connection = Db::get();
-        $connection->executeStatement('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ? SECOND))', [$seconds]);
+        $this->cleanupService->cleanupDbEntries($seconds);
         $this->output->writeln('finish cleaning database entries older than ' . $seconds . ' seconds');
 
         // start deleting log files older than x seconds
-        if (!$keepLogs && is_dir($this->logDirectory)) {
-            $this->output->writeln('start cleaning log files older than ' . $seconds . ' seconds');
-            $files = scandir($this->logDirectory);
-            foreach ($files as $file) {
-                $filePath = $this->logDirectory . '/' . $file;
-                if (
-                    file_exists($filePath) &&
-                    str_contains($file, 'process_manager_') &&
-                    filemtime($filePath) < time() - $seconds
-                ) {
-                    unlink($filePath);
-                }
-            }
-            $this->output->writeln('finish cleaning logfile entries older than ' . $seconds . ' seconds');
-        }
+        $this->output->writeln('start cleaning log files older than ' . $seconds . ' seconds');
+        $this->cleanupService->cleanupLogFiles($this->logDirectory, $seconds, $keepLogs);
+        $this->output->writeln('finish cleaning logfile entries older than ' . $seconds . ' seconds');
         return Command::SUCCESS;
     }
 }

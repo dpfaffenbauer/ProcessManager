@@ -45,13 +45,20 @@ services:
         tags:
             - { name: kernel.event_listener, event: pimcore.asset.postDelete, method: onArtifactAssetDelete }
 
-    ### Maintenance task
+    ### Maintenance tasks
     ProcessManagerBundle\Maintenance\CronTask:
         arguments:
             - '@process_manager.registry.processes'
             - '@messenger.default_bus'
         tags:
             - { name: pimcore.maintenance.task, type: process_manager.maintenance.cron }
+
+    ProcessManagerBundle\Maintenance\CleanupTask:
+        arguments:
+            - '@process_manager.cleanup_service'
+            - '@parameter_bag'
+        tags:
+            - { name: pimcore.maintenance.task, type: process_manager.maintenance.cleanup }
 
     ProcessManagerBundle\Logger\ProcessLogger:
         arguments:
@@ -97,3 +104,11 @@ services:
             - '@process_manager.registry.processes'
         tags:
             - { name: messenger.message_handler }
+
+    ### Cleanup service
+    ProcessManagerBundle\Service\CleanupService:
+        arguments:
+            - '@parameter_bag'
+
+    # service IDs used by the codebase directly
+    process_manager.cleanup_service: '@ProcessManagerBundle\Service\CleanupService'

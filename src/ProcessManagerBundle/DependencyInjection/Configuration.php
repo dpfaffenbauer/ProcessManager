@@ -43,6 +43,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_PIMCORE)->end()
                 ->scalarNode('log_directory')->defaultValue('%kernel.logs_dir%')->end()
                 ->booleanNode('keep_logs')->defaultValue(true)->end()
+                ->integerNode('seconds')->defaultValue(604800)->end()
             ->end()
         ;
 
