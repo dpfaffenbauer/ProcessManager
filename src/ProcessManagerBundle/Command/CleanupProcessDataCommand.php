@@ -17,7 +17,6 @@ namespace ProcessManagerBundle\Command;
 
 use Doctrine\DBAL\Exception;
 use Pimcore\Console\AbstractCommand;
-use Pimcore\Db;
 use ProcessManagerBundle\Service\CleanupService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
