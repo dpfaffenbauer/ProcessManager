@@ -14,7 +14,16 @@
 
 namespace ProcessManagerBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Controller\EventDispatcherInterface;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactoryInterface;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandler;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\Persistence\ObjectManager;
+use Pimcore\Db;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
 use ProcessManagerBundle\Service\CleanupService;
@@ -34,6 +43,17 @@ class ProcessController extends ResourceController
          * @var Process\Listing $list
          */
         $list = new $listingClass();
+        if ($filterString = $request->get('filter')) {
+            $db = Db::get();
+            $filters = json_decode($filterString);
+            $conditionParts = [];
+            foreach ($filters as $f) {
+                $fieldname = $f->property;
+                $conditionParts[] = $db->quoteIdentifier($fieldname) . ' LIKE ' . $db->quote('%' . $f->value . '%');
+            }
+            $condition = implode(' AND ', $conditionParts);
+            $list->setCondition($condition);
+        }
         if ($sort = $request->get('sort')) {
             $sort = json_decode($sort)[0];
             $list->setOrderKey($sort->property);
@@ -113,7 +133,7 @@ class ProcessController extends ResourceController
         $keepLogs = $this->container->getParameter('process_manager.keep_logs');
 
         /** @var CleanupService $cleanupService */
-        $cleanupService = $this->get('process_manager.cleanup_service');
+        $cleanupService = $this->container->get('process_manager.cleanup_service');
         $cleanupService->cleanupDbEntries($seconds);
         $cleanupService->cleanupLogFiles($logDirectory, $seconds, $keepLogs);
         return $this->json(['success' => true]);

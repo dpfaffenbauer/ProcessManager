@@ -25,13 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CleanupProcessDataCommand extends AbstractCommand
 {
-    private CleanupService $cleanupService;
-    private string $logDirectory;
-
-    public function __construct(CleanupService $cleanupService, string $logDirectory) {
+    public function __construct(private CleanupService $cleanupService, private string $logDirectory) {
         parent::__construct();
-        $this->cleanupService = $cleanupService;
-        $this->logDirectory = $logDirectory;
     }
 
     protected function configure(): void
@@ -75,14 +70,14 @@ EOT
         }
 
         // start deleting database entries older than x seconds
-        $this->output->writeln('start cleaning database entries older than ' . $seconds . ' seconds');
+        $output->writeln('start cleaning database entries older than ' . $seconds . ' seconds');
         $this->cleanupService->cleanupDbEntries($seconds);
-        $this->output->writeln('finish cleaning database entries older than ' . $seconds . ' seconds');
+        $output->writeln('finish cleaning database entries older than ' . $seconds . ' seconds');
 
         // start deleting log files older than x seconds
-        $this->output->writeln('start cleaning log files older than ' . $seconds . ' seconds');
+        $output->writeln('start cleaning log files older than ' . $seconds . ' seconds');
         $this->cleanupService->cleanupLogFiles($this->logDirectory, $seconds, $keepLogs);
-        $this->output->writeln('finish cleaning logfile entries older than ' . $seconds . ' seconds');
+        $output->writeln('finish cleaning logfile entries older than ' . $seconds . ' seconds');
         return Command::SUCCESS;
     }
 }

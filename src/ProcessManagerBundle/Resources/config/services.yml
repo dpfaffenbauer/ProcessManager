@@ -55,8 +55,10 @@ services:
 
     ProcessManagerBundle\Maintenance\CleanupTask:
         arguments:
-            - '@process_manager.cleanup_service'
-            - '@parameter_bag'
+            - '@ProcessManagerBundle\Service\CleanupService'
+            - '%process_manager.log_directory%'
+            - '%process_manager.seconds%'
+            - '%process_manager.keep_logs%'
         tags:
             - { name: pimcore.maintenance.task, type: process_manager.maintenance.cleanup }
 

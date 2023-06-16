@@ -16,23 +16,14 @@ namespace ProcessManagerBundle\Maintenance;
 
 use Pimcore\Maintenance\TaskInterface;
 use ProcessManagerBundle\Service\CleanupService;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class CleanupTask implements TaskInterface
 {
-    private CleanupService $cleanupService;
-    private ParameterBagInterface $parameterBag;
-
-    public function __construct(CleanupService $cleanupService, ParameterBagInterface $parameterBag) {
-        $this->cleanupService = $cleanupService;
-        $this->parameterBag = $parameterBag;
+    public function __construct(private CleanupService $cleanupService, private string $logDirectory, private int $seconds, private bool $keepLogs) {
     }
     public function execute(): void
     {
-        $seconds = $this->parameterBag->get('process_manager.seconds');
-        $logDirectory = $this->parameterBag->get('process_manager.log_directory');
-        $keepLogs = $this->parameterBag->get('process_manager.keep_logs');
-        $this->cleanupService->cleanupDbEntries($seconds);
-        $this->cleanupService->cleanupLogFiles($logDirectory, $seconds, $keepLogs);
+        $this->cleanupService->cleanupDbEntries($this->seconds);
+        $this->cleanupService->cleanupLogFiles($this->logDirectory, $this->seconds, $this->keepLogs);
     }
 }
