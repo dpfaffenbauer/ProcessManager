@@ -111,6 +111,3 @@ services:
     ProcessManagerBundle\Service\CleanupService:
         arguments:
             - '@parameter_bag'
-
-    # service IDs used by the codebase directly
-    process_manager.cleanup_service: '@ProcessManagerBundle\Service\CleanupService'

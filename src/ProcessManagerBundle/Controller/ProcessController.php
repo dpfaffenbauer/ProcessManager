@@ -14,15 +14,7 @@
 
 namespace ProcessManagerBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Controller\EventDispatcherInterface;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactoryInterface;
-use CoreShop\Bundle\ResourceBundle\Controller\ViewHandler;
-use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Metadata\MetadataInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Persistence\ObjectManager;
 use Pimcore\Db;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
@@ -133,7 +125,7 @@ class ProcessController extends ResourceController
         $keepLogs = $this->container->getParameter('process_manager.keep_logs');
 
         /** @var CleanupService $cleanupService */
-        $cleanupService = $this->container->get('process_manager.cleanup_service');
+        $cleanupService = $this->container->get(CleanupService::class);
         $cleanupService->cleanupDbEntries($seconds);
         $cleanupService->cleanupLogFiles($logDirectory, $seconds, $keepLogs);
         return $this->json(['success' => true]);
