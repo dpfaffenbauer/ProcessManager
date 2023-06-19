@@ -18,6 +18,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Pimcore\Db;
 use ProcessManagerBundle\Model\Process;
 use ProcessManagerBundle\Model\ProcessInterface;
+use ProcessManagerBundle\Service\CleanupService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +35,17 @@ class ProcessController extends ResourceController
          * @var Process\Listing $list
          */
         $list = new $listingClass();
+        if ($filterString = $request->get('filter')) {
+            $db = Db::get();
+            $filters = json_decode($filterString);
+            $conditionParts = [];
+            foreach ($filters as $f) {
+                $fieldname = $f->property;
+                $conditionParts[] = $db->quoteIdentifier($fieldname) . ' LIKE ' . $db->quote('%' . $f->value . '%');
+            }
+            $condition = implode(' AND ', $conditionParts);
+            $list->setCondition($condition);
+        }
         if ($sort = $request->get('sort')) {
             $sort = json_decode($sort)[0];
             $list->setOrderKey($sort->property);
@@ -109,9 +121,13 @@ class ProcessController extends ResourceController
     public function clearAction(Request $request): JsonResponse
     {
         $seconds = (int)$request->get('seconds', 604_800);
-        $connection = Db::get();
-        $connection->executeStatement('DELETE FROM process_manager_processes  WHERE started < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ? SECOND))', [$seconds]);
+        $logDirectory = $this->container->getParameter('process_manager.log_directory');
+        $keepLogs = $this->container->getParameter('process_manager.keep_logs');
 
+        /** @var CleanupService $cleanupService */
+        $cleanupService = $this->container->get(CleanupService::class);
+        $cleanupService->cleanupDbEntries($seconds);
+        $cleanupService->cleanupLogFiles($logDirectory, $seconds, $keepLogs);
         return $this->json(['success' => true]);
     }
 

@@ -145,6 +145,7 @@ pimcore.plugin.processmanager.processes = Class.create({
             xtype: 'grid',
             store: store,
             bbar: pimcore.helpers.grid.buildDefaultPagingToolbar(store),
+            plugins: 'gridfilters',
             columns: [
                 {
                     text: t('id'),
@@ -154,12 +155,14 @@ pimcore.plugin.processmanager.processes = Class.create({
                 {
                     text: t('name'),
                     dataIndex: 'name',
-                    width: 300
+                    width: 400,
+                    filter: 'string'
                 },
                 {
                     text: t('processmanager_message'),
                     dataIndex: 'message',
-                    flex : 1
+                    flex : 1,
+                    filter: 'string'
                 },
                 {
                     text: t('processmanager_started'),
@@ -273,6 +276,7 @@ pimcore.plugin.processmanager.processes = Class.create({
                     text : t('processmanager_status'),
                     width: 100,
                     dataIndex: 'status',
+                    filter: 'string',
                     renderer: function (value, metadata, record) {
                         if (record.data.status != '' && record.data.status != null) {
                             return t('processmanager_' + record.data.status);
