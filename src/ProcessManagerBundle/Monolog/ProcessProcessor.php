@@ -16,6 +16,7 @@ namespace ProcessManagerBundle\Monolog;
 
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use ProcessManagerBundle\Logger\HandlerFactoryInterface;
 use ProcessManagerBundle\Model\ProcessInterface;
 
@@ -31,13 +32,13 @@ class ProcessProcessor
         $this->registry = $registry;
     }
 
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record): LogRecord
     {
-        if (!isset($record['context']['process'])) {
+        if (!isset($record->context['process'])) {
             return $record;
         }
 
-        $process = $record['context']['process'];
+        $process = $record->context['process'];
 
         if (!$process instanceof ProcessInterface) {
             return $process;
@@ -64,11 +65,11 @@ class ProcessProcessor
             $log = $this->loggers[$process->getId()];
         }
 
-        $record['extra']['process'] = $process;
+        $record->context['process'] = $process;
 
-        unset($record['context']['process']);
+        unset($record->context['process']);
 
-        $log->addRecord($record['level'], $record['message'], $record['context']);
+        $log->addRecord($record->level, $record->message, $record->context);
 
         return $record;
     }

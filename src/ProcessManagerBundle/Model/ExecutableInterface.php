@@ -19,16 +19,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface ExecutableInterface extends ResourceInterface
 {
     /**
-     * @return int
-     */
-    public function getId();
-
-    /**
-     * @param int $id
-     */
-    public function setId($id);
-
-    /**
      * @return string
      */
     public function getType();

@@ -32,7 +32,7 @@ class CronTask implements TaskInterface
         $this->messageBus = $messageBus;
     }
 
-    public function execute()
+    public function execute(): void
     {
         /** @var Executable $executable */
         foreach ($this->getExecutables() as $executable) {
