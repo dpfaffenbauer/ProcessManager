@@ -121,8 +121,8 @@ class ProcessController extends ResourceController
     public function clearAction(Request $request): JsonResponse
     {
         $seconds = (int)$request->get('seconds', 604_800);
-        $logDirectory = $this->container->getParameter('process_manager.log_directory');
-        $keepLogs = $this->container->getParameter('process_manager.keep_logs');
+        $logDirectory = $this->parameterBag->get('process_manager.log_directory');
+        $keepLogs = $this->parameterBag->get('process_manager.keep_logs');
 
         /** @var CleanupService $cleanupService */
         $cleanupService = $this->container->get(CleanupService::class);
