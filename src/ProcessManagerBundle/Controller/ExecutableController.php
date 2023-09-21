@@ -24,9 +24,16 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class ExecutableController extends ResourceController
 {
+    private array $configTypes = [];
+
+    public function setConfigTypes(array $configTypes): void
+    {
+        $this->configTypes = $configTypes;
+    }
+
     public function getConfigAction(Request $request): JsonResponse
     {
-        $types = $this->getConfigTypes();
+        $types = $this->configTypes;
 
         return $this->viewHandler->handle([
             'types' => array_keys($types)
