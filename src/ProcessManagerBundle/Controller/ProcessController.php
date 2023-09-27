@@ -131,6 +131,15 @@ class ProcessController extends ResourceController
         return $this->json(['success' => true]);
     }
 
+    public static function getSubscribedServices(): array
+    {
+        $services = parent::getSubscribedServices();
+        $services['process_manager.registry.process_reports'] = '?'.Process\ProcessReportRegistry::class;
+        $services[CleanupService::class] = '?'.CleanupService::class;
+
+        return $services;
+    }
+
     protected function getLog(ProcessInterface $process): string
     {
         $registry = $this->get('process_manager.registry.process_handler_factories');
