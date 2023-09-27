@@ -93,7 +93,7 @@ class ProcessController extends ResourceController
         if ($registry->has($process->getType())) {
             $content = $registry->get($process->getType())->generateReport($process, $log);
         } else {
-            $content = $this->get('process_manager.default_report')->generateReport($process, $log);
+            $content = $this->container->get('process_manager.default_report')->generateReport($process, $log);
         }
 
         return $this->json(
@@ -134,7 +134,10 @@ class ProcessController extends ResourceController
     public static function getSubscribedServices(): array
     {
         $services = parent::getSubscribedServices();
-        $services['process_manager.registry.process_reports'] = '?'.Process\ProcessReportRegistry::class;
+        $services['process_manager.registry.process_reports'] = \CoreShop\Component\Registry\ServiceRegistryInterface::class;
+        $services['process_manager.registry.process_handler_factories'] = \CoreShop\Component\Registry\ServiceRegistryInterface::class;
+        $services['process_manager.default_handler_factory'] = \ProcessManagerBundle\Logger\HandlerFactoryInterface::class;
+        $services['process_manager.default_report'] = \ProcessManagerBundle\Report\ReportInterface::class;
         $services[CleanupService::class] = '?'.CleanupService::class;
 
         return $services;
@@ -143,7 +146,7 @@ class ProcessController extends ResourceController
     protected function getLog(ProcessInterface $process): string
     {
         $registry = $this->container->get('process_manager.registry.process_handler_factories');
-        $handler = $registry->has($process->getType()) ? $registry->get($process->getType()) : $this->get(
+        $handler = $registry->has($process->getType()) ? $registry->get($process->getType()) : $this->container->get(
             'process_manager.default_handler_factory'
         );
 
