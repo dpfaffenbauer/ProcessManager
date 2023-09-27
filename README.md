@@ -1,7 +1,7 @@
 # Pimcore - Process Manager
 
 ## Requirements
- - Pimcore 10
+ - Pimcore 11
 
 [![Software License](https://img.shields.io/badge/license-GPLv3-brightgreen.svg?style=flat)](LICENSE.md)
 
