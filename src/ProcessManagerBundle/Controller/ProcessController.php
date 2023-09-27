@@ -87,7 +87,7 @@ class ProcessController extends ResourceController
     public function logReportAction(Request $request): JsonResponse
     {
         $process = $this->findOr404($request->get('id'));
-        $registry = $this->get('process_manager.registry.process_reports');
+        $registry = $this->container->get('process_manager.registry.process_reports');
         $log = $this->getLog($process);
 
         if ($registry->has($process->getType())) {
@@ -142,7 +142,7 @@ class ProcessController extends ResourceController
 
     protected function getLog(ProcessInterface $process): string
     {
-        $registry = $this->get('process_manager.registry.process_handler_factories');
+        $registry = $this->container->get('process_manager.registry.process_handler_factories');
         $handler = $registry->has($process->getType()) ? $registry->get($process->getType()) : $this->get(
             'process_manager.default_handler_factory'
         );
