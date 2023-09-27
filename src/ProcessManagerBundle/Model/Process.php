@@ -171,7 +171,7 @@ class Process extends AbstractModel implements ProcessInterface
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): string|int|null
     {
         return $this->id;
     }

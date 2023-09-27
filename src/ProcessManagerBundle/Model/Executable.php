@@ -81,7 +81,7 @@ class Executable extends AbstractModel implements ExecutableInterface
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): string|int|null
     {
         return $this->id;
     }

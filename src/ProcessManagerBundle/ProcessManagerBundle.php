@@ -18,6 +18,7 @@ use Composer\InstalledVersions;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use ProcessManagerBundle\DependencyInjection\Compiler\ControllerServiceSubscriberCompilerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\MonologHandlerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessHandlerFactoryTypeRegistryCompilerPass;
 use ProcessManagerBundle\DependencyInjection\Compiler\ProcessReportTypeRegistryCompilerPass;
@@ -45,6 +46,7 @@ class ProcessManagerBundle extends AbstractResourceBundle implements PimcoreBund
     {
         parent::build($builder);
 
+        $builder->addCompilerPass(new ControllerServiceSubscriberCompilerPass());
         $builder->addCompilerPass(new ProcessTypeRegistryCompilerPass());
         $builder->addCompilerPass(new ProcessReportTypeRegistryCompilerPass());
         $builder->addCompilerPass(new ProcessHandlerFactoryTypeRegistryCompilerPass());

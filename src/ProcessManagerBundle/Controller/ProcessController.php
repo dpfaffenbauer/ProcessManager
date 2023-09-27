@@ -87,13 +87,13 @@ class ProcessController extends ResourceController
     public function logReportAction(Request $request): JsonResponse
     {
         $process = $this->findOr404($request->get('id'));
-        $registry = $this->get('process_manager.registry.process_reports');
+        $registry = $this->container->get('process_manager.registry.process_reports');
         $log = $this->getLog($process);
 
         if ($registry->has($process->getType())) {
             $content = $registry->get($process->getType())->generateReport($process, $log);
         } else {
-            $content = $this->get('process_manager.default_report')->generateReport($process, $log);
+            $content = $this->container->get('process_manager.default_report')->generateReport($process, $log);
         }
 
         return $this->json(
@@ -121,8 +121,8 @@ class ProcessController extends ResourceController
     public function clearAction(Request $request): JsonResponse
     {
         $seconds = (int)$request->get('seconds', 604_800);
-        $logDirectory = $this->container->getParameter('process_manager.log_directory');
-        $keepLogs = $this->container->getParameter('process_manager.keep_logs');
+        $logDirectory = $this->parameterBag->get('process_manager.log_directory');
+        $keepLogs = $this->parameterBag->get('process_manager.keep_logs');
 
         /** @var CleanupService $cleanupService */
         $cleanupService = $this->container->get(CleanupService::class);
@@ -131,10 +131,22 @@ class ProcessController extends ResourceController
         return $this->json(['success' => true]);
     }
 
+    public static function getSubscribedServices(): array
+    {
+        $services = parent::getSubscribedServices();
+        $services['process_manager.registry.process_reports'] = \CoreShop\Component\Registry\ServiceRegistryInterface::class;
+        $services['process_manager.registry.process_handler_factories'] = \CoreShop\Component\Registry\ServiceRegistryInterface::class;
+        $services['process_manager.default_handler_factory'] = \ProcessManagerBundle\Logger\HandlerFactoryInterface::class;
+        $services['process_manager.default_report'] = \ProcessManagerBundle\Report\ReportInterface::class;
+        $services[CleanupService::class] = '?'.CleanupService::class;
+
+        return $services;
+    }
+
     protected function getLog(ProcessInterface $process): string
     {
-        $registry = $this->get('process_manager.registry.process_handler_factories');
-        $handler = $registry->has($process->getType()) ? $registry->get($process->getType()) : $this->get(
+        $registry = $this->container->get('process_manager.registry.process_handler_factories');
+        $handler = $registry->has($process->getType()) ? $registry->get($process->getType()) : $this->container->get(
             'process_manager.default_handler_factory'
         );
 

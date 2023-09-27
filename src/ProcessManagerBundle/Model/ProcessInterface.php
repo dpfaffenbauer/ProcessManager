@@ -28,11 +28,6 @@ interface ProcessInterface extends ResourceInterface
     public function progress($steps = 1, $message = '');
 
     /**
-     * @return int
-     */
-    public function getId();
-
-    /**
      * @param int $id
      */
     public function setId($id);

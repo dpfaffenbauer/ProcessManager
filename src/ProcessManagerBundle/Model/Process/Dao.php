@@ -34,7 +34,7 @@ class Dao extends AbstractDao
             $this->model->setId($id);
         }
 
-        $data = $this->db->fetchRow('SELECT * FROM '.$this->tableName.' WHERE id = ?', [$this->model->getId()]);
+        $data = $this->db->fetchAssociative('SELECT * FROM '.$this->tableName.' WHERE id = ?', [$this->model->getId()]);
 
         if (!$data["id"]) {
             throw new \Exception("Process with the ID " . $this->model->getId() . " doesn't exists");
@@ -100,10 +100,10 @@ class Dao extends AbstractDao
     /**
      * @param array $data
      */
-    protected function assignVariablesToModel($data)
+    protected function assignVariablesToModel(array $data): void
     {
         foreach($data as $key => &$value) {
-            if ($key === "artifact") {
+            if ($key === "artifact" && $value !== null) {
                 $value = Asset::getById($value);
             }
         }

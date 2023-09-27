@@ -26,7 +26,7 @@ class ExecutableController extends ResourceController
 {
     public function getConfigAction(Request $request): JsonResponse
     {
-        $types = $this->getConfigTypes();
+        $types = $this->parameterBag->get('process_manager.processes');
 
         return $this->viewHandler->handle([
             'types' => array_keys($types)
@@ -57,7 +57,7 @@ class ExecutableController extends ResourceController
         }
 
         $params = [];
-        $form = $this->get(ProcessStartupFormResolverInterface::class)->resolveFormType($exe);
+        $form = $this->container->get(ProcessStartupFormResolverInterface::class)->resolveFormType($exe);
 
         if ($form) {
             $form = $this->createForm($form);
@@ -78,15 +78,19 @@ class ExecutableController extends ResourceController
             $params = $form->getData();
         }
 
-        $this->get('messenger.default_bus')->dispatch(new ProcessMessage($exe->getId(), $params));
+        $this->container->get('messenger.default_bus')->dispatch(new ProcessMessage($exe->getId(), $params));
 
         return $this->viewHandler->handle([
             'success' => true
         ]);
     }
 
-    protected function getConfigTypes(): array
+    public static function getSubscribedServices(): array
     {
-        return $this->container->getParameter('process_manager.processes');
+        $services = parent::getSubscribedServices();
+        $services['messenger.default_bus'] = '?'.MessageBusInterface::class;
+        $services[\ProcessManagerBundle\Process\ProcessStartupFormResolverInterface::class] = '?'.ProcessStartupFormResolverInterface::class;
+
+        return $services;
     }
 }

@@ -16,6 +16,7 @@ namespace ProcessManagerBundle\Monolog;
 
 use Monolog\Handler\AbstractHandler;
 use Monolog\Logger;
+use Monolog\LogRecord;
 
 class ProcessHandler extends AbstractHandler
 {
@@ -32,7 +33,7 @@ class ProcessHandler extends AbstractHandler
         $this->logProcessIntoRegularLogFile = $logProcessIntoRegularLogFile;
     }
 
-    public function handle(array $record): bool
+    public function handle(LogRecord $record): bool
     {
         if (!array_key_exists('process', $record['extra'])) {
             return false;
