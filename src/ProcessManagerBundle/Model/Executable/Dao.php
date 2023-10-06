@@ -36,7 +36,7 @@ class Dao extends AbstractDao
 
         $data = $this->db->fetchAssociative('SELECT * FROM '.$this->tableName.' WHERE id = ?', [$this->model->getId()]);
 
-        if (!$data["id"]) {
+        if ($data === false) {
             throw new \Exception("Executable with the ID " . $this->model->getId() . " doesn't exists");
         }
 
