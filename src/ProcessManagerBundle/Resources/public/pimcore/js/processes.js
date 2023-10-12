@@ -26,9 +26,7 @@ pimcore.plugin.processmanager.processes = Class.create({
     },
 
     reloadProcesses: function() {
-        pimcore.globalmanager.get(this.storeId).load(function () {
-            this.createInterval();
-        }.bind(this));
+        pimcore.globalmanager.get(this.storeId).load();
     },
 
     clear: function(seconds, msg) {
@@ -94,6 +92,10 @@ pimcore.plugin.processmanager.processes = Class.create({
                 { name:'artifact' }
             ]
         });
+
+        store.on('load', function () {
+            this.createInterval();
+        }.bind(this));
 
         pimcore.globalmanager.add(this.storeId, store);
         this.reloadProcesses();
