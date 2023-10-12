@@ -1,6 +1,7 @@
 imports:
     - { resource: "services/forms.yml" }
     - { resource: "services/installer.yml" }
+    - { resource: "services/commands.yml" }
 
 services:
     _defaults:
@@ -44,13 +45,22 @@ services:
         tags:
             - { name: kernel.event_listener, event: pimcore.asset.postDelete, method: onArtifactAssetDelete }
 
-    ### Maintenance task
+    ### Maintenance tasks
     ProcessManagerBundle\Maintenance\CronTask:
         arguments:
             - '@process_manager.registry.processes'
             - '@messenger.default_bus'
         tags:
             - { name: pimcore.maintenance.task, type: process_manager.maintenance.cron }
+
+    ProcessManagerBundle\Maintenance\CleanupTask:
+        arguments:
+            - '@ProcessManagerBundle\Service\CleanupService'
+            - '%process_manager.log_directory%'
+            - '%process_manager.seconds%'
+            - '%process_manager.keep_logs%'
+        tags:
+            - { name: pimcore.maintenance.task, type: process_manager.maintenance.cleanup }
 
     ProcessManagerBundle\Logger\ProcessLogger:
         arguments:
@@ -69,6 +79,7 @@ services:
     ProcessManagerBundle\Logger\DefaultHandlerFactory:
         arguments:
             - '%process_manager.log_directory%'
+            - '%process_manager.keep_logs%'
 
     ProcessManagerBundle\Report\DefaultReport: ~
 
@@ -95,3 +106,8 @@ services:
             - '@process_manager.registry.processes'
         tags:
             - { name: messenger.message_handler }
+
+    ### Cleanup service
+    ProcessManagerBundle\Service\CleanupService:
+        arguments:
+            - '@parameter_bag'

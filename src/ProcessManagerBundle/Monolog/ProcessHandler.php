@@ -35,7 +35,7 @@ class ProcessHandler extends AbstractHandler
     public function handle(array $record): bool
     {
         if (!array_key_exists('process', $record['extra'])) {
-            return true;
+            return false;
         }
 
         return $this->logProcessIntoRegularLogFile;
