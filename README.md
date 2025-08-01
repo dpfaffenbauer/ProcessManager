@@ -1,5 +1,7 @@
 # Pimcore - Process Manager
 
+> *ARCHIVED*: This will no longer be maintained!
+
 ## Requirements
  - Pimcore 11
 
